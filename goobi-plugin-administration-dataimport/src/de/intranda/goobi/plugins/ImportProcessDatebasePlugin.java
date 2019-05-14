@@ -120,6 +120,11 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     @Setter
     private Rule selectedRule;
 
+    @Getter
+    @Setter
+    private String currentRule;
+    private List<String> allRulenames = new ArrayList<>();
+
     // sql statements
 
     private static final String processIdCheckQuery = "SELECT count(1) FROM prozesse WHERE ProzesseID = ?";
@@ -148,8 +153,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         namespaces.add(mods);
 
     }
-
-
 
     public List<ImportObject> generateFiles(List<Record> recordList) {
         List<ImportObject> answer = new ArrayList<>();
@@ -228,12 +231,23 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
             Element projectTitleElement = projectElement.getChild("title", goobiNamespace);
             String projectName = projectTitleElement.getText();
-            for (Rule rule : configurationItemList) {
-                if (rule.getRulename().equals(projectName)) {
-                    selectedRule = rule;
-                    break;
+
+            if (StringUtils.isBlank(currentRule) || currentRule.equals("Autodetect rule")) {
+                for (Rule rule : configurationItemList) {
+                    if (rule.getRulename().equals(projectName)) {
+                        selectedRule = rule;
+                        break;
+                    }
+                }
+            } else {
+                for (Rule rule : configurationItemList) {
+                    if (rule.getRulename().equals(currentRule)) {
+                        selectedRule = rule;
+                        break;
+                    }
                 }
             }
+
             // no rule defined, use file
             if (selectedRule == null) {
                 selectedRule = new Rule();
@@ -853,11 +867,11 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
                         if (StringUtils.isNotBlank(userName)) {
                             if (userName.contains(",")) {
                                 user.setNachname(userName.substring(0, userName.indexOf(",")));
-                                user.setVorname(userName.substring(userName.indexOf(","+1)));
+                                user.setVorname(userName.substring(userName.indexOf("," + 1)));
                             }
                         }
                         user.setIstAktiv(false);
-                        user.setIsVisible( "deleted");
+                        user.setIsVisible("deleted");
                         try {
                             UserManager.saveUser(user);
                         } catch (DAOException e) {
@@ -1202,7 +1216,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         process.setDocket(docket);
     }
 
-
     public List<Record> generateRecordsFromFilenames(List<String> selectedFolder) {
         List<Record> answer = new ArrayList<>(selectedFolder.size());
         for (String folder : selectedFolder) {
@@ -1214,7 +1227,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
         return answer;
     }
-
 
     public List<String> getAllFilenames() {
         // TODO find equivalent for S3
@@ -1252,13 +1264,10 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         }
     }
 
-
-
     @Override
     public PluginType getType() {
         return PluginType.Administration;
     }
-
 
     // database interaction
 
@@ -1350,11 +1359,21 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         }
     }
 
-
-
     @Override
     public String getGui() {
         return "/uii/administration_dataimport.xhtml";
+    }
+
+    public List<String> getAllRuleNames() {
+        if (allRulenames.isEmpty()) {
+            allRulenames.add("Autodetect rule");
+            for (Rule rule : configurationItemList) {
+                allRulenames.add(rule.getRulename());
+            }
+
+        }
+
+        return allRulenames;
     }
 
 }
