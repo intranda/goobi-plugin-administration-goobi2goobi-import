@@ -1228,39 +1228,45 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         return answer;
     }
 
-    public List<String> getAllFilenames() {
+    @Getter @Setter
+    private List<String> allFilenames = new ArrayList<>();
+
+    @Getter
+    @Setter
+    private List<String> selectedFilenames = new ArrayList<>();
+
+
+    public void generateAllFilenames() {
         // TODO find equivalent for S3
         // search for all  folder names in /opt/digiverso/goobi/metadata/
         // check, if a file *_db_export.xml exists in the process folder
         // return the folder names
+        allFilenames = new ArrayList<>();
+        allFilenames.add("Select all");
         if (ConfigurationHelper.getInstance().useS3()) {
             //
             AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
             ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(importPath);
             ObjectListing listing = s3.listObjects(req);
-            List<String> objs = new ArrayList<>();
             for (S3ObjectSummary os : listing.getObjectSummaries()) {
                 String key = os.getKey();
-                objs.add(key);
+                allFilenames.add(key);
             }
             while (listing.isTruncated()) {
                 listing = s3.listNextBatchOfObjects(listing);
                 for (S3ObjectSummary os : listing.getObjectSummaries()) {
                     String key = os.getKey();
-                    objs.add(key);
+                    allFilenames.add(key);
                 }
             }
-            return objs;
         } else {
-            List<String> processIdList = new ArrayList<>();
             try {
                 Files.find(Paths.get(importPath), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
-                .forEach(p -> processIdList.add(p.getParent().getFileName().toString()));
+                .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
             } catch (IOException e) {
                 log.error(e);
             }
 
-            return processIdList;
         }
     }
 

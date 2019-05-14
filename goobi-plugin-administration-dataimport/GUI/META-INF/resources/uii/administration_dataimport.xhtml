@@ -588,30 +588,73 @@
                     </div>
                     <div class="box-content nopadding">
                         <div class="dataTables_wrapper">
-<h:form styleClass="form-horizontal form-bordered">
-                            <div class="row">
-                                <div class="col-sm-6">
+                            <h:form styleClass="form-horizontal form-bordered">
+                                <div class="row">
+                                    <div class="col-sm-6">
 
-                                    <h:panelGroup id="plugin_data">
+
+
+
+
+                                        <div
+                                            class="form-group"
+                                            style="">
+                                            <div class="col-sm-3 control-label">
+                                                <h:outputLabel
+                                                    for="rules"
+                                                    value="plugin_adiministration_dataimport_rulename" />
+                                                <h:panelGroup>
+                                                    <i class="fa fa-asterisk pull-right font-asterisk" />
+                                                </h:panelGroup>
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <h:selectOneListbox
+                                                    id="rules"
+                                                    styleClass="form-control massimportListHeight"
+                                                    value="#{AdministrationForm.administrationPlugin.currentRule}"
+                                                    required="true">
+                                                    <f:selectItems
+                                                        value="#{AdministrationForm.administrationPlugin.allRuleNames}"
+                                                        var="file"
+                                                        itemLabel="#{file}"
+                                                        itemValue="#{file}" />
+                                                </h:selectOneListbox>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <h:commandLink
+                                            id="reload"
+                                            action="#{AdministrationForm.administrationPlugin.generateAllFilenames()}"
+                                            styleClass="btn btn-mini"
+                                            title="#{msgs.reload}">
+                                            <i
+                                                class="fa fa-refresh"
+                                                title="#{msgs.reload}" />
+                                        </h:commandLink>
+
+
                                         <intranda:formInputSelectMany
-                                            id="rules"
-                                            label="#{msgs.plugin_adiministration_dataimport_rulename}"
-                                            field="#{AdministrationForm.administrationPlugin.currentRule}"
+                                            id="files"
+                                            label="#{msgs.plugin_adiministration_dataimport_files}"
+                                            field="#{AdministrationForm.administrationPlugin.selectedFilenames}"
                                             help=""
-                                            name="rulename"
-                                            selectItems="#{AdministrationForm.administrationPlugin.allRuleNames}"
+                                            name="files"
+                                            selectItems="#{AdministrationForm.administrationPlugin.allFilenames}"
                                             fieldStyle="form-control massimportListHeight"
                                             required="true"
                                             itemLabel="#{file}"
                                             itemValue="#{file}"
                                             var="file" />
-                                    </h:panelGroup>
 
-                                    select one of the configured rules - or detect rule automatically based on project name
+
+
+
+                                    </div>
                                 </div>
-
-                                <div class="col-sm-6">select data to be imported or import all</div>
-                            </div>
                             </h:form>
                             <br />
                             <br />
