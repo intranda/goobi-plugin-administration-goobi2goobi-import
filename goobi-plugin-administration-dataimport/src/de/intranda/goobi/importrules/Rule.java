@@ -1,14 +1,14 @@
-package de.intranda.goobi.plugins;
+package de.intranda.goobi.importrules;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.intranda.goobi.plugins.rules.DocketConfigurationItem;
-import de.intranda.goobi.plugins.rules.MetadataConfigurationItem;
-import de.intranda.goobi.plugins.rules.ProjectConfigurationItem;
-import de.intranda.goobi.plugins.rules.PropertyConfigurationItem;
-import de.intranda.goobi.plugins.rules.RulesetConfigurationItem;
-import de.intranda.goobi.plugins.rules.StepConfigurationItem;
+import de.intranda.goobi.importrules.DocketConfigurationItem;
+import de.intranda.goobi.importrules.MetadataConfigurationItem;
+import de.intranda.goobi.importrules.ProjectConfigurationItem;
+import de.intranda.goobi.importrules.PropertyConfigurationItem;
+import de.intranda.goobi.importrules.RulesetConfigurationItem;
+import de.intranda.goobi.importrules.StepConfigurationItem;
 import lombok.Data;
 
 @Data

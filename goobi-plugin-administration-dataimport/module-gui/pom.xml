@@ -31,7 +31,8 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
                 <includes>
-                    <include>**/converter/*.class</include>
+                    <include>**/de/intranda/goobi/importrules/*.class</include>
+                      <include>**/org/goobi/api/mq/ticket/*.class</include>
                 </includes>
 			</resource>
 		</resources>
@@ -43,7 +44,7 @@
 					<source>1.8</source>
 					<target>1.8</target>
                     <excludes>
-                        <exclude>**/de/intranda/goobi/**/*.java</exclude>
+                        <exclude>**/de/intranda/goobi/plugins/**/*.java</exclude>
                     </excludes>
 				</configuration>
                 

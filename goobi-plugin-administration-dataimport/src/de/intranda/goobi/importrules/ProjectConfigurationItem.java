@@ -1,4 +1,4 @@
-package de.intranda.goobi.plugins.rules;
+package de.intranda.goobi.importrules;
 
 import lombok.Data;
 

@@ -38,7 +38,8 @@
 					<source>1.8</source>
 					<target>1.8</target>
                     <excludes>
-                        <exclude>**/org/goobi/converter/*.java</exclude>
+<!--                         <exclude>**/de/intranda/goobi/importrules/*.java</exclude> -->
+                        <exclude>**/mq/ticket/*.java</exclude>
                     </excludes>
 				</configuration>
                 

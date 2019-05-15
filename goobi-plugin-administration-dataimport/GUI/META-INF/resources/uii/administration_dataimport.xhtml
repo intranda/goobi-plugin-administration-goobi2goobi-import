@@ -57,6 +57,7 @@
 .resizableSelection {
     resize: vertical;
     min-height: 150px;
+    max-height: 800px;
 }
 </style>
 
@@ -80,9 +81,9 @@
                             <h:outputText value="#{msgs.plugin_administration_configuredRules}" />
                         </h3>
                     </div>
-                    <div class="box-content nopadding">
-                        <div class="dataTables_wrapper">
-                            <h:form id="tableForm">
+                    <h:form id="tableForm">
+                        <div class="box-content nopadding">
+                            <div class="dataTables_wrapper">
                                 <x:dataTable
                                     styleClass="table table-hover table-nomargin dataTable table-bordered responsive"
                                     value="#{AdministrationForm.administrationPlugin.configurationItemList}"
@@ -572,9 +573,24 @@
                                         </h:panelGroup>
                                     </x:column>
                                 </x:dataTable>
-                            </h:form>
+                            </div>
                         </div>
-                    </div>
+
+
+                        <div class="form-actions">
+                            <h:commandLink
+                                id="reloadRules"
+                                action="#{AdministrationForm.administrationPlugin.reloadRules}"
+                                styleClass="btn font-size-s margin-bottom-most margin-sides-10"
+                                title="#{msgs.reload}">
+                                <i
+                                    class="fa fa-refresh margin-right-5"
+                                    title="#{msgs.plugin_adiministration_dataimport_reloadRules}" />
+                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_reloadRules}" />
+                            </h:commandLink>
+
+                        </div>
+                    </h:form>
                 </div>
             </div>
 
@@ -663,20 +679,16 @@
                                 <h:commandLink
                                     id="reload"
                                     action="#{AdministrationForm.administrationPlugin.generateAllFilenames}"
-                                    styleClass="btn  pull-right font-size-s margin-bottom-most margin-sides-10"
+                                    styleClass="btn font-size-s margin-bottom-most margin-sides-10"
                                     title="#{msgs.reload}">
                                     <i
                                         class="fa fa-refresh margin-right-5"
-                                        title="#{msgs.reload}" />
+                                        title="#{msgs.plugin_adiministration_dataimport_loadFiles}" />
                                     <h:outputText value="#{msgs.plugin_adiministration_dataimport_loadFiles}" />
                                 </h:commandLink>
 
                             </div>
                         </h:form>
-                        <br />
-                        <br />
-
-
 
                     </div>
                 </div>
