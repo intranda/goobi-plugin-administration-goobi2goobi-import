@@ -53,6 +53,11 @@
     list-style-type: none;
     margin-bottom: 3px;
 }
+
+.resizableSelection {
+    resize: vertical;
+    min-height: 150px;
+}
 </style>
 
         <h:panelGroup rendered="#{!LoginForm.hasRole('administration_import_data')}">
@@ -587,80 +592,92 @@
                         </h3>
                     </div>
                     <div class="box-content nopadding">
-                        <div class="dataTables_wrapper">
-                            <h:form styleClass="form-horizontal form-bordered">
-                                <div class="row">
-                                    <div class="col-sm-6">
 
+                        <h:form styleClass="form-horizontal form-bordered">
 
-
-
-
-                                        <div
-                                            class="form-group"
-                                            style="">
-                                            <div class="col-sm-3 control-label">
-                                                <h:outputLabel
-                                                    for="rules"
-                                                    value="plugin_adiministration_dataimport_rulename" />
-                                                <h:panelGroup>
-                                                    <i class="fa fa-asterisk pull-right font-asterisk" />
-                                                </h:panelGroup>
-                                            </div>
-                                            <div class="col-sm-9">
-                                                <h:selectOneListbox
-                                                    id="rules"
-                                                    styleClass="form-control massimportListHeight"
-                                                    value="#{AdministrationForm.administrationPlugin.currentRule}"
-                                                    required="true">
-                                                    <f:selectItems
-                                                        value="#{AdministrationForm.administrationPlugin.allRuleNames}"
-                                                        var="file"
-                                                        itemLabel="#{file}"
-                                                        itemValue="#{file}" />
-                                                </h:selectOneListbox>
-                                            </div>
-                                        </div>
-
-
-                                    </div>
-
-                                    <div class="col-sm-6">
-                                        <h:commandLink
-                                            id="reload"
-                                            action="#{AdministrationForm.administrationPlugin.generateAllFilenames()}"
-                                            styleClass="btn btn-mini"
-                                            title="#{msgs.reload}">
-                                            <i
-                                                class="fa fa-refresh"
-                                                title="#{msgs.reload}" />
-                                        </h:commandLink>
-
-
-                                        <intranda:formInputSelectMany
-                                            id="files"
-                                            label="#{msgs.plugin_adiministration_dataimport_files}"
-                                            field="#{AdministrationForm.administrationPlugin.selectedFilenames}"
-                                            help=""
-                                            name="files"
-                                            selectItems="#{AdministrationForm.administrationPlugin.allFilenames}"
-                                            fieldStyle="form-control massimportListHeight"
-                                            required="true"
-                                            itemLabel="#{file}"
-                                            itemValue="#{file}"
-                                            var="file" />
-
-
-
-
-                                    </div>
+                            <div
+                                class="form-group"
+                                style="">
+                                <div class="col-sm-3 control-label">
+                                    <h:outputLabel
+                                        for="rules"
+                                        value="#{msgs.plugin_adiministration_dataimport_rulename}" />
+                                    <h:panelGroup>
+                                        <i class="fa fa-asterisk pull-right font-asterisk" />
+                                    </h:panelGroup>
                                 </div>
-                            </h:form>
-                            <br />
-                            <br />
+                                <div class="col-sm-9">
+                                    <h:selectOneListbox
+                                        id="rules"
+                                        styleClass="form-control resizableSelection"
+                                        value="#{AdministrationForm.administrationPlugin.currentRule}"
+                                        required="false">
+                                        <f:selectItems
+                                            value="#{AdministrationForm.administrationPlugin.allRuleNames}"
+                                            var="file"
+                                            itemLabel="#{file}"
+                                            itemValue="#{file}" />
+                                    </h:selectOneListbox>
+                                </div>
+                            </div>
 
 
-                        </div>
+
+
+
+                            <div class="form-group">
+                                <div class="col-sm-3 control-label">
+                                    <h:outputLabel
+                                        for="files"
+                                        value="#{msgs.plugin_adiministration_dataimport_files}" />
+                                    <h:panelGroup>
+                                        <i class="fa fa-asterisk pull-right font-asterisk" />
+                                    </h:panelGroup>
+                                </div>
+                                <div class="col-sm-9">
+                                    <h:selectManyListbox
+                                        id="files"
+                                        styleClass="form-control resizableSelection"
+                                        value="#{AdministrationForm.administrationPlugin.selectedFilenames}"
+                                        required="false">
+                                        <f:selectItems
+                                            value="#{AdministrationForm.administrationPlugin.allFilenames}"
+                                            var="file"
+                                            itemLabel="#{file}"
+                                            itemValue="#{file}" />
+                                    </h:selectManyListbox>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+
+                                <!-- Save -->
+                                <h:commandLink
+                                    styleClass="btn btn-success submitOnEnter pull-right font-size-s margin-bottom-most"
+                                    id="absenden"
+                                    type="submit"
+                                    action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
+                                    <i class="fa fa-save margin-right-5"></i>
+                                    <h:outputText value="#{msgs.plugin_adiministration_dataimport_importFile}" />
+                                </h:commandLink>
+                                <h:commandLink
+                                    id="reload"
+                                    action="#{AdministrationForm.administrationPlugin.generateAllFilenames}"
+                                    styleClass="btn  pull-right font-size-s margin-bottom-most margin-sides-10"
+                                    title="#{msgs.reload}">
+                                    <i
+                                        class="fa fa-refresh margin-right-5"
+                                        title="#{msgs.reload}" />
+                                    <h:outputText value="#{msgs.plugin_adiministration_dataimport_loadFiles}" />
+                                </h:commandLink>
+
+                            </div>
+                        </h:form>
+                        <br />
+                        <br />
+
+
+
                     </div>
                 </div>
             </div>

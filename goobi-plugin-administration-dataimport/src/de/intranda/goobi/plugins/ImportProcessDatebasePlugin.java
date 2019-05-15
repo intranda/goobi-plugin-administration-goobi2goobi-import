@@ -154,6 +154,11 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
     }
 
+
+    public void importSelectedFiles() {
+        System.out.println("click");
+    }
+
     public List<ImportObject> generateFiles(List<Record> recordList) {
         List<ImportObject> answer = new ArrayList<>();
         for (Record record : recordList) {
