@@ -3,6 +3,7 @@ package org.goobi.api.mq.ticket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -45,6 +46,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathFactory;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+
 import de.intranda.goobi.importrules.DocketConfigurationItem;
 import de.intranda.goobi.importrules.ImportConfiguration;
 import de.intranda.goobi.importrules.MetadataConfigurationItem;
@@ -54,7 +58,9 @@ import de.intranda.goobi.importrules.Rule;
 import de.intranda.goobi.importrules.RulesetConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
+import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.export.dms.ExportDms;
+import de.sub.goobi.helper.S3FileUtils;
 import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.enums.StepEditType;
@@ -126,6 +132,26 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             return PluginReturnValue.ERROR;
         } else {
             log.info("Stored process " + processId);
+        }
+
+        // move meta.xml and meta_anchor.xml to efs
+        AmazonS3 s3 = S3FileUtils.createS3Client();
+        ConfigurationHelper config = ConfigurationHelper.getInstance();
+
+        S3Object objMeta = s3.getObject(config.getS3Bucket(), processId + "/meta.xml");
+        try (InputStream is = objMeta.getObjectContent()) {
+            Files.copy(is, processFolder.resolve("meta.xml"));
+            s3.deleteObject(config.getS3Bucket(), processId + "/meta.xml");
+        } catch (IOException e1) {
+            log.error(e1);
+        }
+
+        S3Object objMetaAnchor = s3.getObject(config.getS3Bucket(), processId + "/meta_anchor.xml");
+        try (InputStream is = objMetaAnchor.getObjectContent()) {
+            Files.copy(is, processFolder.resolve("meta_anchor.xml"));
+            s3.deleteObject(config.getS3Bucket(), processId + "/meta_anchor.xml");
+        } catch (IOException e1) {
+            log.error(e1);
         }
 
         // move [id]_db_export.xml to  /import/[id]_db_export.xml
@@ -1217,9 +1243,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(), o
                     .isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(), o
-                    .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
-                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
-                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                            .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
+                                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
+                                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
 
         } catch (SQLException e) {
             log.error(e);

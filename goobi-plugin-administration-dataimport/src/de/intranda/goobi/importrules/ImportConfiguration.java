@@ -21,7 +21,7 @@ import de.sub.goobi.config.ConfigPlugins;
 public class ImportConfiguration {
 
     private static List<Rule> configuredRules = new ArrayList<>();
-
+    private static XMLConfiguration config = null;
 
     //    public static void main(String[] args) {
     //        List<Rule> map = getConfiguredItems();
@@ -59,6 +59,11 @@ public class ImportConfiguration {
     //        }
     //    }
 
+    private static void loadConfig() {
+        config = ConfigPlugins.getPluginConfig("goobi-plugin-administration-database-information");
+        config.setReloadingStrategy(new FileChangedReloadingStrategy());
+        config.setExpressionEngine(new XPathExpressionEngine());
+    }
 
     @SuppressWarnings("unchecked")
     public static List<Rule> getConfiguredItems() {
@@ -66,10 +71,9 @@ public class ImportConfiguration {
         if (configuredRules.isEmpty()) {
 
             //        Map<String, List<StepConfigurationItem>> answer = new HashMap<>();
-
-            XMLConfiguration config = ConfigPlugins.getPluginConfig("goobi-plugin-administration-database-information");
-            config.setReloadingStrategy(new FileChangedReloadingStrategy());
-            config.setExpressionEngine(new XPathExpressionEngine());
+            if (config == null) {
+                loadConfig();
+            }
 
             List<String> configuredProjectNames = config.getList("/config/rulename");
             for (String projectName : configuredProjectNames) {
@@ -264,5 +268,26 @@ public class ImportConfiguration {
 
     public static void resetRules() {
         configuredRules.clear();
+    }
+
+    public static String getDbExportPrefix() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config.getString("globalConfig/dbExportPrefix");
+    }
+
+    public static String getImportPath() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config.getString("globalConfig/importPath");
+    }
+
+    public static String getBucket() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config.getString("globalConfig/bucket");
     }
 }

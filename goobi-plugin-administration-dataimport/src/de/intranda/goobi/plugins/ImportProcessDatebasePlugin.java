@@ -37,10 +37,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     @Getter
     private String title = "goobi-plugin-administration-database-information";
 
-    //    //TODO: make these two configurable
-    private String importPath = "/opt/digiverso/goobi/metadata/";
-    private String bucket = "goobi-db-export-bucket";
-
     @Getter
     @Setter
     private String currentRule;
@@ -72,10 +68,14 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
             TaskTicket importTicket = TicketGenerator.generateSimpleTicket("DatabaseInformationTicket");
 
+            //filename of xml file is "<processId>_db_export.xml"
             importTicket.setProcessName(processId);
+            int underscoreIdx = processId.indexOf('_');
+            if (underscoreIdx >= 0) {
+                processId = processId.substring(0, underscoreIdx);
+            }
 
-            //TODO check S3 path
-            Path processFolder = Paths.get(importPath, processId);
+            Path processFolder = Paths.get(ImportConfiguration.getImportPath(), processId);
 
             importTicket.getProperties().put("processFolder", processFolder.toString());
             if (StringUtils.isBlank(currentRule)) {
@@ -89,9 +89,8 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             }
         }
 
-        Helper.setMeldung(Helper.getTranslation("plugin_adiministration_dataimport_success", ""+selectedFilenames.size())) ;
+        Helper.setMeldung(Helper.getTranslation("plugin_adiministration_dataimport_success", "" + selectedFilenames.size()));
     }
-
 
     public void generateAllFilenames() {
         // TODO find equivalent for S3
@@ -103,7 +102,8 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         if (ConfigurationHelper.getInstance().useS3()) {
             //
             AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-            ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(importPath);
+            ListObjectsRequest req = new ListObjectsRequest().withBucketName(ImportConfiguration.getBucket()).withPrefix(ImportConfiguration
+                    .getDbExportPrefix());
             ObjectListing listing = s3.listObjects(req);
             for (S3ObjectSummary os : listing.getObjectSummaries()) {
                 String key = os.getKey();
@@ -118,8 +118,9 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             }
         } else {
             try {
-                Files.find(Paths.get(importPath), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
-                .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
+                Files.find(Paths.get(ImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
+                        ".*_db_export.xml"))
+                        .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
             } catch (IOException e) {
                 log.error(e);
             }
@@ -130,7 +131,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     public PluginType getType() {
         return PluginType.Administration;
     }
-
 
     @Override
     public String getGui() {
@@ -148,7 +148,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
         return allRulenames;
     }
-
 
     public void reloadRules() {
         ImportConfiguration.resetRules();
