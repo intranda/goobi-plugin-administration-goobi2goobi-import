@@ -732,7 +732,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
                     log.error(e);
                 }
             }
-
         }
 
         if (!newRulesets.isEmpty() && importRulesets) {
@@ -754,25 +753,56 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
                     log.error(e);
                 }
             }
-
         }
 
-        if (!newLdaps.isEmpty()) {
+        if (!newLdaps.isEmpty() && importLdaps) {
+            for (Ldap ldap : newLdaps) {
+                // TODO: check if manipulation is needed.
 
+                try {
+                    LdapManager.saveLdap(ldap);
+                } catch (DAOException e) {
+                    log.error(e);
+                }
+            }
         }
 
-        if (!newProjects.isEmpty()) {
+        if (!newProjects.isEmpty() && importProjects) {
+            for (Project project : newProjects) {
+                // TODO: check if manipulation is needed.
 
+                try {
+                    ProjectManager.saveProject(project);
+                } catch (DAOException e) {
+                    log.error(e);
+                }
+            }
         }
 
-        if (!newUsers.isEmpty()) {
+        if (!newUsers.isEmpty() && importUsers) {
+            for (User user : newUsers) {
+                // TODO: check if manipulation is needed.
 
+                try {
+                    UserManager.saveUser(user);
+                } catch (DAOException e) {
+                    log.error(e);
+                }
+            }
         }
 
-        if (!newUserGroups.isEmpty()) {
+        if (!newUserGroups.isEmpty() && importUserGroups) {
+            for (Usergroup ug : newUserGroups) {
+                // TODO: check if manipulation is needed.
 
+                try {
+                    UsergroupManager.saveUsergroup(ug);
+
+                } catch (DAOException e) {
+                    log.error(e);
+                }
+            }
         }
-
     }
 
     private String getTextFromElement(Element element) {
