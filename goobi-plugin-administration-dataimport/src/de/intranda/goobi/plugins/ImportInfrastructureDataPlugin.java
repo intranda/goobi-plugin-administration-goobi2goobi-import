@@ -43,8 +43,10 @@ import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.primefaces.event.FileUploadEvent;
 
+import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.StorageProvider;
+import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.persistence.managers.DocketManager;
 import de.sub.goobi.persistence.managers.LdapManager;
 import de.sub.goobi.persistence.managers.ProjectManager;
@@ -52,6 +54,7 @@ import de.sub.goobi.persistence.managers.RulesetManager;
 import de.sub.goobi.persistence.managers.UserManager;
 import de.sub.goobi.persistence.managers.UsergroupManager;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
 
@@ -133,6 +136,26 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
     private static Namespace ns = Namespace.getNamespace("http://www.goobi.io/logfile");
     private static final SimpleDateFormat dateConverter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+    @Getter
+    @Setter
+    private boolean importDockets;
+    @Getter
+    @Setter
+    private boolean importRulesets;
+
+    @Getter
+    @Setter
+    private boolean importLdaps;
+    @Getter
+    @Setter
+    private boolean importProjects;
+    @Getter
+    @Setter
+    private boolean importUsers;
+    @Getter
+    @Setter
+    private boolean importUserGroups;
 
     public void handleFileUpload(FileUploadEvent event) {
         xmlFile = null;
@@ -296,7 +319,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             numberOfNewProjects = newProjects.size();
             numberOfNewUsers = newUsers.size();
             numberOfNewLdaps = newLdaps.size();
-
 
         } catch (IOException | JDOMException e) {
             log.error(e);
@@ -691,8 +713,66 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
     }
 
     public void importSelectedData() {
+        // import dockets if checkbox is checked and new dockets are found
+        if (!newDockets.isEmpty() && importDockets) {
+            for (Docket docket : newDockets) {
+                // TODO: check if manipulation is needed.
+                try {
+                    // save docket
+                    DocketManager.saveDocket(docket);
+                    // copy xsl file
+                    if (dockets != null) {
+                        Path docketToImport = Paths.get(dockets.toString(), docket.getFile());
+                        Path destination = Paths.get(ConfigurationHelper.getInstance().getXsltFolder(), docket.getFile());
+                        if (StorageProvider.getInstance().isFileExists(docketToImport) && !StorageProvider.getInstance().isFileExists(destination)) {
+                            StorageProvider.getInstance().copyFile(docketToImport, destination);
+                        }
+                    }
+                } catch (DAOException | IOException e) {
+                    log.error(e);
+                }
+            }
 
-        System.out.println("click");
+        }
+
+        if (!newRulesets.isEmpty() && importRulesets) {
+            for (Ruleset ruleset : newRulesets) {
+                // TODO: check if manipulation is needed.
+
+                try {
+                    // save ruleset
+                    RulesetManager.saveRuleset(ruleset);
+                    // copy ruleset file
+                    if (rulesets != null) {
+                        Path rulesetToImport = Paths.get(rulesets.toString(), ruleset.getDatei());
+                        Path destination = Paths.get(ConfigurationHelper.getInstance().getRulesetFolder(), ruleset.getDatei());
+                        if (StorageProvider.getInstance().isFileExists(rulesetToImport) && !StorageProvider.getInstance().isFileExists(destination)) {
+                            StorageProvider.getInstance().copyFile(rulesetToImport, destination);
+                        }
+                    }
+                } catch (DAOException | IOException e) {
+                    log.error(e);
+                }
+            }
+
+        }
+
+        if (!newLdaps.isEmpty()) {
+
+        }
+
+        if (!newProjects.isEmpty()) {
+
+        }
+
+        if (!newUsers.isEmpty()) {
+
+        }
+
+        if (!newUserGroups.isEmpty()) {
+
+        }
+
     }
 
     private String getTextFromElement(Element element) {
