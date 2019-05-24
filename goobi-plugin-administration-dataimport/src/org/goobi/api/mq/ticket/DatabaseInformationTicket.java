@@ -3,6 +3,7 @@ package org.goobi.api.mq.ticket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Connection;
@@ -45,6 +46,9 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathFactory;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.S3Object;
+
 import de.intranda.goobi.importrules.DocketConfigurationItem;
 import de.intranda.goobi.importrules.ImportConfiguration;
 import de.intranda.goobi.importrules.MetadataConfigurationItem;
@@ -54,7 +58,9 @@ import de.intranda.goobi.importrules.Rule;
 import de.intranda.goobi.importrules.RulesetConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
+import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.export.dms.ExportDms;
+import de.sub.goobi.helper.S3FileUtils;
 import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
 import de.sub.goobi.helper.enums.StepEditType;
@@ -127,7 +133,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         } else {
             log.info("Stored process " + processId);
         }
-        /*
+
         if (ConfigurationHelper.getInstance().useS3()) {
             // move meta.xml and meta_anchor.xml to efs
             AmazonS3 s3 = S3FileUtils.createS3Client();
@@ -149,7 +155,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 log.error(e1);
             }
         }
-         */
+
         // move [id]_db_export.xml to  /import/[id]_db_export.xml
         if (StorageProvider.getInstance().isDirectory(processFolder)) {
             Path dbExportFile = Paths.get(processFolder.toString(), processId + "_db_export.xml");
