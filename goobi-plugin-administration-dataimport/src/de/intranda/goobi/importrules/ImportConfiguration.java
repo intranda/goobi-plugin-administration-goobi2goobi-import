@@ -274,20 +274,20 @@ public class ImportConfiguration {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/dbExportPrefix");
+        return config.getString("./globalConfig/dbExportPrefix");
     }
 
     public static String getImportPath() {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/importPath");
+        return config.getString("./globalConfig/importPath");
     }
 
     public static String getBucket() {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/bucket");
+        return config.getString("./globalConfig/bucket");
     }
 }
