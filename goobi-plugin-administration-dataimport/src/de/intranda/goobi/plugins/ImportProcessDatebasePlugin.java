@@ -21,7 +21,7 @@ import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
 
-import de.intranda.goobi.importrules.ImportConfiguration;
+import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.Rule;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
@@ -51,7 +51,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     private List<String> selectedFilenames = new ArrayList<>();
 
     public List<Rule> getConfigurationItemList() {
-        return ImportConfiguration.getConfiguredItems();
+        return ProcessImportConfiguration.getConfiguredItems();
     }
 
     public void importSelectedFiles() {
@@ -75,7 +75,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
                 processId = processId.substring(0, underscoreIdx);
             }
 
-            Path processFolder = Paths.get(ImportConfiguration.getImportPath(), processId);
+            Path processFolder = Paths.get(ProcessImportConfiguration.getImportPath(), processId);
 
             importTicket.getProperties().put("processFolder", processFolder.toString());
             if (StringUtils.isBlank(currentRule)) {
@@ -102,7 +102,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         if (ConfigurationHelper.getInstance().useS3()) {
             //
             AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-            ListObjectsRequest req = new ListObjectsRequest().withBucketName(ImportConfiguration.getBucket()).withPrefix(ImportConfiguration
+            ListObjectsRequest req = new ListObjectsRequest().withBucketName(ProcessImportConfiguration.getBucket()).withPrefix(ProcessImportConfiguration
                     .getDbExportPrefix());
             ObjectListing listing = s3.listObjects(req);
             for (S3ObjectSummary os : listing.getObjectSummaries()) {
@@ -118,7 +118,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             }
         } else {
             try {
-                Files.find(Paths.get(ImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
+                Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
                         ".*_db_export.xml"))
                         .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
             } catch (IOException e) {
@@ -140,7 +140,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     public List<String> getAllRuleNames() {
         if (allRulenames.isEmpty()) {
             allRulenames.add("Autodetect rule");
-            for (Rule rule : ImportConfiguration.getConfiguredItems()) {
+            for (Rule rule : ProcessImportConfiguration.getConfiguredItems()) {
                 allRulenames.add(rule.getRulename());
             }
 
@@ -150,6 +150,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     }
 
     public void reloadRules() {
-        ImportConfiguration.resetRules();
+        ProcessImportConfiguration.resetRules();
     }
 }

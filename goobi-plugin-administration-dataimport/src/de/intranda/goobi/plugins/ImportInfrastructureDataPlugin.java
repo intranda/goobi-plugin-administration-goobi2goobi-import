@@ -43,6 +43,11 @@ import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.primefaces.event.FileUploadEvent;
 
+import de.intranda.goobi.importrules.DocketConfigurationItem;
+import de.intranda.goobi.importrules.InfrastructureImportConfiguration;
+import de.intranda.goobi.importrules.ProjectConfigurationItem;
+import de.intranda.goobi.importrules.Rule;
+import de.intranda.goobi.importrules.RulesetConfigurationItem;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.StorageProvider;
@@ -157,11 +162,13 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
     @Setter
     private boolean importUserGroups;
 
+    private Rule importRule;
+
     public void handleFileUpload(FileUploadEvent event) {
         xmlFile = null;
         dockets = null;
         rulesets = null;
-
+        importRule = InfrastructureImportConfiguration.getConfiguredItems();
         try {
             filename = event.getFile().getFileName();
             copyFile(filename, event.getFile().getInputstream());
@@ -345,6 +352,8 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
     private Usergroup createUsergroup(Element usergroupElement) {
         String usergroupname = usergroupElement.getAttributeValue("name");
+        // TODO
+
         for (Usergroup ug : allExistingUserGroups) {
             if (ug.getTitel().equals(usergroupname)) {
                 return null;
@@ -393,7 +402,7 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         }
 
         User user = new User();
-
+        // TODO
         user.setVorname(userElement.getAttributeValue("firstname"));
         user.setNachname(userElement.getAttributeValue("lastname"));
         user.setLogin(userElement.getAttributeValue("login"));
@@ -486,6 +495,22 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         String rulesetName = rulesetElement.getAttributeValue("name");
         String filename = rulesetElement.getAttributeValue("file");
 
+        // check if ruleset should be overwritten
+        if (!importRule.getConfiguredRulesetRules().isEmpty()) {
+            for (RulesetConfigurationItem rci : importRule.getConfiguredRulesetRules()) {
+                // replace ruleset name, if old ruleset name field is empty or matches the ruleset name in db file
+                if (StringUtils.isBlank(rci.getOldRulesetName()) || rci.getOldRulesetName().equalsIgnoreCase(rulesetName)) {
+                    if (StringUtils.isNotBlank(rci.getNewRulesetName())) {
+                        rulesetName = rci.getNewRulesetName();
+                    }
+                    if (StringUtils.isNotBlank(rci.getNewFileName())) {
+                        filename = rci.getNewFileName();
+                    }
+                    break;
+                }
+            }
+        }
+
         for (Ruleset ruleset : allExistingRulesets) {
             if (ruleset.getTitel().equals(rulesetName) && ruleset.getDatei().equals(filename)) {
                 return null;
@@ -501,6 +526,22 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         String docketName = docketElement.getAttributeValue("name");
         String filename = docketElement.getAttributeValue("file");
 
+        // check if configured rule applies
+        if (!importRule.getConfiguredDocketRules().isEmpty()) {
+            for (DocketConfigurationItem dci : importRule.getConfiguredDocketRules()) {
+                // replace docket, if old name field is empty or matches the name in db file
+                if (StringUtils.isBlank(dci.getOldDocketName()) || dci.getOldDocketName().equalsIgnoreCase(docketName)) {
+                    if (StringUtils.isNotBlank(dci.getNewDocketName())) {
+                        docketName = dci.getNewDocketName();
+                    }
+                    if (StringUtils.isNotBlank(dci.getNewFileName())) {
+                        filename = dci.getNewFileName();
+                    }
+                    break;
+                }
+            }
+        }
+
         for (Docket docket : allExistingDockets) {
             if (docket.getName().equals(docketName) && docket.getFile().equals(filename)) {
                 return null;
@@ -515,6 +556,18 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
     private Project createProject(Element projectElement) {
 
         String projectTitle = projectElement.getChild("title", ns).getText();
+        ProjectConfigurationItem projectRule = null;
+        // check if project should be overwritten
+        if (!importRule.getConfiguredProjectRules().isEmpty()) {
+            for (ProjectConfigurationItem pci : importRule.getConfiguredProjectRules()) {
+                // replace project name, if old project name field is empty or matches the project name in db file
+                if (StringUtils.isBlank(pci.getOldProjectName()) || pci.getOldProjectName().equalsIgnoreCase(projectTitle)) {
+                    projectTitle = pci.getNewProjectName();
+                    projectRule = pci;
+                    break;
+                }
+            }
+        }
 
         for (Project project : allExistingProjects) {
             if (project.getTitel().equals(projectTitle)) {
@@ -523,14 +576,19 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             }
         }
         // create new project
+        if (projectRule == null) {
+            projectRule = new ProjectConfigurationItem();
+        }
 
         Project project = new Project();
         project = new Project();
         project.setTitel(projectTitle);
         project.setProjectIsArchived(Boolean.parseBoolean(projectElement.getAttributeValue("archived")));
 
-        project.setFileFormatInternal(projectElement.getChild("fileFormatInternal", ns).getText());
-        project.setFileFormatDmsExport(projectElement.getChild("fileFormatDmsExport", ns).getText());
+        project.setFileFormatInternal(StringUtils.isNotBlank(projectRule.getFileFormatInternal()) ? projectRule.getFileFormatInternal()
+                : projectElement.getChild("fileFormatInternal", ns).getText());
+        project.setFileFormatDmsExport(StringUtils.isNotBlank(projectRule.getFileFormatDmsExport()) ? projectRule.getFileFormatDmsExport()
+                : projectElement.getChild("fileFormatDmsExport", ns).getText());
 
         Element startDateElement = projectElement.getChild("startDate", ns);
         Element endDateElement = projectElement.getChild("endDate", ns);
@@ -561,46 +619,100 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         // export configuration
         Element exportConfiguration = projectElement.getChild("exportConfiguration", ns);
-        project.setUseDmsImport(Boolean.parseBoolean(exportConfiguration.getAttributeValue("useDmsImport")));
-        project.setDmsImportCreateProcessFolder(Boolean.parseBoolean(exportConfiguration.getAttributeValue("dmsImportCreateProcessFolder")));
+        project.setUseDmsImport(projectRule.getUseDmsImport() != null ? projectRule.getUseDmsImport() : Boolean.parseBoolean(exportConfiguration
+                .getAttributeValue("useDmsImport")));
+        project.setDmsImportCreateProcessFolder(projectRule.getDmsImportCreateProcessFolder() != null ? projectRule.getDmsImportCreateProcessFolder()
+                : Boolean.parseBoolean(exportConfiguration.getAttributeValue("dmsImportCreateProcessFolder")));
+
         Element dmsImportTimeOut = exportConfiguration.getChild("dmsImportTimeOut", ns);
+        if (projectRule.getDmsImportTimeOut() != null) {
+            dmsImportTimeOut.setText("" + projectRule.getDmsImportTimeOut());
+        }
+
         if (StringUtils.isNotBlank(dmsImportTimeOut.getText())) {
             project.setDmsImportTimeOut(Integer.parseInt(dmsImportTimeOut.getText()));
         }
-        project.setDmsImportRootPath(getTextFromElement(exportConfiguration.getChild("dmsImportRootPath", ns)));
-        project.setDmsImportImagesPath(getTextFromElement(exportConfiguration.getChild("dmsImportImagesPath", ns)));
-        project.setDmsImportImagesPath(getTextFromElement(exportConfiguration.getChild("dmsImportImagesPath", ns)));
-        project.setDmsImportSuccessPath(getTextFromElement(exportConfiguration.getChild("dmsImportSuccessPath", ns)));
-        project.setDmsImportErrorPath(getTextFromElement(exportConfiguration.getChild("dmsImportErrorPath", ns)));
+        project.setDmsImportRootPath(StringUtils.isNotBlank(projectRule.getDmsImportRootPath()) ? projectRule.getDmsImportRootPath()
+                : getTextFromElement(exportConfiguration.getChild("dmsImportRootPath", ns)));
+        project.setDmsImportImagesPath(StringUtils.isNotBlank(projectRule.getDmsImportImagesPath()) ? projectRule.getDmsImportImagesPath()
+                : getTextFromElement(exportConfiguration.getChild("dmsImportImagesPath", ns)));
+        project.setDmsImportSuccessPath(StringUtils.isNotBlank(projectRule.getDmsImportSuccessPath()) ? projectRule.getDmsImportSuccessPath()
+                : getTextFromElement(exportConfiguration.getChild("dmsImportSuccessPath", ns)));
+        project.setDmsImportErrorPath(StringUtils.isNotBlank(projectRule.getDmsImportErrorPath()) ? projectRule.getDmsImportErrorPath()
+                : getTextFromElement(exportConfiguration.getChild("dmsImportErrorPath", ns)));
 
         // mets configuration
         Element metsConfiguration = projectElement.getChild("metsConfiguration", ns);
-        project.setMetsRightsOwnerLogo(getTextFromElement(metsConfiguration.getChild("metsRightsOwnerLogo", ns)));
-        project.setMetsRightsOwnerSite(getTextFromElement(metsConfiguration.getChild("metsRightsOwnerSite", ns)));
-        project.setMetsRightsOwnerMail(getTextFromElement(metsConfiguration.getChild("metsRightsOwnerMail", ns)));
-        project.setMetsDigiprovReference(getTextFromElement(metsConfiguration.getChild("metsDigiprovReference", ns)));
-        project.setMetsDigiprovPresentation(getTextFromElement(metsConfiguration.getChild("metsDigiprovPresentation", ns)));
-        project.setMetsDigiprovReferenceAnchor(getTextFromElement(metsConfiguration.getChild("metsDigiprovReferenceAnchor", ns)));
-        project.setMetsPointerPath(getTextFromElement(metsConfiguration.getChild("metsPointerPath", ns)));
-        project.setMetsPointerPathAnchor(getTextFromElement(metsConfiguration.getChild("metsPointerPathAnchor", ns)));
-        project.setMetsPurl(getTextFromElement(metsConfiguration.getChild("metsPurl", ns)));
-        project.setMetsContentIDs(getTextFromElement(metsConfiguration.getChild("metsContentIDs", ns)));
-        project.setMetsRightsSponsor(getTextFromElement(metsConfiguration.getChild("metsRightsSponsor", ns)));
-        project.setMetsRightsSponsorLogo(getTextFromElement(metsConfiguration.getChild("metsRightsSponsorLogo", ns)));
-        project.setMetsRightsSponsorSiteURL(getTextFromElement(metsConfiguration.getChild("metsRightsSponsorSiteURL", ns)));
-        project.setMetsRightsLicense(getTextFromElement(metsConfiguration.getChild("metsRightsLicense", ns)));
+        project.setMetsRightsOwnerLogo(StringUtils.isNotBlank(projectRule.getMetsRightsOwnerLogo()) ? projectRule.getMetsRightsOwnerLogo()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsOwnerLogo", ns)));
+        project.setMetsRightsOwnerSite(StringUtils.isNotBlank(projectRule.getMetsRightsOwnerSite()) ? projectRule.getMetsRightsOwnerSite()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsOwnerSite", ns)));
+        project.setMetsRightsOwnerMail(StringUtils.isNotBlank(projectRule.getMetsRightsOwnerMail()) ? projectRule.getMetsRightsOwnerMail()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsOwnerMail", ns)));
+        project.setMetsDigiprovReference(StringUtils.isNotBlank(projectRule.getMetsDigiprovReference()) ? projectRule.getMetsDigiprovReference()
+                : getTextFromElement(metsConfiguration.getChild("metsDigiprovReference", ns)));
+        project.setMetsDigiprovPresentation(StringUtils.isNotBlank(projectRule.getMetsDigiprovPresentation()) ? projectRule
+                .getMetsDigiprovPresentation() : getTextFromElement(metsConfiguration.getChild("metsDigiprovPresentation", ns)));
+        project.setMetsDigiprovReferenceAnchor(StringUtils.isNotBlank(projectRule.getMetsDigiprovReferenceAnchor()) ? projectRule
+                .getMetsDigiprovReferenceAnchor() : getTextFromElement(metsConfiguration.getChild("metsDigiprovReferenceAnchor", ns)));
+        project.setMetsPointerPath(StringUtils.isNotBlank(projectRule.getMetsPointerPath()) ? projectRule.getMetsPointerPath() : getTextFromElement(
+                metsConfiguration.getChild("metsPointerPath", ns)));
+        project.setMetsPointerPathAnchor(StringUtils.isNotBlank(projectRule.getMetsPointerPathAnchor()) ? projectRule.getMetsPointerPathAnchor()
+                : getTextFromElement(metsConfiguration.getChild("metsPointerPathAnchor", ns)));
+        project.setMetsPurl(StringUtils.isNotBlank(projectRule.getMetsPurl()) ? projectRule.getMetsPurl() : getTextFromElement(metsConfiguration
+                .getChild("metsPurl", ns)));
+        project.setMetsContentIDs(StringUtils.isNotBlank(projectRule.getMetsContentIDs()) ? projectRule.getMetsContentIDs() : getTextFromElement(
+                metsConfiguration.getChild("metsContentIDs", ns)));
+        project.setMetsRightsSponsor(StringUtils.isNotBlank(projectRule.getMetsRightsSponsor()) ? projectRule.getMetsRightsSponsor()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsSponsor", ns)));
+        project.setMetsRightsSponsorLogo(StringUtils.isNotBlank(projectRule.getMetsRightsSponsorLogo()) ? projectRule.getMetsRightsSponsorLogo()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsSponsorLogo", ns)));
+        project.setMetsRightsSponsorSiteURL(StringUtils.isNotBlank(projectRule.getMetsRightsSponsorSiteURL()) ? projectRule
+                .getMetsRightsSponsorSiteURL() : getTextFromElement(metsConfiguration.getChild("metsRightsSponsorSiteURL", ns)));
+        project.setMetsRightsLicense(StringUtils.isNotBlank(projectRule.getMetsRightsLicense()) ? projectRule.getMetsRightsLicense()
+                : getTextFromElement(metsConfiguration.getChild("metsRightsLicense", ns)));
 
         // filegroups
         Element fileGroups = projectElement.getChild("fileGroups", ns);
         if (fileGroups != null) {
             for (Element grpElement : fileGroups.getChildren()) {
+                String fileGroupName = grpElement.getAttributeValue("name");
+                String folder = grpElement.getAttributeValue("folder");
+                String mimetype = grpElement.getAttributeValue("mimetype");
+                String path = grpElement.getAttributeValue("path");
+                String suffix = grpElement.getAttributeValue("suffix");
+                // check if a rule exists
+                for (ProjectConfigurationItem.FilegroupConfigurationItem item : projectRule.getFilegroups()) {
+                    if (fileGroupName.equals(item.getOldName())) {
+                        if (StringUtils.isNotBlank(item.getNewName())) {
+                            fileGroupName = item.getNewName();
+                        }
+
+                        if (StringUtils.isNotBlank(item.getPath())) {
+                            path = item.getPath();
+                        }
+
+                        if (StringUtils.isNotBlank(item.getFileSuffix())) {
+                            suffix = item.getFileSuffix();
+                        }
+                        if (StringUtils.isNotBlank(item.getMimeType())) {
+                            mimetype = item.getMimeType();
+                        }
+                        if (StringUtils.isNotBlank(item.getFolderValidation())) {
+                            folder = item.getFolderValidation();
+                        }
+                        break;
+                    }
+                }
+
                 ProjectFileGroup pfg = new ProjectFileGroup();
-                pfg.setFolder(grpElement.getAttributeValue("folder"));
-                pfg.setMimetype(grpElement.getAttributeValue("mimetype"));
-                pfg.setName(grpElement.getAttributeValue("name"));
-                pfg.setPath(grpElement.getAttributeValue("path"));
+                pfg.setFolder(folder);
+                pfg.setMimetype(mimetype);
+                pfg.setName(fileGroupName);
+                pfg.setPath(path);
                 pfg.setProject(project);
-                pfg.setSuffix(grpElement.getAttributeValue("suffix"));
+                pfg.setSuffix(suffix);
+
                 project.getFilegroups().add(pfg);
             }
         }
@@ -612,10 +724,15 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         // check if ldap already exist, otherwise create new ldap
         String ldapName = ldapElement.getAttributeValue("title");
         String dn = ldapElement.getAttributeValue("dn");
-        for (Ldap ldap : allExistingLdaps) {
-            if (ldap.getTitel().equals(ldapName) && ldap.getUserDN().equals(dn)) {
-                // found existing ldap
-                return null;
+
+        //TODO
+
+        {
+            for (Ldap ldap : allExistingLdaps) {
+                if (ldap.getTitel().equals(ldapName) && ldap.getUserDN().equals(dn)) {
+                    // found existing ldap
+                    return null;
+                }
             }
         }
         // otherwise create new one
@@ -716,7 +833,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         // import dockets if checkbox is checked and new dockets are found
         if (!newDockets.isEmpty() && importDockets) {
             for (Docket docket : newDockets) {
-                // TODO: check if manipulation is needed.
                 try {
                     // save docket
                     DocketManager.saveDocket(docket);
@@ -736,8 +852,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         if (!newRulesets.isEmpty() && importRulesets) {
             for (Ruleset ruleset : newRulesets) {
-                // TODO: check if manipulation is needed.
-
                 try {
                     // save ruleset
                     RulesetManager.saveRuleset(ruleset);
@@ -757,8 +871,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         if (!newLdaps.isEmpty() && importLdaps) {
             for (Ldap ldap : newLdaps) {
-                // TODO: check if manipulation is needed.
-
                 try {
                     LdapManager.saveLdap(ldap);
                 } catch (DAOException e) {
@@ -769,8 +881,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         if (!newProjects.isEmpty() && importProjects) {
             for (Project project : newProjects) {
-                // TODO: check if manipulation is needed.
-
                 try {
                     ProjectManager.saveProject(project);
                 } catch (DAOException e) {
@@ -781,8 +891,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         if (!newUsers.isEmpty() && importUsers) {
             for (User user : newUsers) {
-                // TODO: check if manipulation is needed.
-
                 try {
                     UserManager.saveUser(user);
                 } catch (DAOException e) {
@@ -793,8 +901,6 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
         if (!newUserGroups.isEmpty() && importUserGroups) {
             for (Usergroup ug : newUserGroups) {
-                // TODO: check if manipulation is needed.
-
                 try {
                     UsergroupManager.saveUsergroup(ug);
 

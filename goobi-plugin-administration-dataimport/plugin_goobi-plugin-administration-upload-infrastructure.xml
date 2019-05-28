@@ -1,0 +1,82 @@
+<config_plugin>
+    <config>
+        <!-- change dockets -->
+        <docket name="Default docket">
+            <newDocketName>docket</newDocketName>
+            <newFileName>docket.xsl</newFileName>
+        </docket>
+        <!-- change ruleset -->
+        <ruleset name="Default">
+            <newRulesetName>default ruleset</newRulesetName>
+            <newFileName>wellcome.xml</newFileName>
+        </ruleset>
+        <!-- change projecsts -->
+        <project name="19_century">
+            <newProjectName>IA-Downloads</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/tiff</mimeType>
+                <fileSuffix>tif</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+            <!-- export mapping -->
+            <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+        <!-- configure ldap changes -->
+        <ldap name="Standard">
+            <newLdapName>Default</newLdapName>
+            <ldapConfiguration
+                homeDirectory="/home/{login}"
+                gidNumber="100"
+                dn="cn={login},ou=users,ou=goobi,dc=goobihost,dc=example,dc=net"
+                objectClass="top,inetOrgPerson,posixAccount,shadowAccount,sambaSamAccount"
+                sambaSID="S-1-5-21-3214869138-56264717-4102676759-{uidnumber*2+1000} "
+                sn="{login}"
+                uid="{login}"
+                description="Mitarbeiter"
+                displayName="{user full name}"
+                gecos="Mitarbeiter"
+                loginShell="/bin/false"
+                sambaAcctFlags="[UX         ]"
+                sambaLogonScript="_{login}.bat"
+                sambaPrimaryGroupSID="S-1-5-21-3214869138-56264717-4102676759-100"
+                sambaPwdMustChange="2147483647"
+                sambaPasswordHistory="0000000000000000000000000000000000000000000000000000000000000000"
+                sambaLogonHours="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                sambaKickoffTime="0" />
+            <!-- new name, cn, dn, -->
+        </ldap>
+        <!-- change user groups -->
+        <usergroup name=""> new name, add role, delete role
+        </usergroup>
+        <!-- change users -->
+        <user> add usergroup, delete usergroup, change ldap, write into ldap, add project, delete project
+        </user>
+    </config>
+</config_plugin>

@@ -50,7 +50,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 
 import de.intranda.goobi.importrules.DocketConfigurationItem;
-import de.intranda.goobi.importrules.ImportConfiguration;
+import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.MetadataConfigurationItem;
 import de.intranda.goobi.importrules.ProjectConfigurationItem;
 import de.intranda.goobi.importrules.PropertyConfigurationItem;
@@ -194,14 +194,14 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             String projectName = projectTitleElement.getText();
 
             if (StringUtils.isBlank(currentRule) || currentRule.equals("Autodetect rule")) {
-                for (Rule rule : ImportConfiguration.getConfiguredItems()) {
+                for (Rule rule : ProcessImportConfiguration.getConfiguredItems()) {
                     if (rule.getRulename().equals(projectName)) {
                         selectedRule = rule;
                         break;
                     }
                 }
             } else {
-                for (Rule rule : ImportConfiguration.getConfiguredItems()) {
+                for (Rule rule : ProcessImportConfiguration.getConfiguredItems()) {
                     if (rule.getRulename().equals(currentRule)) {
                         selectedRule = rule;
                         break;

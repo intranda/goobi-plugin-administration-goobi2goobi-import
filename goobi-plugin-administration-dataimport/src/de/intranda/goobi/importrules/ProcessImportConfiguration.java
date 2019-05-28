@@ -18,7 +18,7 @@ import de.sub.goobi.config.ConfigPlugins;
  * 
  */
 
-public class ImportConfiguration {
+public class ProcessImportConfiguration {
 
     private static List<Rule> configuredRules = new ArrayList<>();
     private static XMLConfiguration config = null;
@@ -274,20 +274,20 @@ public class ImportConfiguration {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/dbExportPrefix");
+        return config.getString("./globalConfig/dbExportPrefix");
     }
 
     public static String getImportPath() {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/importPath");
+        return config.getString("./globalConfig/importPath");
     }
 
     public static String getBucket() {
         if (config == null) {
             loadConfig();
         }
-        return config.getString("globalConfig/bucket");
+        return config.getString("./globalConfig/bucket");
     }
 }

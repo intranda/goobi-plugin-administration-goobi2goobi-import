@@ -3,12 +3,6 @@ package de.intranda.goobi.importrules;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.intranda.goobi.importrules.DocketConfigurationItem;
-import de.intranda.goobi.importrules.MetadataConfigurationItem;
-import de.intranda.goobi.importrules.ProjectConfigurationItem;
-import de.intranda.goobi.importrules.PropertyConfigurationItem;
-import de.intranda.goobi.importrules.RulesetConfigurationItem;
-import de.intranda.goobi.importrules.StepConfigurationItem;
 import lombok.Data;
 
 @Data
@@ -32,25 +26,34 @@ public class Rule {
 
     private List<ProjectConfigurationItem> configuredProjectRules = new ArrayList<>();
 
-
+    private List<LdapConfigurationItem> configuredLdapRules = new ArrayList<>();
 
     public int getConfiguredStepRulesSize() {
         return configuredStepRules.size();
     }
+
     public int getConfiguredPropertyRulesSize() {
         return configuredPropertyRules.size();
     }
+
     public int getConfiguredMetadataRulesSize() {
         return configuredMetadataRules.size();
     }
+
     public int getConfiguredRulesetRulesSize() {
         return configuredRulesetRules.size();
     }
+
     public int getConfiguredDocketRulesSize() {
         return configuredDocketRules.size();
     }
+
     public int getConfiguredProjectRulesSize() {
         return configuredProjectRules.size();
+    }
+
+    public int getConfiguredLdapRulesSize() {
+        return configuredLdapRules.size();
     }
 
     private boolean stepPanelExpanded;
@@ -59,6 +62,6 @@ public class Rule {
     private boolean rulesetPanelExpanded;
     private boolean docketPanelExpanded;
     private boolean projectPanelExpanded;
-
+    private boolean ldapPanelExpanded;
 
 }
