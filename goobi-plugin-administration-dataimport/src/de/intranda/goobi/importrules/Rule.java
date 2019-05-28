@@ -28,6 +28,9 @@ public class Rule {
 
     private List<LdapConfigurationItem> configuredLdapRules = new ArrayList<>();
 
+    private List<UsergroupConfigurationItem> configuredUsergroupRules = new ArrayList<>();
+
+
     public int getConfiguredStepRulesSize() {
         return configuredStepRules.size();
     }
@@ -56,6 +59,11 @@ public class Rule {
         return configuredLdapRules.size();
     }
 
+    public int getConfiguredUsergroupRulesSize() {
+        return configuredUsergroupRules.size();
+    }
+
+
     private boolean stepPanelExpanded;
     private boolean propertyPanelExpanded;
     private boolean metadataPanelExpanded;
@@ -63,5 +71,5 @@ public class Rule {
     private boolean docketPanelExpanded;
     private boolean projectPanelExpanded;
     private boolean ldapPanelExpanded;
-
+    private boolean usergroupPanelExpanded;
 }

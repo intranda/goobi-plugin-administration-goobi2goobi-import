@@ -1,5 +1,6 @@
 package de.intranda.goobi.importrules;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -14,7 +15,7 @@ public class ProjectConfigurationItem {
     // replace the old project with this project
     private String newProjectName;
 
-    private List<FilegroupConfigurationItem> filegroups;
+    private List<FilegroupConfigurationItem> filegroups = new ArrayList<>();
 
     public FilegroupConfigurationItem createNewFilgroupItem() {
         return new FilegroupConfigurationItem();

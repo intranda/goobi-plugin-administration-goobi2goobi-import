@@ -49,6 +49,7 @@ import de.intranda.goobi.importrules.LdapConfigurationItem;
 import de.intranda.goobi.importrules.ProjectConfigurationItem;
 import de.intranda.goobi.importrules.Rule;
 import de.intranda.goobi.importrules.RulesetConfigurationItem;
+import de.intranda.goobi.importrules.UsergroupConfigurationItem;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.StorageProvider;
@@ -353,12 +354,26 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
     private Usergroup createUsergroup(Element usergroupElement) {
         String usergroupname = usergroupElement.getAttributeValue("name");
-        // TODO
-
+        UsergroupConfigurationItem ugRule = null;
+        // check if usergroup should be overwritten
+        if (!importRule.getConfiguredUsergroupRules().isEmpty()) {
+            for (UsergroupConfigurationItem pci : importRule.getConfiguredUsergroupRules()) {
+                // replace project name, if old project name field is empty or matches the project name in db file
+                if (StringUtils.isBlank(pci.getOldUsergroupName()) || pci.getOldUsergroupName().equalsIgnoreCase(usergroupname)) {
+                    usergroupname = pci.getNewUsergroupName();
+                    ugRule = pci;
+                    break;
+                }
+            }
+        }
+        // abort, when group already exist
         for (Usergroup ug : allExistingUserGroups) {
             if (ug.getTitel().equals(usergroupname)) {
                 return null;
             }
+        }
+        if (ugRule == null) {
+            ugRule = new UsergroupConfigurationItem();
         }
 
         Usergroup ug = new Usergroup();
@@ -369,6 +384,18 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         for (Element role : usergroupElement.getChildren("role", ns)) {
             roles.add(getTextFromElement(role));
         }
+        // add and remove configured roles
+        for (String roleToAdd : ugRule.getAddRoleList()) {
+            if (!roles.contains(roleToAdd)) {
+                roles.add(roleToAdd);
+            }
+        }
+        for (String roleToRemove : ugRule.getRemoveRoleList()) {
+            if (roles.contains(roleToRemove)) {
+                roles.remove(roleToRemove);
+            }
+        }
+
         ug.setUserRoles(roles);
 
         Element assignedUsers = usergroupElement.getChild("assignedUsers", ns);

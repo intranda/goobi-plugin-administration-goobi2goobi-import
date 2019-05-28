@@ -73,7 +73,11 @@
             <!-- new name, cn, dn, -->
         </ldap>
         <!-- change user groups -->
-        <usergroup name=""> new name, add role, delete role
+        <usergroup name="Administratie">
+            <newUsergroupName>Administration</newUsergroupName>
+            <addRole>role1</addRole>
+            <addRole>role2</addRole>
+            <removeRole>Plugin_Goobi_CataloguePoller</removeRole>
         </usergroup>
         <!-- change users -->
         <user> add usergroup, delete usergroup, change ldap, write into ldap, add project, delete project

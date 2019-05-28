@@ -168,8 +168,25 @@ public class InfrastructureImportConfiguration {
                     }
                 }
 
-            }
 
+                // read ldap configuration
+                List<HierarchicalConfiguration> usergroupList = config.configurationsAt("/config/usergroup");
+                List<UsergroupConfigurationItem> configuredUsergroupRules = new ArrayList<>();
+                rule.setConfiguredUsergroupRules(configuredUsergroupRules);
+
+                if (usergroupList != null && !usergroupList.isEmpty()) {
+                    for (HierarchicalConfiguration ugConfiguration : usergroupList) {
+                        UsergroupConfigurationItem rci = new UsergroupConfigurationItem();
+                        rci.setOldUsergroupName(ugConfiguration.getString("./@name", null));
+                        rci.setNewUsergroupName(ugConfiguration.getString("./newRulesetName", null));
+                        List<String> rolesToAdd = ugConfiguration.getList("./addRole");
+                        List<String> rolesToRemove = ugConfiguration.getList("./removeRole");
+                        rci.setAddRoleList(rolesToAdd);
+                        rci.setRemoveRoleList(rolesToRemove);
+                        configuredUsergroupRules.add(rci);
+                    }
+                }
+            }
         }
         return rule;
     }
