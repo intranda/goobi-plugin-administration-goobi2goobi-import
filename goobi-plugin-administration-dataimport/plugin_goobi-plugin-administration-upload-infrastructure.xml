@@ -12,7 +12,7 @@
         </ruleset>
         <!-- change projecsts -->
         <project name="19_century">
-            <newProjectName>IA-Downloads</newProjectName>
+            <newProjectName>Testprojekt</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -74,13 +74,48 @@
         </ldap>
         <!-- change user groups -->
         <usergroup name="Administratie">
-            <newUsergroupName>Administration</newUsergroupName>
+            <newUsergroupName>Admin</newUsergroupName>
             <addRole>role1</addRole>
             <addRole>role2</addRole>
             <removeRole>Plugin_Goobi_CataloguePoller</removeRole>
+            <addUser>res020</addUser>
+            <removeUser>marcel020</removeUser>
         </usergroup>
-        <!-- change users -->
-        <user> add usergroup, delete usergroup, change ldap, write into ldap, add project, delete project
+        <!-- change user -->
+        <user name="testadmin">
+            <addAssignedProject>19_century</addAssignedProject>
+            <removeAssignedProject>KB_copy</removeAssignedProject>
+            <configuration
+                place="KB"
+                tablesize="10"
+                massdownload="false"
+                ldapgroup="Standard"
+                email=""
+                shortcut="ctrl+shift"
+                displayDeactivatedProjects="false"
+                displayFinishedProcesses="false"
+                displaySelectBoxes="false"
+                displayIdColumn="false"
+                displayBatchColumn="false"
+                displayProcessDateColumn="false"
+                displayLocksColumn="false"
+                displaySwappingColumn="false"
+                displayModulesColumn="false"
+                displayMetadataColumn="false"
+                displayThumbColumn="false"
+                displayGridView="false"
+                displayAutomaticTasks="false"
+                hideCorrectionTasks="false"
+                displayOnlySelectedTasks="false"
+                displayOnlyOpenTasks="false"
+                displayOtherTasks="false"
+                metsDisplayTitle="false"
+                metsLinkImage="false"
+                metsDisplayPageAssignments="false"
+                metsDisplayHierarchy="false"
+                metsDisplayProcessID="false"
+                customColumns=""
+                customCss="" />
         </user>
     </config>
 </config_plugin>

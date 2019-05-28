@@ -14,4 +14,7 @@ public class UsergroupConfigurationItem {
 
     private List<String> addRoleList = new ArrayList<>();
     private List<String> removeRoleList = new ArrayList<>();
+
+    private List<String> addUserList = new ArrayList<>();
+    private List<String> removeUserList = new ArrayList<>();
 }

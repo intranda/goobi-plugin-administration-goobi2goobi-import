@@ -49,6 +49,7 @@ import de.intranda.goobi.importrules.LdapConfigurationItem;
 import de.intranda.goobi.importrules.ProjectConfigurationItem;
 import de.intranda.goobi.importrules.Rule;
 import de.intranda.goobi.importrules.RulesetConfigurationItem;
+import de.intranda.goobi.importrules.UserConfigurationItem;
 import de.intranda.goobi.importrules.UsergroupConfigurationItem;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
@@ -146,23 +147,22 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
 
     @Getter
     @Setter
-    private boolean importDockets;
+    private boolean importLdaps = true;
     @Getter
     @Setter
-    private boolean importRulesets;
-
+    private boolean importProjects = true;
     @Getter
     @Setter
-    private boolean importLdaps;
+    private boolean importRulesets = true;
     @Getter
     @Setter
-    private boolean importProjects;
+    private boolean importDockets = true;
     @Getter
     @Setter
-    private boolean importUsers;
+    private boolean importUsers = true;
     @Getter
     @Setter
-    private boolean importUserGroups;
+    private boolean importUserGroups = true;
 
     private Rule importRule;
 
@@ -326,6 +326,7 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             numberOfNewDockets = newDockets.size();
             numberOfNewRulesets = newRulesets.size();
             numberOfNewProjects = newProjects.size();
+            numberOfNewUserGroups = newUserGroups.size();
             numberOfNewUsers = newUsers.size();
             numberOfNewLdaps = newLdaps.size();
 
@@ -397,10 +398,10 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         }
 
         ug.setUserRoles(roles);
+        List<User> userList = new ArrayList<>();
 
         Element assignedUsers = usergroupElement.getChild("assignedUsers", ns);
         if (assignedUsers != null && assignedUsers.getChildren() != null) {
-            List<User> userList = new ArrayList<>();
             for (Element userElement : assignedUsers.getChildren("user", ns)) {
                 String login = userElement.getAttributeValue("login");
                 for (User user : allExistingUsers) {
@@ -416,8 +417,46 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
                     }
                 }
             }
-            ug.setBenutzer(userList);
         }
+        if (ugRule.getAddUserList() != null && !ugRule.getAddUserList().isEmpty()) {
+            for (String loginName : ugRule.getAddUserList()) {
+                boolean added = false;
+                for (User user : userList) {
+                    if (user.getLogin().equals(loginName)) {
+                        // user already assigned, abort
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    for (User user : allExistingUsers) {
+                        if (user.getLogin().equals(loginName)) {
+                            userList.add(user);
+                            break;
+                        }
+                    }
+                    for (User user : newUsers) {
+                        if (user.getLogin().equals(loginName)) {
+                            userList.add(user);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (ugRule.getRemoveUserList() != null && !ugRule.getRemoveUserList().isEmpty()) {
+            for (String loginName : ugRule.getRemoveUserList()) {
+                for (User user : userList) {
+                    if (user.getLogin().equals(loginName)) {
+                        userList.remove(user);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        ug.setBenutzer(userList);
         return ug;
     }
 
@@ -429,21 +468,39 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             }
         }
 
+        // check if usergroup should be overwritten
+        UserConfigurationItem item = null;
+        if (!importRule.getConfiguredUserRules().isEmpty()) {
+            for (UserConfigurationItem pci : importRule.getConfiguredUserRules()) {
+                // replace project name, if old project name field is empty or matches the project name in db file
+                if (StringUtils.isBlank(pci.getLogin()) || pci.getLogin().equalsIgnoreCase(login)) {
+                    item = pci;
+                    break;
+                }
+            }
+        }
+        if (item == null) {
+            item = new UserConfigurationItem();
+        }
+
         User user = new User();
-        // TODO
+
         user.setVorname(userElement.getAttributeValue("firstname"));
         user.setNachname(userElement.getAttributeValue("lastname"));
         user.setLogin(userElement.getAttributeValue("login"));
         user.setLdaplogin(userElement.getAttributeValue("ldaplogin"));
         user.setIstAktiv(Boolean.parseBoolean(userElement.getAttributeValue("active")));
-        user.setIsVisible(userElement.getAttributeValue("visible"));
-        user.setStandort(userElement.getAttributeValue("place"));
-        user.setTabellengroesse(Integer.parseInt(userElement.getAttributeValue("tablesize")));
+        user.setIsVisible(StringUtils.isBlank(userElement.getAttributeValue("visible")) ? null : userElement.getAttributeValue("visible"));
+        user.setStandort(StringUtils.isNotBlank(item.getPlace()) ? item.getPlace() : userElement.getAttributeValue("place"));
+        user.setTabellengroesse(item.getTablesize() != null ? item.getTablesize() : Integer.parseInt(userElement.getAttributeValue("tablesize")));
         user.setSessiontimeout(Integer.parseInt(userElement.getAttributeValue("sessionlength")));
         user.setMetadatenSprache(userElement.getAttributeValue("metadatalanguage"));
         user.setMitMassendownload(Boolean.parseBoolean(userElement.getAttributeValue("massdownload")));
 
         String ldapGroup = userElement.getAttributeValue("ldapgroup");
+        if (StringUtils.isNotBlank(item.getLdapgroup())) {
+            ldapGroup = item.getLdapgroup();
+        }
         for (Ldap grp : allExistingLdaps) {
             if (grp.getTitel().equals(ldapGroup)) {
                 user.setLdapGruppe(grp);
@@ -460,8 +517,8 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         }
 
         user.setCss(userElement.getAttributeValue("css"));
-        user.setEmail(userElement.getAttributeValue("email"));
-        user.setShortcutPrefix(userElement.getAttributeValue("shortcut"));
+        user.setEmail(StringUtils.isNotBlank(item.getEmail()) ? item.getEmail() : userElement.getAttributeValue("email"));
+        user.setShortcutPrefix(StringUtils.isNotBlank(item.getShortcut()) ? item.getShortcut() : userElement.getAttributeValue("shortcut"));
         user.setEncryptedPassword(userElement.getAttributeValue("password"));
         user.setPasswordSalt(userElement.getAttributeValue("salt"));
 
@@ -469,35 +526,58 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             createNewPassword(user);
         }
 
-        user.setDisplayDeactivatedProjects(Boolean.parseBoolean(userElement.getAttributeValue("displayDeactivatedProjects")));
-        user.setDisplayFinishedProcesses(Boolean.parseBoolean(userElement.getAttributeValue("displayFinishedProcesses")));
-        user.setDisplaySelectBoxes(Boolean.parseBoolean(userElement.getAttributeValue("displaySelectBoxes")));
-        user.setDisplayIdColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayIdColumn")));
-        user.setDisplayBatchColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayBatchColumn")));
-        user.setDisplayProcessDateColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayProcessDateColumn")));
-        user.setDisplayLocksColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayLocksColumn")));
-        user.setDisplaySwappingColumn(Boolean.parseBoolean(userElement.getAttributeValue("displaySwappingColumn")));
-        user.setDisplayModulesColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayModulesColumn")));
-        user.setDisplayMetadataColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayMetadataColumn")));
-        user.setDisplayThumbColumn(Boolean.parseBoolean(userElement.getAttributeValue("displayThumbColumn")));
-        user.setDisplayGridView(Boolean.parseBoolean(userElement.getAttributeValue("displayGridView")));
-        user.setDisplayAutomaticTasks(Boolean.parseBoolean(userElement.getAttributeValue("displayAutomaticTasks")));
-        user.setHideCorrectionTasks(Boolean.parseBoolean(userElement.getAttributeValue("hideCorrectionTasks")));
-        user.setDisplayOnlySelectedTasks(Boolean.parseBoolean(userElement.getAttributeValue("displayOnlySelectedTasks")));
-        user.setDisplayOnlyOpenTasks(Boolean.parseBoolean(userElement.getAttributeValue("displayOnlyOpenTasks")));
-        user.setDisplayOtherTasks(Boolean.parseBoolean(userElement.getAttributeValue("displayOtherTasks")));
-        user.setMetsDisplayTitle(Boolean.parseBoolean(userElement.getAttributeValue("metsDisplayTitle")));
-        user.setMetsLinkImage(Boolean.parseBoolean(userElement.getAttributeValue("metsLinkImage")));
-        user.setMetsDisplayPageAssignments(Boolean.parseBoolean(userElement.getAttributeValue("metsDisplayPageAssignments")));
-        user.setMetsDisplayHierarchy(Boolean.parseBoolean(userElement.getAttributeValue("metsDisplayHierarchy")));
-        user.setMetsDisplayProcessID(Boolean.parseBoolean(userElement.getAttributeValue("metsDisplayProcessID")));
+        user.setDisplayDeactivatedProjects(item.getDisplayDeactivatedProjects() != null ? item.getDisplayDeactivatedProjects() : Boolean.parseBoolean(
+                userElement.getAttributeValue("displayDeactivatedProjects")));
+        user.setDisplayFinishedProcesses(item.getDisplayFinishedProcesses() != null ? item.getDisplayFinishedProcesses() : Boolean.parseBoolean(
+                userElement.getAttributeValue("displayFinishedProcesses")));
+        user.setDisplaySelectBoxes(item.getDisplaySelectBoxes() != null ? item.getDisplaySelectBoxes() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displaySelectBoxes")));
+        user.setDisplayIdColumn(item.getDisplayIdColumn() != null ? item.getDisplayIdColumn() : Boolean.parseBoolean(userElement.getAttributeValue(
+                "displayIdColumn")));
+        user.setDisplayBatchColumn(item.getDisplayBatchColumn() != null ? item.getDisplayBatchColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayBatchColumn")));
+        user.setDisplayProcessDateColumn(item.getDisplayProcessDateColumn() != null ? item.getDisplayProcessDateColumn() : Boolean.parseBoolean(
+                userElement.getAttributeValue("displayProcessDateColumn")));
+        user.setDisplayLocksColumn(item.getDisplayLocksColumn() != null ? item.getDisplayLocksColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayLocksColumn")));
+        user.setDisplaySwappingColumn(item.getDisplaySwappingColumn() != null ? item.getDisplaySwappingColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displaySwappingColumn")));
+        user.setDisplayModulesColumn(item.getDisplayModulesColumn() != null ? item.getDisplayModulesColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayModulesColumn")));
+        user.setDisplayMetadataColumn(item.getDisplayMetadataColumn() != null ? item.getDisplayMetadataColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayMetadataColumn")));
+        user.setDisplayThumbColumn(item.getDisplayThumbColumn() != null ? item.getDisplayThumbColumn() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayThumbColumn")));
+        user.setDisplayGridView(item.getDisplayGridView() != null ? item.getDisplayGridView() : Boolean.parseBoolean(userElement.getAttributeValue(
+                "displayGridView")));
+        user.setDisplayAutomaticTasks(item.getDisplayAutomaticTasks() != null ? item.getDisplayAutomaticTasks() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayAutomaticTasks")));
+        user.setHideCorrectionTasks(item.getHideCorrectionTasks() != null ? item.getHideCorrectionTasks() : Boolean.parseBoolean(userElement
+                .getAttributeValue("hideCorrectionTasks")));
+        user.setDisplayOnlySelectedTasks(item.getDisplayOnlySelectedTasks() != null ? item.getDisplayOnlySelectedTasks() : Boolean.parseBoolean(
+                userElement.getAttributeValue("displayOnlySelectedTasks")));
+        user.setDisplayOnlyOpenTasks(item.getDisplayOnlyOpenTasks() != null ? item.getDisplayOnlyOpenTasks() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayOnlyOpenTasks")));
+        user.setDisplayOtherTasks(item.getDisplayOtherTasks() != null ? item.getDisplayOtherTasks() : Boolean.parseBoolean(userElement
+                .getAttributeValue("displayOtherTasks")));
+        user.setMetsDisplayTitle(item.getMetsDisplayTitle() != null ? item.getMetsDisplayTitle() : Boolean.parseBoolean(userElement.getAttributeValue(
+                "metsDisplayTitle")));
+        user.setMetsLinkImage(item.getMetsLinkImage() != null ? item.getMetsLinkImage() : Boolean.parseBoolean(userElement.getAttributeValue(
+                "metsLinkImage")));
+        user.setMetsDisplayPageAssignments(item.getMetsDisplayPageAssignments() != null ? item.getMetsDisplayPageAssignments() : Boolean.parseBoolean(
+                userElement.getAttributeValue("metsDisplayPageAssignments")));
+        user.setMetsDisplayHierarchy(item.getMetsDisplayHierarchy() != null ? item.getMetsDisplayHierarchy() : Boolean.parseBoolean(userElement
+                .getAttributeValue("metsDisplayHierarchy")));
+        user.setMetsDisplayProcessID(item.getMetsDisplayProcessID() != null ? item.getMetsDisplayProcessID() : Boolean.parseBoolean(userElement
+                .getAttributeValue("metsDisplayProcessID")));
         user.setMetsEditorTime(Integer.parseInt(userElement.getAttributeValue("metsEditorTime")));
-        user.setCustomColumns(userElement.getAttributeValue("customColumns"));
-        user.setCustomCss(userElement.getAttributeValue("customCss"));
+        user.setCustomColumns(StringUtils.isNotBlank(item.getCustomColumns()) ? item.getCustomColumns() : userElement.getAttributeValue(
+                "customColumns"));
+        user.setCustomCss(StringUtils.isNotBlank(item.getCustomCss()) ? item.getCustomCss() : userElement.getAttributeValue("customCss"));
 
         Element assignedProjects = userElement.getChild("assignedProjects", ns);
+        List<Project> projectList = new ArrayList<>();
         if (assignedProjects != null && assignedProjects.getChildren() != null) {
-            List<Project> projectList = new ArrayList<>();
             for (Element projectElement : assignedProjects.getChildren("project", ns)) {
                 String title = projectElement.getAttributeValue("title");
                 for (Project project : allExistingProjects) {
@@ -513,8 +593,49 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
                     }
                 }
             }
-            user.setProjekte(projectList);
         }
+
+        // add
+        if (item.getAddProjectList() != null && !item.getAddProjectList().isEmpty()) {
+            for (String projectName : item.getAddProjectList()) {
+                boolean added = false;
+                for (Project project : projectList) {
+                    if (project.getTitel().equals(projectName)) {
+                        // user already assigned, abort
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    for (Project project : allExistingProjects) {
+                        if (project.getTitel().equals(projectName)) {
+                            projectList.add(project);
+                            break;
+                        }
+                    }
+                    for (Project project : newProjects) {
+                        if (project.getTitel().equals(projectName)) {
+                            projectList.add(project);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        // remove
+        if (item.getRemoveProjectList() != null && !item.getRemoveProjectList().isEmpty()) {
+            for (String projectName : item.getRemoveProjectList()) {
+                for (Project project : projectList) {
+                    if (project.getTitel().equals(projectName)) {
+                        projectList.remove(project);
+                        break;
+                    }
+                }
+            }
+        }
+
+        user.setProjekte(projectList);
 
         return user;
     }
@@ -945,6 +1066,10 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             for (User user : newUsers) {
                 try {
                     UserManager.saveUser(user);
+
+                    for (Project project : user.getProjekte()) {
+                        UserManager.addProjectAssignment(user, project.getId());
+                    }
                 } catch (DAOException e) {
                     log.error(e);
                 }
@@ -955,6 +1080,9 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
             for (Usergroup ug : newUserGroups) {
                 try {
                     UsergroupManager.saveUsergroup(ug);
+                    for (User user : ug.getBenutzer()) {
+                        UserManager.addUsergroupAssignment(user, ug.getId());
+                    }
 
                 } catch (DAOException e) {
                     log.error(e);

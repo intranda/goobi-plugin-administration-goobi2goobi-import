@@ -11,6 +11,17 @@ public class Rule {
     // name of the rule, can be selected from a list of all rules
     private String rulename;
 
+    private boolean stepPanelExpanded;
+    private boolean propertyPanelExpanded;
+    private boolean metadataPanelExpanded;
+    private boolean rulesetPanelExpanded;
+    private boolean docketPanelExpanded;
+    private boolean projectPanelExpanded;
+    private boolean ldapPanelExpanded;
+    private boolean usergroupPanelExpanded;
+    private boolean userPanelExpanded;
+
+
     // list of all manipulations on the workflow
     private List<StepConfigurationItem> configuredStepRules = new ArrayList<>();
 
@@ -30,6 +41,7 @@ public class Rule {
 
     private List<UsergroupConfigurationItem> configuredUsergroupRules = new ArrayList<>();
 
+    private List<UserConfigurationItem> configuredUserRules = new ArrayList<>();
 
     public int getConfiguredStepRulesSize() {
         return configuredStepRules.size();
@@ -63,13 +75,8 @@ public class Rule {
         return configuredUsergroupRules.size();
     }
 
+    public int getConfiguredUserRulesSize() {
+        return configuredUserRules.size();
+    }
 
-    private boolean stepPanelExpanded;
-    private boolean propertyPanelExpanded;
-    private boolean metadataPanelExpanded;
-    private boolean rulesetPanelExpanded;
-    private boolean docketPanelExpanded;
-    private boolean projectPanelExpanded;
-    private boolean ldapPanelExpanded;
-    private boolean usergroupPanelExpanded;
 }

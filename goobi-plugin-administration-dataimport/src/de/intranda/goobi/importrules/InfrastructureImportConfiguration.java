@@ -168,8 +168,7 @@ public class InfrastructureImportConfiguration {
                     }
                 }
 
-
-                // read ldap configuration
+                // read usergroup configuration
                 List<HierarchicalConfiguration> usergroupList = config.configurationsAt("/config/usergroup");
                 List<UsergroupConfigurationItem> configuredUsergroupRules = new ArrayList<>();
                 rule.setConfiguredUsergroupRules(configuredUsergroupRules);
@@ -178,12 +177,68 @@ public class InfrastructureImportConfiguration {
                     for (HierarchicalConfiguration ugConfiguration : usergroupList) {
                         UsergroupConfigurationItem rci = new UsergroupConfigurationItem();
                         rci.setOldUsergroupName(ugConfiguration.getString("./@name", null));
-                        rci.setNewUsergroupName(ugConfiguration.getString("./newRulesetName", null));
+                        rci.setNewUsergroupName(ugConfiguration.getString("./newUsergroupName", null));
                         List<String> rolesToAdd = ugConfiguration.getList("./addRole");
                         List<String> rolesToRemove = ugConfiguration.getList("./removeRole");
                         rci.setAddRoleList(rolesToAdd);
                         rci.setRemoveRoleList(rolesToRemove);
+
+                        List<String> userToAdd = ugConfiguration.getList("./addUser");
+                        List<String> userToRemove = ugConfiguration.getList("./removeUser");
+                        rci.setAddUserList(userToAdd);
+                        rci.setRemoveUserList(userToRemove);
+
                         configuredUsergroupRules.add(rci);
+                    }
+                }
+
+                // read user configuration
+                List<HierarchicalConfiguration> userList = config.configurationsAt("/config/user");
+                List<UserConfigurationItem> configuredUserRules = new ArrayList<>();
+                rule.setConfiguredUserRules(configuredUserRules);
+
+                if (userList != null && !userList.isEmpty()) {
+                    for (HierarchicalConfiguration ugConfiguration : userList) {
+                        UserConfigurationItem rci = new UserConfigurationItem();
+                        rci.setLogin(ugConfiguration.getString("./@name", null));
+                        List<String> rolesToAdd = ugConfiguration.getList("./addAssignedProject");
+                        List<String> rolesToRemove = ugConfiguration.getList("./removeAssignedProject");
+                        rci.setAddProjectList(rolesToAdd);
+                        rci.setRemoveProjectList(rolesToRemove);
+                        HierarchicalConfiguration config = ugConfiguration.configurationAt("./configuration");
+                        if (config != null) {
+                            rci.setPlace(ugConfiguration.getString("./@place", null));
+                            rci.setLdapgroup(ugConfiguration.getString("./@ldapgroup", null));
+                            rci.setTablesize(ugConfiguration.getInteger("./@tablesize",null));
+
+                            rci.setShortcut(ugConfiguration.getString("./@shortcut", null));
+                            rci.setDisplayDeactivatedProjects(ugConfiguration.getBoolean("./@displayDeactivatedProjects", null));
+                            rci.setDisplayFinishedProcesses(ugConfiguration.getBoolean("./@displayFinishedProcesses", null));
+                            rci.setDisplaySelectBoxes(ugConfiguration.getBoolean("./@displaySelectBoxes", null));
+                            rci.setDisplayIdColumn(ugConfiguration.getBoolean("./@displayIdColumn", null));
+                            rci.setDisplayBatchColumn(ugConfiguration.getBoolean("./@displayBatchColumn", null));
+                            rci.setDisplayProcessDateColumn(ugConfiguration.getBoolean("./@displayProcessDateColumn", null));
+                            rci.setDisplayLocksColumn(ugConfiguration.getBoolean("./@displayLocksColumn", null));
+                            rci.setDisplaySwappingColumn(ugConfiguration.getBoolean("./@displaySwappingColumn", null));
+                            rci.setDisplayModulesColumn(ugConfiguration.getBoolean("./@displayModulesColumn", null));
+                            rci.setDisplayMetadataColumn(ugConfiguration.getBoolean("./@displayMetadataColumn", null));
+                            rci.setDisplayThumbColumn(ugConfiguration.getBoolean("./@displayThumbColumn", null));
+                            rci.setDisplayGridView(ugConfiguration.getBoolean("./@displayGridView", null));
+                            rci.setDisplayAutomaticTasks(ugConfiguration.getBoolean("./@displayAutomaticTasks", null));
+                            rci.setHideCorrectionTasks(ugConfiguration.getBoolean("./@hideCorrectionTasks", null));
+                            rci.setDisplayOnlySelectedTasks(ugConfiguration.getBoolean("./@displayOnlySelectedTasks", null));
+                            rci.setDisplayOnlyOpenTasks(ugConfiguration.getBoolean("./@displayOnlyOpenTasks", null));
+                            rci.setDisplayOtherTasks(ugConfiguration.getBoolean("./@displayOtherTasks", null));
+                            rci.setMetsDisplayTitle(ugConfiguration.getBoolean("./@metsDisplayTitle", null));
+                            rci.setMetsLinkImage(ugConfiguration.getBoolean("./@metsLinkImage", null));
+                            rci.setMetsDisplayPageAssignments(ugConfiguration.getBoolean("./@metsDisplayPageAssignments", null));
+                            rci.setMetsDisplayHierarchy(ugConfiguration.getBoolean("./@metsDisplayHierarchy", null));
+                            rci.setMetsDisplayProcessID(ugConfiguration.getBoolean("./@metsDisplayProcessID", null));
+
+                            rci.setCustomColumns(ugConfiguration.getString("./@customColumns", null));
+                            rci.setCustomCss(ugConfiguration.getString("./@customCss", null));
+                        }
+                        configuredUserRules.add(rci);
                     }
                 }
             }
