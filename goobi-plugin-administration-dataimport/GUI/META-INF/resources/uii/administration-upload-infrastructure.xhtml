@@ -56,7 +56,7 @@
         <h:panelGroup rendered="#{!LoginForm.hasRole('administration_import_data')}">
             <h:outputText
                 styleClass="alert alert-danger alert-dismissable margin-bottom-10 margin-top-10"
-                value="#{mgs.plugin_administration_missingPermission} administration_import_data"></h:outputText>
+                value="#{msgs.plugin_administration_missingPermission} administration_import_data"></h:outputText>
         </h:panelGroup>
 
         <h:panelGroup rendered="#{LoginForm.hasRole('administration_import_data')}">
@@ -107,9 +107,13 @@
                         layout="block"
                         styleClass="row"
                         rendered="#{AdministrationForm.administrationPlugin.filename != null}">
-
-
                         <div class="col-sm-12">
+
+
+
+
+
+
                             <div class="box box-color box-bordered">
                                 <div
                                     class="box-title"
@@ -120,14 +124,6 @@
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
-<!--                                     <intranda:formOutputText -->
-<!--                                         id="filename" -->
-<!--                                         label="#{msgs.filename}" -->
-<!--                                         field="#{AdministrationForm.administrationPlugin.filename}" -->
-<!--                                         help="" -->
-<!--                                         fieldStyle="form-control" -->
-<!--                                         name="filename" /> -->
-
 
                                     <intranda:formOutputText
                                         id="totalNumberOfLdaps"
@@ -137,7 +133,6 @@
                                         fieldStyle="form-control"
                                         name="totalNumberOfLdaps" />
 
-
                                     <intranda:formOutputText
                                         id="numberOfNewLdaps"
                                         label="#{msgs.plugin_administration_import_numberOfNewLdaps}"
@@ -145,7 +140,6 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewLdaps" />
-
 
                                     <intranda:formOutputText
                                         id="totalNumberOfProjects"
@@ -155,7 +149,6 @@
                                         fieldStyle="form-control"
                                         name="totalNumberOfLdaps" />
 
-
                                     <intranda:formOutputText
                                         id="numberOfNewProjects"
                                         label="#{msgs.plugin_administration_import_numberOfNewProjects}"
@@ -163,7 +156,6 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewProjects" />
-
 
                                     <intranda:formOutputText
                                         id="totalNumberOfRulesets"
@@ -179,9 +171,8 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewRulesets" />
-                                        
-                                        
-                                   <intranda:formOutputText
+
+                                    <intranda:formOutputText
                                         id="totalNumberOfDockets"
                                         label="#{msgs.plugin_administration_import_totalNumberOfDockets}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfDockets}"
@@ -195,13 +186,8 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewDockets" />
-                                        
-                                        
 
-
-                                        
-                                        
-                                   <intranda:formOutputText
+                                    <intranda:formOutputText
                                         id="totalNumberOfUsers"
                                         label="#{msgs.plugin_administration_import_totalNumberOfUsers}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfUsers}"
@@ -215,12 +201,8 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewUsers" />
-                                        
-                                        
-                                        
-                                                                                
-                                        
-                                   <intranda:formOutputText
+
+                                    <intranda:formOutputText
                                         id="totalNumberOfUserGroups"
                                         label="#{msgs.plugin_administration_import_totalNumberOfUserGroups}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfUserGroups}"
@@ -234,8 +216,6 @@
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewUserGroups" />
-                                        
-
                                 </div>
                             </div>
                         </div>
@@ -243,87 +223,22 @@
 
 
 
+
+
+
+
+
+
+
+                        <h:commandLink
+                            rendered="#{AdministrationForm.administrationPlugin.filename != null}"
+                            styleClass="btn btn-lightgrey pull-right margin-right-10 margin-top-10 margin-bottom-10 font-size-s"
+                            id="finalize"
+                            action="#{AdministrationForm.administrationPlugin.importSelectedData}">
+                            <i class="fa fa-exchange margin-right-5"></i>
+                            <h:outputText value="#{msgs.plugin_administration_import_importData}" />
+                        </h:commandLink>
                     </h:panelGroup>
-
-
-
-
-
-                    <h:panelGroup
-                        layout="block"
-                        styleClass="row"
-                        rendered="#{AdministrationForm.administrationPlugin.uploadHasErrors}">
-                        <h:panelGroup
-                            layout="block"
-                            styleClass="col-sm-12">
-                            <div class="box box-color lightgrey box-bordered">
-                                <div
-                                    class="box-title"
-                                    id="title">
-                                    <h3>
-                                        <i class="fa fa-exclamation"></i>
-                                        <h:outputText value="#{msgs.plugin_kb_notMatchedBindings}" />
-                                    </h3>
-                                </div>
-
-
-                                <div class="box-content nopadding">
-
-
-
-
-
-                                    <!--                                     <x:dataTable -->
-                                    <!--                                         value="#{AdministrationForm.administrationPlugin.errorList}" -->
-                                    <!--                                         var="binding" -->
-                                    <!--                                         id="table" -->
-                                    <!--                                         tyle="max-width: 100%;" -->
-                                    <!--                                         rowIndexVar="count" -->
-                                    <!--                                         styleClass="table table-hover table-nomargin dataTable table-bordered responsive"> -->
-
-                                    <!--                                         <x:column> -->
-                                    <!--                                             <f:facet name="header"> -->
-                                    <!--                                                 <h:outputText value="#{msgs.barcode}" /> -->
-                                    <!--                                             </f:facet> -->
-                                    <!--                                             <h:outputText value="#{binding.bindingBarcode}" /> -->
-                                    <!--                                         </x:column> -->
-
-                                    <!--                                         <x:column> -->
-                                    <!--                                             <f:facet name="header"> -->
-                                    <!--                                                 <h:outputText value="#{msgs.ppn}" /> -->
-                                    <!--                                             </f:facet> -->
-                                    <!--                                             <h:outputText value="#{binding.bindingPPN}" /> -->
-                                    <!--                                         </x:column> -->
-
-                                    <!--                                         <x:column> -->
-                                    <!--                                             <f:facet name="header"> -->
-                                    <!--                                                 <h:outputText value="#{msgs.shelfmark}" /> -->
-                                    <!--                                             </f:facet> -->
-                                    <!--                                             <h:outputText value="#{binding.shelfmark}" /> -->
-                                    <!--                                         </x:column> -->
-
-                                    <!--                                         <x:column> -->
-                                    <!--                                             <f:facet name="header"> -->
-                                    <!--                                                 <h:outputText value="#{msgs.reason}" /> -->
-                                    <!--                                             </f:facet> -->
-                                    <!--                                             <h:outputText value="#{binding.errorText}" /> -->
-                                    <!--                                         </x:column> -->
-
-                                    <!--                                     </x:dataTable> -->
-
-                                </div>
-                            </div>
-                        </h:panelGroup>
-                    </h:panelGroup>
-                    <h:commandLink
-                        rendered="#{AdministrationForm.administrationPlugin.filename != null and LoginForm.hasRole('edit_upload_packinglist') and !AdministrationForm.administrationPlugin.uploadHasErrors}"
-                        styleClass="btn btn-lightgrey pull-right margin-right-10 margin-top-10 margin-bottom-10 font-size-s"
-                        id="finalize"
-                        action="#{AdministrationForm.administrationPlugin.importSelectedData}">
-                        <i class="fa fa-exchange margin-right-5"></i>
-                        <h:outputText value="#{msgs.finalizePlugin}" />
-                    </h:commandLink>
-
 
                 </h:panelGroup>
             </h:form>
