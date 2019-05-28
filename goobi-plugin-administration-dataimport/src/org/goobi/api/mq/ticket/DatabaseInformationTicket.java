@@ -104,6 +104,15 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
         Path processFolder = Paths.get(ticket.getProperties().get("processFolder"));
 
+        if (!Files.exists(processFolder)) {
+            try {
+                Files.createDirectories(processFolder);
+            } catch (IOException e) {
+                log.error(e);
+                return PluginReturnValue.ERROR;
+            }
+        }
+
         String currentRule = ticket.getProperties().get("rule");
 
         List<Path> folderContentList = StorageProvider.getInstance().listFiles(processFolder.toString());
@@ -112,9 +121,10 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         List<Path> folder = new ArrayList<>();
         Path importFile = null;
         for (Path path : folderContentList) {
+            String filename = path.getFileName().toString();
             if (StorageProvider.getInstance().isDirectory(path)) {
                 folder.add(path);
-            } else if (path.getFileName().toString().equals(processId + "_db_export.xml")) {
+            } else if (filename.equals(processId + "_db_export.xml")) {
                 importFile = path;
             } else {
                 files.add(path);
@@ -1245,9 +1255,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(), o
                     .isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(), o
-                    .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
-                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
-                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                            .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
+                                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
+                                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
 
         } catch (SQLException e) {
             log.error(e);

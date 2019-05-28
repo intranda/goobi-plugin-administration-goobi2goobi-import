@@ -16,7 +16,6 @@ import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IAdministrationPlugin;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.amazonaws.services.s3.model.ObjectListing;
 import com.amazonaws.services.s3.model.S3ObjectSummary;
@@ -25,6 +24,7 @@ import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.Rule;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
+import de.sub.goobi.helper.S3FileUtils;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
@@ -69,11 +69,11 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             TaskTicket importTicket = TicketGenerator.generateSimpleTicket("DatabaseInformationTicket");
 
             //filename of xml file is "<processId>_db_export.xml"
-            importTicket.setProcessName(processId);
-            int underscoreIdx = processId.indexOf('_');
-            if (underscoreIdx >= 0) {
-                processId = processId.substring(0, underscoreIdx);
+            int slashIdx = processId.indexOf('/');
+            if (slashIdx >= 0) {
+                processId = processId.substring(0, slashIdx);
             }
+            importTicket.setProcessName(processId);
 
             Path processFolder = Paths.get(ProcessImportConfiguration.getImportPath(), processId);
 
@@ -101,26 +101,29 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         allFilenames.add("Select all");
         if (ConfigurationHelper.getInstance().useS3()) {
             //
-            AmazonS3 s3 = AmazonS3ClientBuilder.defaultClient();
-            ListObjectsRequest req = new ListObjectsRequest().withBucketName(ProcessImportConfiguration.getBucket()).withPrefix(ProcessImportConfiguration
-                    .getDbExportPrefix());
+            AmazonS3 s3 = S3FileUtils.createS3Client();
+            String bucket = ProcessImportConfiguration.getBucket();
+            String dbExportPrefix = ProcessImportConfiguration.getDbExportPrefix();
+            ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(dbExportPrefix);
             ObjectListing listing = s3.listObjects(req);
             for (S3ObjectSummary os : listing.getObjectSummaries()) {
                 String key = os.getKey();
-                allFilenames.add(key);
+                String newKey = key.substring(dbExportPrefix.length());
+                allFilenames.add(newKey);
             }
             while (listing.isTruncated()) {
                 listing = s3.listNextBatchOfObjects(listing);
                 for (S3ObjectSummary os : listing.getObjectSummaries()) {
                     String key = os.getKey();
-                    allFilenames.add(key);
+                    String newKey = key.substring(dbExportPrefix.length());
+                    allFilenames.add(newKey);
                 }
             }
         } else {
             try {
                 Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
                         ".*_db_export.xml"))
-                        .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
+                .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
             } catch (IOException e) {
                 log.error(e);
             }
