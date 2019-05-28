@@ -45,6 +45,7 @@ import org.primefaces.event.FileUploadEvent;
 
 import de.intranda.goobi.importrules.DocketConfigurationItem;
 import de.intranda.goobi.importrules.InfrastructureImportConfiguration;
+import de.intranda.goobi.importrules.LdapConfigurationItem;
 import de.intranda.goobi.importrules.ProjectConfigurationItem;
 import de.intranda.goobi.importrules.Rule;
 import de.intranda.goobi.importrules.RulesetConfigurationItem;
@@ -725,37 +726,61 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
         String ldapName = ldapElement.getAttributeValue("title");
         String dn = ldapElement.getAttributeValue("dn");
 
-        //TODO
-
-        {
-            for (Ldap ldap : allExistingLdaps) {
-                if (ldap.getTitel().equals(ldapName) && ldap.getUserDN().equals(dn)) {
-                    // found existing ldap
-                    return null;
+        LdapConfigurationItem ldapRule = null;
+        // check if project should be overwritten
+        if (!importRule.getConfiguredLdapRules().isEmpty()) {
+            for (LdapConfigurationItem lci : importRule.getConfiguredLdapRules()) {
+                // replace project name, if old project name field is empty or matches the project name in db file
+                if (StringUtils.isBlank(lci.getOldLadapName()) || lci.getOldLadapName().equalsIgnoreCase(ldapName)) {
+                    ldapName = lci.getNewLdapName();
+                    ldapRule = lci;
+                    break;
                 }
             }
         }
+
+        for (Ldap ldap : allExistingLdaps) {
+            if (ldap.getTitel().equals(ldapName) && ldap.getUserDN().equals(dn)) {
+                // found existing ldap
+                return null;
+            }
+        }
+
+        if (ldapRule == null) {
+            ldapRule = new LdapConfigurationItem();
+        }
+
         // otherwise create new one
 
         Ldap ldap = new Ldap();
         ldap.setTitel(ldapElement.getAttributeValue("title"));
-        ldap.setHomeDirectory(ldapElement.getAttributeValue("homeDirectory"));
-        ldap.setGidNumber(ldapElement.getAttributeValue("gidNumber"));
-        ldap.setUserDN(ldapElement.getAttributeValue("dn"));
-        ldap.setObjectClasses(ldapElement.getAttributeValue("objectClass"));
-        ldap.setSambaSID(ldapElement.getAttributeValue("sambaSID"));
-        ldap.setSn(ldapElement.getAttributeValue("sn"));
-        ldap.setUid(ldapElement.getAttributeValue("uid"));
-        ldap.setDescription(ldapElement.getAttributeValue("description"));
-        ldap.setDisplayName(ldapElement.getAttributeValue("displayName"));
-        ldap.setGecos(ldapElement.getAttributeValue("gecos"));
-        ldap.setLoginShell(ldapElement.getAttributeValue("loginShell"));
-        ldap.setSambaAcctFlags(ldapElement.getAttributeValue("sambaAcctFlags"));
-        ldap.setSambaLogonScript(ldapElement.getAttributeValue("sambaLogonScript"));
-        ldap.setSambaPwdMustChange(ldapElement.getAttributeValue("sambaPwdMustChange"));
-        ldap.setSambaPasswordHistory(ldapElement.getAttributeValue("sambaPasswordHistory"));
-        ldap.setSambaLogonHours(ldapElement.getAttributeValue("sambaLogonHours"));
-        ldap.setSambaKickoffTime(ldapElement.getAttributeValue("sambaKickoffTime"));
+        ldap.setHomeDirectory(StringUtils.isNotBlank(ldapRule.getHomeDirectory()) ? ldapRule.getHomeDirectory() : ldapElement.getAttributeValue(
+                "homeDirectory"));
+        ldap.setGidNumber(StringUtils.isNotBlank(ldapRule.getGidNumber()) ? ldapRule.getGidNumber() : ldapElement.getAttributeValue("gidNumber"));
+        ldap.setUserDN(StringUtils.isNotBlank(ldapRule.getDn()) ? ldapRule.getDn() : ldapElement.getAttributeValue("dn"));
+        ldap.setObjectClasses(StringUtils.isNotBlank(ldapRule.getObjectClass()) ? ldapRule.getObjectClass() : ldapElement.getAttributeValue(
+                "objectClass"));
+        ldap.setSambaSID(StringUtils.isNotBlank(ldapRule.getSn()) ? ldapRule.getSn() : ldapElement.getAttributeValue("sambaSID"));
+        ldap.setSn(StringUtils.isNotBlank(ldapRule.getGidNumber()) ? ldapRule.getGidNumber() : ldapElement.getAttributeValue("sn"));
+        ldap.setUid(StringUtils.isNotBlank(ldapRule.getUid()) ? ldapRule.getUid() : ldapElement.getAttributeValue("uid"));
+        ldap.setDescription(StringUtils.isNotBlank(ldapRule.getDescription()) ? ldapRule.getDescription() : ldapElement.getAttributeValue(
+                "description"));
+        ldap.setDisplayName(StringUtils.isNotBlank(ldapRule.getDisplayName()) ? ldapRule.getDisplayName() : ldapElement.getAttributeValue(
+                "displayName"));
+        ldap.setGecos(StringUtils.isNotBlank(ldapRule.getGecos()) ? ldapRule.getGecos() : ldapElement.getAttributeValue("gecos"));
+        ldap.setLoginShell(StringUtils.isNotBlank(ldapRule.getLoginShell()) ? ldapRule.getLoginShell() : ldapElement.getAttributeValue("loginShell"));
+        ldap.setSambaAcctFlags(StringUtils.isNotBlank(ldapRule.getSambaAcctFlags()) ? ldapRule.getSambaAcctFlags() : ldapElement.getAttributeValue(
+                "sambaAcctFlags"));
+        ldap.setSambaLogonScript(StringUtils.isNotBlank(ldapRule.getSambaLogonScript()) ? ldapRule.getSambaLogonScript() : ldapElement
+                .getAttributeValue("sambaLogonScript"));
+        ldap.setSambaPwdMustChange(StringUtils.isNotBlank(ldapRule.getSambaPwdMustChange()) ? ldapRule.getSambaPwdMustChange() : ldapElement
+                .getAttributeValue("sambaPwdMustChange"));
+        ldap.setSambaPasswordHistory(StringUtils.isNotBlank(ldapRule.getSambaPasswordHistory()) ? ldapRule.getSambaPasswordHistory() : ldapElement
+                .getAttributeValue("sambaPasswordHistory"));
+        ldap.setSambaLogonHours(StringUtils.isNotBlank(ldapRule.getSambaLogonHours()) ? ldapRule.getSambaLogonHours() : ldapElement.getAttributeValue(
+                "sambaLogonHours"));
+        ldap.setSambaKickoffTime(StringUtils.isNotBlank(ldapRule.getSambaKickoffTime()) ? ldapRule.getSambaKickoffTime() : ldapElement
+                .getAttributeValue("sambaKickoffTime"));
 
         return ldap;
     }

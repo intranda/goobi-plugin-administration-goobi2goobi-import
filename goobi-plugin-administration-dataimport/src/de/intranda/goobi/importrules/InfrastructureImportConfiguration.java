@@ -132,6 +132,42 @@ public class InfrastructureImportConfiguration {
                     }
 
                 }
+
+                // read ldap configuration
+                List<HierarchicalConfiguration> ldapList = config.configurationsAt("/config/ldap");
+                List<LdapConfigurationItem> configuredLdapRules = new ArrayList<>();
+                rule.setConfiguredLdapRules(configuredLdapRules);
+
+                if (ldapList != null && !ldapList.isEmpty()) {
+                    for (HierarchicalConfiguration ldapConfiguration : ldapList) {
+                        LdapConfigurationItem rci = new LdapConfigurationItem();
+                        rci.setOldLadapName(ldapConfiguration.getString("./@name", null));
+                        rci.setNewLdapName(ldapConfiguration.getString("./newRulesetName", null));
+                        HierarchicalConfiguration configuration = ldapConfiguration.configurationAt("./ldapConfiguration");
+                        if (configuration != null) {
+                            rci.setHomeDirectory(configuration.getString("./@homeDirectory", null));
+                            rci.setGidNumber(configuration.getString("./@gidNumber", null));
+                            rci.setDn(configuration.getString("./@dn", null));
+                            rci.setObjectClass(configuration.getString("./@objectClass", null));
+                            rci.setSambaSID(configuration.getString("./@sambaSID", null));
+                            rci.setSn(configuration.getString("./@sn", null));
+                            rci.setUid(configuration.getString("./@uid", null));
+                            rci.setDescription(configuration.getString("./@description", null));
+                            rci.setDisplayName(configuration.getString("./@displayName", null));
+                            rci.setGecos(configuration.getString("./@gecos", null));
+                            rci.setLoginShell(configuration.getString("./@loginShell", null));
+                            rci.setSambaAcctFlags(configuration.getString("./@sambaAcctFlags", null));
+                            rci.setSambaLogonScript(configuration.getString("./@sambaLogonScript", null));
+                            rci.setSambaPrimaryGroupSID(configuration.getString("./@sambaPrimaryGroupSID", null));
+                            rci.setSambaPwdMustChange(configuration.getString("./@sambaPwdMustChange", null));
+                            rci.setSambaPasswordHistory(configuration.getString("./@sambaPasswordHistory", null));
+                            rci.setSambaLogonHours(configuration.getString("./@sambaLogonHours", null));
+                            rci.setSambaKickoffTime(configuration.getString("./@sambaKickoffTime", null));
+                        }
+                        configuredLdapRules.add(rci);
+                    }
+                }
+
             }
 
         }
