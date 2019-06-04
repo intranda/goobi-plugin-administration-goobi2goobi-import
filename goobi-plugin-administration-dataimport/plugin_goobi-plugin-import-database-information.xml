@@ -1,4 +1,9 @@
 <config_plugin>
+	<globalConfig>    
+        <dbExportPrefix>import/</dbExportPrefix>    
+        <importPath>/opt/digiverso/goobi/metadata/</importPath>    
+        <bucket>goobi-test-metadata</bucket>    
+    </globalConfig>
 	<config>
 		<rulename>19_century</rulename>
 		<step name="Download from internet archive with ITM" type="change">
