@@ -89,7 +89,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             }
         }
 
-        Helper.setMeldung(Helper.getTranslation("plugin_adiministration_dataimport_success", "" + selectedFilenames.size()));
+        Helper.setMeldung(Helper.getTranslation("plugin_administration_dataimport_success", "" + selectedFilenames.size()));
     }
 
     public void generateAllFilenames() {

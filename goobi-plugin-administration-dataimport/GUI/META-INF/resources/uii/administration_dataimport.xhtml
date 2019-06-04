@@ -91,7 +91,7 @@
                                     <x:column styleClass="tableColumnOverflow">
                                         <f:facet name="header">
                                             <x:div>
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_rulename}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulename}" />
                                             </x:div>
                                         </f:facet>
                                         <h:outputText value="#{rule.rulename}" />
@@ -102,7 +102,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_stepRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_stepRules}" />
                                             </x:div>
                                         </f:facet>
 
@@ -150,7 +150,7 @@
                                                         value="#{rule.configuredStepRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_stepName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_stepName}" />
                                                             </f:facet>
                                                             <h:outputText
                                                                 value="#{step.currentStepName}"
@@ -184,7 +184,7 @@
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_changeType}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_changeType}" />
                                                             </f:facet>
                                                             <h:outputText value="#{msgs[step.configurationType]}" />
                                                         </h:column>
@@ -199,7 +199,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_propertyRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
@@ -245,26 +245,26 @@
                                                         value="#{rule.configuredPropertyRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_propertyName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.oldPropertyName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newPropertyName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newPropertyName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.newPropertyName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_propertyValue}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyValue}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.oldPropertyValue}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newPropertyValue}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newPropertyValue}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.newPropertyValue}" />
                                                         </h:column>
@@ -278,7 +278,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
@@ -324,33 +324,33 @@
                                                         value="#{rule.configuredMetadataRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.metadataName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataChangeType}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataChangeType}" />
                                                             </f:facet>
                                                             <h:outputText value="#{msgs[Metadata.configurationType]}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataValueContitionRegex}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataValueContitionRegex}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.valueContitionRegex}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataValueReplacementRegex}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataValueReplacementRegex}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.valueReplacementRegex}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_metadataPosition}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataPosition}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.position}" />
                                                         </h:column>
@@ -364,7 +364,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_rulesetRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulesetRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
@@ -410,20 +410,20 @@
                                                         value="#{rule.configuredRulesetRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_rulesetName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulesetName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.oldRulesetName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newRulesetName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newRulesetName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.newRulesetName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newFileName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newFileName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.newFileName}" />
                                                         </h:column>
@@ -438,7 +438,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_docketRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_docketRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
@@ -484,20 +484,20 @@
                                                         value="#{rule.configuredDocketRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_docketName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_docketName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.oldDocketName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newDocketName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newDocketName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.newDocketName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newFileName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newFileName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.newFileName}" />
                                                         </h:column>
@@ -511,7 +511,7 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_projectRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_dataimport_projectRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
@@ -557,13 +557,13 @@
                                                         value="#{rule.configuredProjectRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_projectName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_projectName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Project.oldProjectName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_newProjectName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newProjectName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Project.newProjectName}" />
                                                         </h:column>
@@ -585,8 +585,8 @@
                                 title="#{msgs.reload}">
                                 <i
                                     class="fa fa-refresh margin-right-5"
-                                    title="#{msgs.plugin_adiministration_dataimport_reloadRules}" />
-                                <h:outputText value="#{msgs.plugin_adiministration_dataimport_reloadRules}" />
+                                    title="#{msgs.plugin_administration_dataimport_reloadRules}" />
+                                <h:outputText value="#{msgs.plugin_administration_dataimport_reloadRules}" />
                             </h:commandLink>
 
                         </div>
@@ -617,7 +617,7 @@
                                 <div class="col-sm-3 control-label">
                                     <h:outputLabel
                                         for="rules"
-                                        value="#{msgs.plugin_adiministration_dataimport_rulename}" />
+                                        value="#{msgs.plugin_administration_dataimport_rulename}" />
                                     <h:panelGroup>
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
@@ -645,7 +645,7 @@
                                 <div class="col-sm-3 control-label">
                                     <h:outputLabel
                                         for="files"
-                                        value="#{msgs.plugin_adiministration_dataimport_files}" />
+                                        value="#{msgs.plugin_administration_dataimport_files}" />
                                     <h:panelGroup>
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
@@ -674,7 +674,7 @@
                                     type="submit"
                                     action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
                                     <i class="fa fa-save margin-right-5"></i>
-                                    <h:outputText value="#{msgs.plugin_adiministration_dataimport_importFile}" />
+                                    <h:outputText value="#{msgs.plugin_administration_dataimport_importFile}" />
                                 </h:commandLink>
                                 <h:commandLink
                                     id="reload"
@@ -683,8 +683,8 @@
                                     title="#{msgs.reload}">
                                     <i
                                         class="fa fa-refresh margin-right-5"
-                                        title="#{msgs.plugin_adiministration_dataimport_loadFiles}" />
-                                    <h:outputText value="#{msgs.plugin_adiministration_dataimport_loadFiles}" />
+                                        title="#{msgs.plugin_administration_dataimport_loadFiles}" />
+                                    <h:outputText value="#{msgs.plugin_administration_dataimport_loadFiles}" />
                                 </h:commandLink>
 
                             </div>
