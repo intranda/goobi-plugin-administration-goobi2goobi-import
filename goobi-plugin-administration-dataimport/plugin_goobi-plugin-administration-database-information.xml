@@ -65,7 +65,7 @@
         <step name="PDF creation" type="delete">
         </step>
         <!-- add new task: 120 bagit creation and upload -->
-        <step name="15 days delay" type="insertAfter">
+        <step name="Edit METS" type="insertAfter">
             <newStepName>bagit creation and upload</newStepName>
             <order>120</order>
             <stepStatus>0</stepStatus>
@@ -99,7 +99,7 @@
             <usergroup>AutomaticTasks</usergroup>
         </step>
         <!-- add new task: 130 Send ingest request to archive service -->
-        <step name="15 days delay" type="insertAfter">
+        <step name="Edit METS" type="insertAfter">
             <newStepName>Send ingest request to archive service</newStepName>
             <order>130</order>
             <stepStatus>0</stepStatus>
@@ -208,7 +208,7 @@
         </step>
 
  <!-- add new task: 120 bagit creation and upload -->
-        <step name="15 days delay" type="insertAfter">
+        <step name="Edit METS" type="insertAfter">
             <newStepName>bagit creation and upload</newStepName>
             <order>120</order>
             <stepStatus>0</stepStatus>
@@ -242,7 +242,7 @@
             <usergroup>AutomaticTasks</usergroup>
         </step>
         <!-- add new task: 130 Send ingest request to archive service -->
-        <step name="15 days delay" type="insertAfter">
+        <step name="Edit METS" type="insertAfter">
             <newStepName>Send ingest request to archive service</newStepName>
             <order>130</order>
             <stepStatus>0</stepStatus>
@@ -261,18 +261,21 @@
 <!-- 150 Re-run METS editing -->	
         <step name="Re-run METS editing" type="delete">
         </step>
-
-       
-    
-
     </config>
-
-
-
-
 
     <config>
         <rulename>Wellcome_Image_Awards</rulename>
+
+<!-- 50	SDB ingest -->	
+        <step name="SDB ingest" type="delete">
+        </step>
+<!-- 80	PDF creation -->	
+        <step name="80	PDF creation" type="delete">
+        </step>
+<!-- 150	Re-run METS editing	-->
+        <step name="Re-run METS editing" type="delete">
+        </step>
+
 
 <!-- 1	Bibliographic import -->	
   	<step name="Bibliographic import" type="change">
@@ -320,14 +323,8 @@
             <order>40</order>
         </step>	
 
-
-<!-- 50	SDB ingest -->	
-        <step name="SDB ingest" type="delete">
-        </step>
-
-
 <!-- 60	Export to DDS -->	
-       <step name="Edit METS" type="change">
+       <step name="Export to DDS" type="change">
             <newStepName>Export with PREMIS data</newStepName>
             <order>110</order>
             <types export="true" stepPlugin="plugin_export-premis" />
@@ -367,16 +364,13 @@
             <usergroup>AutomaticTasks</usergroup>
         </step>
         <!-- add new task: 130 Send ingest request to archive service -->
-        <step name="15 days delay" type="insertAfter">
+        <step name="Edit METS" type="insertAfter">
             <newStepName>Send ingest request to archive service</newStepName>
             <order>130</order>
             <stepStatus>0</stepStatus>
             <types automatic="true" stepPlugin="intranda_step_archiveIngest" />
             <usergroup>AutomaticTasks</usergroup>
         </step>
-
-
-<!-- 80	PDF creation -->	
 
 
 
@@ -386,26 +380,151 @@
         </step>
 
 <!-- 100	Image removal -->	
-150	Image removal	
+        <step name="Image removal" type="change">
+            <order>150</order>
+        </step>
 
-
-<!-- 110	90 days delay -->	
+<!-- 90 days delay -->
+        <step name="90 days delay" type="change">
+            <order>160</order>
+        </step>
 
 <!-- 120	jpeg deletion -->	
-170	jpeg deletion
+        <step name="jpeg deletion" type="change">
+            <order>170</order>
+        </step>
 
-<!-- 150	Re-run METS editing	-->
+
+   </config> 
+
+    <config>
+	 <rulename>Wellcome_Film</rulename>
+<!-- first delete obsolete tasks -->
+
+<!-- Automatic: Create hashes for derivatives  -->
+        <step name="Automatic: Create hashes for derivatives" type="delete">
+        </step>
+<!-- Automatic: Verify hashes for derivatives  -->
+        <step name="Automatic: Verify hashes for derivatives" type="delete">
+        </step>
+<!-- Automatic: Create hashes for imagepath  -->
+        <step name="Automatic: Create hashes for imagepath" type="delete">
+        </step>
+<!-- SDB ingest  -->
+        <step name="SDB ingest" type="delete">
+        </step>
+<!-- PDF creation  -->
+        <step name="PDF creation" type="delete">
+        </step>
+<!-- bagit creation and upload  -->
+        <step name="bagit creation and upload" type="delete">
+        </step>
+<!-- Export with PREMIS data -->
+        <step name="Export with PREMIS data" type="delete">
+        </step>
+<!-- Send ingest request to archive service  -->
+        <step name="Send ingest request to archive service" type="delete">
+        </step>
+<!-- Re-run METS editing  -->
         <step name="Re-run METS editing" type="delete">
+        </step>
+
+<!-- Bibliographic import  -->
+  	<step name="Bibliographic import" type="change">
+            <order>10</order>
+        </step>
+
+<!-- Batch preparation  -->
+  	<step name="Batch preparation" type="change">
+            <order>15</order>
+        </step>
+
+<!-- Video data import  -->
+        <step name="Video data import" type="change">
+	    <order>20</order>
+            <useHomeDirectory>0</useHomeDirectory>
+            <types readImages="false" writeImages="false" validateOnExit="false" stepPlugin="intranda_step_fileUpload" />
+        </step>
+
+<!-- Video data conversion  -->
+        <step name="Video data conversion" type="change">
+            <order>30</order>
+            <scriptStep
+                scriptStep="true"
+                scriptName1="CopyFiles"
+                scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}" />
+        </step>
+
+<!-- Edit METS  -->
+        <step name="Edit METS" type="change">
+            <order>40</order>
+        </step>
+
+<!-- Export to DDS  -->
+<!-- 60	Export to DDS -->	
+       <step name="Export to DDS" type="change">
+            <newStepName>Export with PREMIS data</newStepName>
+            <order>110</order>
+            <types export="true" stepPlugin="plugin_export-premis" />
+        </step>
+ <!-- add new task: 120 bagit creation and upload -->
+       <step name="Edit METS" type="insertAfter">
+            <newStepName>bagit creation and upload</newStepName>
+            <order>120</order>
+            <stepStatus>0</stepStatus>
+            <types automatic="true" />
+            <httpStep
+                httpStep="true"
+                httpCloseStep="false"
+                httpJsonBody="{                                                                               
+    &quot;goobiId&quot;:&quot;{processid}&quot;,                                                    
+    &quot;sourceDir&quot;:&quot;&quot;,                                                             
+    &quot;targetDir&quot;:&quot;&quot;,                                                             
+    &quot;fontType&quot;:&quot;&quot;,                                                              
+    &quot;priority&quot;:5,                                                               
+    &quot;postOCR&quot;:&quot;{stepid}&quot;,                                                       
+    &quot;titleprefix&quot;:&quot;{processtitle}&quot;,                                            
+    &quot;templatename&quot;:&quot;bagit&quot;,                                                  
+    &quot;jobtype&quot;:&quot;BAGIT&quot;,                                                          
+    &quot;serverType&quot;:&quot;&quot;,                                                            
+    &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;,                                              
+    &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;,                                        
+    &quot;goobiTitle&quot;:&quot;{processtitle}&quot;,                                             
+    &quot;goobiID&quot;:&quot;{processid}&quot;,                                                    
+    &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;,                     
+    &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;,                      
+    &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;,                                           
+    &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;,
+    &quot;archiveType&quot;:&quot;tar.gz&quot;
+}"
+                httpMethod="POST"
+                httpUrl="http://itm.workflow/itm/service" />
+            <usergroup>AutomaticTasks</usergroup>
+        </step>
+        <!-- add new task: 130 Send ingest request to archive service -->
+        <step name="Edit METS" type="insertAfter">
+            <newStepName>Send ingest request to archive service</newStepName>
+            <order>130</order>
+            <stepStatus>0</stepStatus>
+            <types automatic="true" stepPlugin="intranda_step_archiveIngest" />
+            <usergroup>AutomaticTasks</usergroup>
+        </step>
+
+<!-- 15 days delay  -->
+        <step name="15 days delay" type="change">
+            <order>140</order>
+        </step>
+<!-- Image removal  -->
+        <step name="Image removal" type="change">
+            <order>150</order>
+        </step>
+<!-- Image Deletion  -->
+        <step name="Image Deletion" type="change">
+            <order>150</order>
         </step>
 
 
 
-	
-
-
-
-
-	
 
 
 
@@ -416,10 +535,7 @@
 
 
 
-
-
-
-   </config> 
+    </config>
     <config>
         <rulename>19_century</rulename>
         <step name="Download from internet archive with ITM" type="change">
