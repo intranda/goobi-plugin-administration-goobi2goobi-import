@@ -50,8 +50,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 
 import de.intranda.goobi.importrules.DocketConfigurationItem;
-import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.MetadataConfigurationItem;
+import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.ProjectConfigurationItem;
 import de.intranda.goobi.importrules.PropertyConfigurationItem;
 import de.intranda.goobi.importrules.Rule;
@@ -535,11 +535,15 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                             stepsToDelete.add(step);
                         } else if (sci.getConfigurationType() == ConfigurationType.INSERT_BEFORE) {
                             Step newStep = createStep(sci, process);
-                            newStep.setReihenfolge(step.getReihenfolge() - 1);
+                            if (newStep.getReihenfolge() == 0) {
+                                newStep.setReihenfolge(step.getReihenfolge() - 1);
+                            }
                             stepList.add(i, newStep);
                         } else if (sci.getConfigurationType() == ConfigurationType.INSERT_AFTER) {
                             Step newStep = createStep(sci, process);
-                            newStep.setReihenfolge(step.getReihenfolge() + 1);
+                            if (newStep.getReihenfolge() == 0) {
+                                newStep.setReihenfolge(step.getReihenfolge() + 1);
+                            }
                             stepList.add(i + 1, newStep);
                         } else {
                             changeCurrentStep(step, sci);
@@ -566,13 +570,15 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         Step step = new Step();
         step.setProzess(process);
         step.setProcessId(process.getId());
-        step.setTitel(sci.getNewStepName());
         changeCurrentStep(step, sci);
         return step;
     }
 
     private void changeCurrentStep(Step step, StepConfigurationItem sci) {
 
+        if (sci.getNewStepName() != null) {
+            step.setTitel(sci.getNewStepName());
+        }
         if (sci.getPrioritaet() != null) {
             step.setPrioritaet(sci.getPrioritaet());
         }
@@ -843,7 +849,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         if (StringUtils.isNotBlank(userName)) {
                             if (userName.contains(",")) {
                                 user.setNachname(userName.substring(0, userName.indexOf(",")));
-                                user.setVorname(userName.substring(userName.indexOf("," + 1)));
+                                user.setVorname(userName.substring(userName.indexOf(",") + 1));
                             }
                         }
                         user.setIstAktiv(false);
@@ -1255,9 +1261,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(), o
                     .isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(), o
-                            .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
-                                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
-                                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                    .getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz()
+                    .getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch()
+                            .getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
 
         } catch (SQLException e) {
             log.error(e);

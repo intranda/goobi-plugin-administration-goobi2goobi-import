@@ -8,10 +8,12 @@ import org.apache.commons.configuration.XMLConfiguration;
 import org.apache.commons.configuration.reloading.FileChangedReloadingStrategy;
 import org.apache.commons.configuration.tree.xpath.XPathExpressionEngine;
 import org.apache.commons.lang.StringUtils;
+import org.goobi.beans.Usergroup;
 
 import de.intranda.goobi.importrules.MetadataConfigurationItem.MetadataConfigurationType;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
 import de.sub.goobi.config.ConfigPlugins;
+import de.sub.goobi.persistence.managers.UsergroupManager;
 
 /**
  * read the configuration file
@@ -164,7 +166,21 @@ public class ProcessImportConfiguration {
                         stepConfigurationItem.setHttpJsonBody(stepConfiguration.getString("./httpStep/@httpJsonBody"));
                         stepConfigurationItem.setHttpCloseStep(stepConfiguration.getBoolean("./httpStep/@httpCloseStep", null));
                         stepConfigurationItem.setHttpEscapeBodyJson(stepConfiguration.getBoolean("./httpStep/@httpEscapeBodyJson", null));
-
+                    }
+                    // add usergroups
+                    List<String> userGroups = stepConfiguration.getList("./usergroup", null);
+                    if (userGroups != null && !userGroups.isEmpty()) {
+                        List<Usergroup> allGroups = UsergroupManager.getAllUsergroups();
+                        List<Usergroup> userGroupsToAdd = new ArrayList<>();
+                        for (String configuredGroupName : userGroups) {
+                            for (Usergroup ug : allGroups) {
+                                if (ug.getTitel().equalsIgnoreCase(configuredGroupName)) {
+                                    userGroupsToAdd.add(ug);
+                                    continue;
+                                }
+                            }
+                        }
+                        stepConfigurationItem.setBenutzergruppen(userGroupsToAdd);
                     }
                 }
 
