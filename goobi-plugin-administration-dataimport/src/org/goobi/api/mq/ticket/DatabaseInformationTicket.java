@@ -250,6 +250,8 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             process.setId(Integer.parseInt(idElement.getText()));
             process.setTitel(titleElement.getText());
 
+            process.setIstTemplate(Boolean.valueOf(processElement.getAttributeValue("template")));
+
             try {
                 process.setErstellungsdatum(dateConverter.parse(processElement.getChild("creationDate", goobiNamespace).getText()));
             } catch (ParseException e) {
