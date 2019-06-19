@@ -56,12 +56,12 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
     public void importSelectedFiles() {
         if (selectedFilenames == null || selectedFilenames.isEmpty()) {
-            Helper.setFehlerMeldung("TODO");
+            Helper.setFehlerMeldung("plugin_administration_dataimport_selection_error");
             return;
         }
 
         if ("Select all".equals(selectedFilenames.get(0))) {
-            selectedFilenames = allFilenames;
+            selectedFilenames = allFilenames.subList(1, allFilenames.size());
         }
         for (String processId : selectedFilenames) {
             // create ticket
@@ -93,10 +93,6 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     }
 
     public void generateAllFilenames() {
-        // TODO find equivalent for S3
-        // search for all  folder names in /opt/digiverso/goobi/metadata/
-        // check, if a file *_db_export.xml exists in the process folder
-        // return the folder names
         allFilenames = new ArrayList<>();
         allFilenames.add("Select all");
         if (ConfigurationHelper.getInstance().useS3()) {
@@ -120,6 +116,9 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
                 }
             }
         } else {
+            // search for all  folder names in /opt/digiverso/goobi/metadata/
+            // check, if a file *_db_export.xml exists in the process folder
+            // return the folder names
             try {
                 Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
                         ".*_db_export.xml"))
