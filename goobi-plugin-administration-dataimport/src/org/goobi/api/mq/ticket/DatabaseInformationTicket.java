@@ -149,16 +149,14 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             AmazonS3 s3 = S3FileUtils.createS3Client();
             ConfigurationHelper config = ConfigurationHelper.getInstance();
 
-            S3Object objMeta = s3.getObject(config.getS3Bucket(), processId + "/meta.xml");
-            try (InputStream is = objMeta.getObjectContent()) {
+            try (S3Object objMeta = s3.getObject(config.getS3Bucket(), processId + "/meta.xml"); InputStream is = objMeta.getObjectContent()) {
                 Files.copy(is, processFolder.resolve("meta.xml"));
                 s3.deleteObject(config.getS3Bucket(), processId + "/meta.xml");
             } catch (IOException e1) {
                 log.error(e1);
             }
             if (s3.doesObjectExist(config.getS3Bucket(), processId + "/meta_anchor.xml")) {
-                S3Object objMetaAnchor = s3.getObject(config.getS3Bucket(), processId + "/meta_anchor.xml");
-                try (InputStream is = objMetaAnchor.getObjectContent()) {
+                try (S3Object objMetaAnchor = s3.getObject(config.getS3Bucket(), processId + "/meta_anchor.xml"); InputStream is = objMetaAnchor.getObjectContent()) {
                     Files.copy(is, processFolder.resolve("meta_anchor.xml"));
                     s3.deleteObject(config.getS3Bucket(), processId + "/meta_anchor.xml");
                 } catch (IOException e1) {
