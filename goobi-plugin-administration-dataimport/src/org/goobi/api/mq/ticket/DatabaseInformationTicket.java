@@ -522,7 +522,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
     private void updateTasks(Process process, Rule selectedRule) {
         List<Step> stepList = process.getSchritte();
-
+        List<Step> stepstoAdd=new ArrayList<>();
         List<Step> stepsToDelete = new ArrayList<>();
         List<StepConfigurationItem> itemList = selectedRule.getConfiguredStepRules();
 
@@ -539,13 +539,13 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                             if (newStep.getReihenfolge() == 0) {
                                 newStep.setReihenfolge(step.getReihenfolge() - 1);
                             }
-                            stepList.add(i, newStep);
+                            stepList.add(newStep);
                         } else if (sci.getConfigurationType() == ConfigurationType.INSERT_AFTER) {
                             Step newStep = createStep(sci, process);
                             if (newStep.getReihenfolge() == 0) {
                                 newStep.setReihenfolge(step.getReihenfolge() + 1);
                             }
-                            stepList.add(i + 1, newStep);
+                            stepList.add(newStep);
                         } else {
                             changeCurrentStep(step, sci);
                         }
@@ -557,12 +557,19 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         // finally remove tasks from process list marked as to be deleted
         if (!stepsToDelete.isEmpty()) {
             for (Step stepToDelete : stepsToDelete) {
-                for (Step step : stepList) {
-                    if (stepToDelete.getTitel().equals(step.getTitel())) {
-                        stepList.remove(step);
-                        break;
-                    }
-                }
+                stepList.remove(stepToDelete);
+//                for (Step step : stepList) {
+//                    if(stepToDelete.getId()==step.getId()) {
+//                        log.debug("stepToDelete Title: "+stepToDelete.getTitel()+" id: "+stepToDelete.getId());
+//                        log.debug("step Title: "+step.getTitel()+" id: "+step.getId());
+//                        stepList.remove(step);
+//                        break;  
+//                    }
+//                    if (stepToDelete.getTitel().equals(step.getTitel())) {
+//                        stepList.remove(step);
+//                        break;
+//                    }
+//                }
             }
         }
     }
