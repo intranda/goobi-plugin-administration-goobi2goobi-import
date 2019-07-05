@@ -410,6 +410,8 @@
     <rulename>Genetics_Books_Project</rulename>
     <rulename>Wellcome_Digitisation_Project</rulename>
     <rulename>Archive Backlog</rulename>
+    <!--Returning physical items  -->
+    <step name="Returning physical items" type="delete"/>
     <!--Automatic: Create hashes for masters  -->
     <step name="Automatic: Create hashes for masters" type="delete"/>
     <!--Automatic: Create hashes for imagepath  -->
