@@ -103,12 +103,15 @@
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!-- OLD workflow: 80 Export to DDS -->
-    <!-- change to 110 Export with PREMIS data -->
-    <step name="Export to DDS" type="change">
+    <!-- OLD workflow delete: 80 Export to DDS -->
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -200,10 +203,14 @@
     <step name="SDB ingest" type="delete">
         </step>
     <!-- 60	Export to DDS -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- 80	PDF creation -->
     <step name="PDF creation" type="delete">
@@ -276,10 +283,14 @@
       <order>40</order>
     </step>
     <!-- 60	Export to DDS -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -369,11 +380,14 @@
       <order>40</order>
     </step>
     <!-- Export to DDS  -->
-    <!-- 60	Export to DDS -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -528,10 +542,14 @@
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
     <!-- Export to DDS                            -->
-    <step name="Export to DDS" type="change">
+     <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -646,10 +664,14 @@
       <order>40</order>
     </step>
     <!--Export to DDS                           -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -759,7 +781,7 @@
     </step>
     <!-- Image conversion JPG                    -->
     <step name="Image conversion JPG" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="jpeg compression" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPEG -n iii-create_jpeg -s {origpath} -d {imagepath} -gid {processid}"/>
     </step>
     <!-- Externalized jpylyzer-validation        -->
@@ -777,10 +799,14 @@
       <order>40</order>
     </step>
     <!-- Export to DDS                            -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -876,10 +902,14 @@
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
     <!-- Export to DDS                           -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -990,10 +1020,14 @@
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
     <!-- Export to DDS                           -->
-    <step name="Export to DDS" type="change">
+    <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -1118,10 +1152,14 @@
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
     <!-- Export to DDS                            -->
-    <step name="Export to DDS" type="change">
+   <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Edit METS" type="insertAfter">
@@ -1275,10 +1313,14 @@
     <step name="Automatic: Verify hashes for derivatives" type="delete">
         </step>
     <!-- Export to DDS                            -->
-    <step name="Export to DDS" type="change">
+     <step name="Export to DDS" type="delete" />
+    <!-- add to 110 Export with PREMIS data -->
+    <step name="Edit METS" type="insertAfter">
       <newStepName>Export with PREMIS data</newStepName>
       <order>110</order>
-      <types export="true" stepPlugin="plugin_export-premis"/>
+       <stepStatus>0</stepStatus>
+      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
+      <usergroup>AutomaticTasks</usergroup>
     </step>
     <!-- add new task: 120 bagit creation and upload -->
     <step name="Automatic METS edition" type="insertAfter">
@@ -1363,3 +1405,4 @@
     </metadata>
   </config>
 </config_plugin>
+
