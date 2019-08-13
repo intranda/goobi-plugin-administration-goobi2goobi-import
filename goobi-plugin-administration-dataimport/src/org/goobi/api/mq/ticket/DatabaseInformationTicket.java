@@ -153,11 +153,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             AmazonS3 s3 = S3FileUtils.createS3Client();
             ConfigurationHelper config = ConfigurationHelper.getInstance();
             List<String> metaList = getMetaHistory(processId, s3, config);
-            log.debug("downloading " + metaList.size() + " files");
+            log.debug("downloading "+metaList.size()+ " files");
             for (String key : metaList) {
                 try (S3Object objMeta = s3.getObject(config.getS3Bucket(), key); InputStream is = objMeta.getObjectContent()) {
-                    String basename = key.substring(key.lastIndexOf('/') + 1);
-                    Path filename = processFolder.resolve(basename);
+                    String basename = key.substring(key.lastIndexOf('/')+1);
+                    Path filename=processFolder.resolve(basename);
                     log.debug(filename);
                     Files.copy(is, processFolder.resolve(basename));
                     s3.deleteObject(config.getS3Bucket(), key);
@@ -189,7 +189,8 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     }
 
     /**
-     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?", so meta.xml, meta_anchor.xml and their previous versions
+     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?",
+     * so meta.xml, meta_anchor.xml and their previous versions
      */
     private List<String> getMetaHistory(String processId, AmazonS3 s3, ConfigurationHelper config) {
         Pattern pattern = Pattern.compile("meta.*xml(?:.\\d)?");
@@ -261,9 +262,12 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 // id already in use
                 idInUse = true;
             }
-
+            if (idInUse) {
+                return "Process does already exist, abort.";
+            }
 
             Element titleElement = processElement.getChild("title", goobiNamespace);
+
 
             Process process = new Process();
             process.setId(Integer.parseInt(idElement.getText()));
