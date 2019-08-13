@@ -153,11 +153,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             AmazonS3 s3 = S3FileUtils.createS3Client();
             ConfigurationHelper config = ConfigurationHelper.getInstance();
             List<String> metaList = getMetaHistory(processId, s3, config);
-            log.debug("downloading "+metaList.size()+ " files");
+            log.debug("downloading " + metaList.size() + " files");
             for (String key : metaList) {
                 try (S3Object objMeta = s3.getObject(config.getS3Bucket(), key); InputStream is = objMeta.getObjectContent()) {
-                    String basename = key.substring(key.lastIndexOf('/')+1);
-                    Path filename=processFolder.resolve(basename);
+                    String basename = key.substring(key.lastIndexOf('/') + 1);
+                    Path filename = processFolder.resolve(basename);
                     log.debug(filename);
                     Files.copy(is, processFolder.resolve(basename));
                     s3.deleteObject(config.getS3Bucket(), key);
@@ -189,8 +189,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     }
 
     /**
-     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?", 
-     * so meta.xml, meta_anchor.xml and their previous versions
+     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?", so meta.xml, meta_anchor.xml and their previous versions
      */
     private List<String> getMetaHistory(String processId, AmazonS3 s3, ConfigurationHelper config) {
         Pattern pattern = Pattern.compile("meta.*xml(?:.\\d)?");
@@ -202,7 +201,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             if (matcher.find()) {
                 metaList.add(os.getKey());
             }
-                
+
         }
         while (ol.isTruncated()) {
             ol = s3.listNextBatchOfObjects(ol);
@@ -263,17 +262,8 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 idInUse = true;
             }
 
-            // TODO check if new title should be generated
 
             Element titleElement = processElement.getChild("title", goobiNamespace);
-            // check if title is already used
-            number = getNumberOfObjectsFromDatabase(processTitleCheckQuery, titleElement.getText());
-            if (number > 0) {
-                titleInUse = true;
-            }
-            if (idInUse || titleInUse) {
-                return "Process does already exist, abort.";
-            }
 
             Process process = new Process();
             process.setId(Integer.parseInt(idElement.getText()));
@@ -472,11 +462,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToChange =
-                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToChange
-                        .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
+                .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
                 if (anchorDocument != null) {
                     List<Element> anchorElements =
                             xFactory.compile(xpathFirst, Filters.element(), null, goobi, mets, mods).evaluate(anchorDocument.getRootElement());
@@ -514,7 +504,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToDelete =
-                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToDelete = xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
@@ -593,7 +583,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 //                        log.debug("stepToDelete Title: "+stepToDelete.getTitel()+" id: "+stepToDelete.getId());
                 //                        log.debug("step Title: "+step.getTitel()+" id: "+step.getId());
                 //                        stepList.remove(step);
-                //                        break;  
+                //                        break;
                 //                    }
                 //                    if (stepToDelete.getTitel().equals(step.getTitel())) {
                 //                        stepList.remove(step);
@@ -1301,7 +1291,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                     o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                     o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                     o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                    o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                            o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
 
         } catch (SQLException e) {
             log.error(e);
