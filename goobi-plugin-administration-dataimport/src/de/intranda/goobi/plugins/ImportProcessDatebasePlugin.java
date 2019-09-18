@@ -6,6 +6,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.jms.JMSException;
 
@@ -42,9 +49,9 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
     private String currentRule;
     private List<String> allRulenames = new ArrayList<>();
 
-    @Getter
     @Setter
     private List<String> allFilenames = new ArrayList<>();
+    private Future<List<String>> futureFilenames;
 
     @Getter
     @Setter
@@ -63,6 +70,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         if ("Select all".equals(selectedFilenames.get(0))) {
             selectedFilenames = allFilenames.subList(1, allFilenames.size());
         }
+
         for (String processId : selectedFilenames) {
             // create ticket
 
@@ -92,41 +100,64 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         Helper.setMeldung(Helper.getTranslation("plugin_administration_dataimport_success", "" + selectedFilenames.size()));
     }
 
+    public List<String> getAllFilenames() {
+        if (allFilenames.isEmpty() && futureFilenames!=null) {
+            try {
+                allFilenames = futureFilenames.get(10, TimeUnit.SECONDS);
+            } catch (InterruptedException | ExecutionException | TimeoutException e) {
+                Helper.setFehlerMeldung("Data collection is not complete, please reload the page in a few seconds");
+            }
+            if (!allFilenames.isEmpty()) {
+                allFilenames.add(0, "Select all");
+            }
+        }
+
+        return allFilenames;
+    }
+
     public void generateAllFilenames() {
         allFilenames = new ArrayList<>();
-        allFilenames.add("Select all");
-        if (ConfigurationHelper.getInstance().useS3()) {
-            //
-            AmazonS3 s3 = S3FileUtils.createS3Client();
-            String bucket = ProcessImportConfiguration.getBucket();
-            String dbExportPrefix = ProcessImportConfiguration.getDbExportPrefix();
-            ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(dbExportPrefix);
-            ObjectListing listing = s3.listObjects(req);
-            for (S3ObjectSummary os : listing.getObjectSummaries()) {
-                String key = os.getKey();
-                String newKey = key.substring(dbExportPrefix.length());
-                allFilenames.add(newKey);
-            }
-            while (listing.isTruncated()) {
-                listing = s3.listNextBatchOfObjects(listing);
+
+        Callable<List<String>> callable = () -> {
+            List<String> allFilenames = new ArrayList<>();
+            if (ConfigurationHelper.getInstance().useS3()) {
+                //
+                AmazonS3 s3 = S3FileUtils.createS3Client();
+                String bucket = ProcessImportConfiguration.getBucket();
+                String dbExportPrefix = ProcessImportConfiguration.getDbExportPrefix();
+                ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(dbExportPrefix);
+                ObjectListing listing = s3.listObjects(req);
                 for (S3ObjectSummary os : listing.getObjectSummaries()) {
                     String key = os.getKey();
                     String newKey = key.substring(dbExportPrefix.length());
                     allFilenames.add(newKey);
                 }
+                while (listing.isTruncated()) {
+                    listing = s3.listNextBatchOfObjects(listing);
+                    for (S3ObjectSummary os : listing.getObjectSummaries()) {
+                        String key = os.getKey();
+                        String newKey = key.substring(dbExportPrefix.length());
+                        allFilenames.add(newKey);
+                    }
+                }
+            } else {
+                // search for all  folder names in /opt/digiverso/goobi/metadata/
+                // check, if a file *_db_export.xml exists in the process folder
+                // return the folder names
+                try {
+                    Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2,
+                            (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
+                    .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
+                } catch (IOException e) {
+                    log.error(e);
+                }
             }
-        } else {
-            // search for all  folder names in /opt/digiverso/goobi/metadata/
-            // check, if a file *_db_export.xml exists in the process folder
-            // return the folder names
-            try {
-                Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2, (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(
-                        ".*_db_export.xml"))
-                .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
-            } catch (IOException e) {
-                log.error(e);
-            }
-        }
+            return allFilenames;
+        };
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        futureFilenames = service.submit(callable);
+        service.shutdown();
+
     }
 
     @Override
