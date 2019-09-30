@@ -1,28 +1,17 @@
 <config_plugin>
     <config>
-        <!-- change dockets -->
-        <docket name="Default docket">
-            <newDocketName>docket</newDocketName>
-            <newFileName>docket.xsl</newFileName>
-        </docket>
-        <!-- change ruleset -->
-        <ruleset name="Default">
-            <newRulesetName>default ruleset</newRulesetName>
-            <newFileName>wellcome.xml</newFileName>
-        </ruleset>
         <!-- change projecsts -->
         <project name="19_century">
-            <newProjectName>Testprojekt</newProjectName>
+ <newProjectName>19_century</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
                 <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
-                <mimeType>image/tiff</mimeType>
-                <fileSuffix>tif</fileSuffix>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-            <!-- export mapping -->
-            <fileFormatInternal>Mets</fileFormatInternal>
+	    <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -48,74 +37,1640 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-        <!-- configure ldap changes -->
-        <ldap name="Standard">
-            <newLdapName>Default</newLdapName>
-            <ldapConfiguration
-                homeDirectory="/home/{login}"
-                gidNumber="100"
-                dn="cn={login},ou=users,ou=goobi,dc=goobihost,dc=example,dc=net"
-                objectClass="top,inetOrgPerson,posixAccount,shadowAccount,sambaSamAccount"
-                sambaSID="S-1-5-21-3214869138-56264717-4102676759-{uidnumber*2+1000} "
-                sn="{login}"
-                uid="{login}"
-                description="Mitarbeiter"
-                displayName="{user full name}"
-                gecos="Mitarbeiter"
-                loginShell="/bin/false"
-                sambaAcctFlags="[UX         ]"
-                sambaLogonScript="_{login}.bat"
-                sambaPrimaryGroupSID="S-1-5-21-3214869138-56264717-4102676759-100"
-                sambaPwdMustChange="2147483647"
-                sambaPasswordHistory="0000000000000000000000000000000000000000000000000000000000000000"
-                sambaLogonHours="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                sambaKickoffTime="0" />
-            <!-- new name, cn, dn, -->
-        </ldap>
-        <!-- change user groups -->
-        <usergroup name="Administratie">
-            <newUsergroupName>Admin</newUsergroupName>
-            <addRole>role1</addRole>
-            <addRole>role2</addRole>
-            <removeRole>Plugin_Goobi_CataloguePoller</removeRole>
-            <addUser>res020</addUser>
-            <removeUser>marcel020</removeUser>
-        </usergroup>
-        <!-- change user -->
-        <user name="testadmin">
-            <addAssignedProject>19_century</addAssignedProject>
-            <removeAssignedProject>KB_copy</removeAssignedProject>
-            <configuration
-                place="KB"
-                tablesize="10"
-                massdownload="false"
-                ldapgroup="Standard"
-                email=""
-                shortcut="ctrl+shift"
-                displayDeactivatedProjects="false"
-                displayFinishedProcesses="false"
-                displaySelectBoxes="false"
-                displayIdColumn="false"
-                displayBatchColumn="false"
-                displayProcessDateColumn="false"
-                displayLocksColumn="false"
-                displaySwappingColumn="false"
-                displayModulesColumn="false"
-                displayMetadataColumn="false"
-                displayThumbColumn="false"
-                displayGridView="false"
-                displayAutomaticTasks="false"
-                hideCorrectionTasks="false"
-                displayOnlySelectedTasks="false"
-                displayOnlyOpenTasks="false"
-                displayOtherTasks="false"
-                metsDisplayTitle="false"
-                metsLinkImage="false"
-                metsDisplayPageAssignments="false"
-                metsDisplayHierarchy="false"
-                metsDisplayProcessID="false"
-                customColumns=""
-                customCss="" />
-        </user>
+
+
+
+                
+        <project name="3rd Party CSHL">
+ <newProjectName>3rd Party CSHL</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+
+              
+        <project name="3rd Party jp2Fs">
+ <newProjectName>3rd Party jp2Fs</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+
+              
+        <project name="Ancestry-Archives">
+ <newProjectName>Ancestry-Archives</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+             
+        <project name="Ancestry-Journals">
+ <newProjectName>Ancestry-Journals</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+               
+        <project name="Ancestry-JPEGs">
+ <newProjectName>Ancestry-JPEGs</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+             
+        <project name="Arabic_Manuscripts">
+ <newProjectName>Arabic_Manuscripts</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+
+        <project name="Archive Backlog">
+ <newProjectName>Archive Backlog</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+          
+        <project name="Archives digitisation">
+ <newProjectName>Archives digitisation</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+        
+        <project name="Borthwick_3rd_Party_ftp">
+ <newProjectName>Borthwick_3rd_Party_ftp</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+               
+        <project name="Charlotte_Soldan">
+ <newProjectName>Charlotte_Soldan</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+           
+        <project name="Chemist_and_druggist">
+ <newProjectName>Chemist_and_druggist</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+         
+        <project name="Digitisation_on_Demand">
+ <newProjectName>Digitisation_on_Demand</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+          
+        <project name="Editorial Photography">
+ <newProjectName>Editorial Photography</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+         
+        <project name="Genetics_Books_Project">
+ <newProjectName>Genetics_Books_Project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+ 
+        <project name="Glasgow_Crichton_3rd_Party_ftp">
+ <newProjectName>Glasgow_Crichton_3rd_Party_ftp</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+
+        <project name="Glasgow_Gartnaval_3rd_Party_ftp">
+ <newProjectName>Glasgow_Gartnaval_3rd_Party_ftp</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+           
+        <project name="Goobi2-2_Testproject">
+ <newProjectName>Goobi2-2_Testproject</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+            
+        <project name="Iconographic_Images">
+ <newProjectName>Iconographic_Images</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+          
+        <project name="intranda test project">
+ <newProjectName>intranda test project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+              
+        <project name="LMA_3rd_Party_ftp">
+ <newProjectName>LMA_3rd_Party_ftp</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+           
+        <project name="Medieval_Manuscripts">
+ <newProjectName>Medieval_Manuscripts</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                    
+        <project name="MHL-Project">
+ <newProjectName>MHL-Project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+              
+        <project name="Migration_project">
+ <newProjectName>Migration_project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+             
+        <project name="MOH report project">
+ <newProjectName>MOH report project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                      
+        <project name="Paintings">
+ <newProjectName>Paintings</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                     
+        <project name="Project  X">
+ <newProjectName>Project  X</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                   
+        <project name="Proquest_EEB">
+ <newProjectName>Proquest_EEB</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+               
+        <project name="Proquest_EEB_MMs">
+ <newProjectName>Proquest_EEB_MMs</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+               
+        <project name="ProQuest_Project">
+ <newProjectName>ProQuest_Project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+         
+        <project name="Published_born_digital">
+ <newProjectName>Published_born_digital</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                     
+        <project name="RAMC_Books">
+ <newProjectName>RAMC_Books</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+        
+        <project name="Reading_Room_mini-theme">
+ <newProjectName>Reading_Room_mini-theme</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                   
+        <project name="Recipe_Books">
+ <newProjectName>Recipe_Books</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                           
+        <project name="test">
+ <newProjectName>test</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                  
+        <project name="Test Projects">
+ <newProjectName>Test Projects</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                
+        <project name="Test_3D_imaging">
+ <newProjectName>Test_3D_imaging</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                 
+        <project name="UK_MOH_Reports"> 
+<newProjectName>UK_MOH_Reports</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                 
+        <project name="US_MHL_Project">
+ <newProjectName>US_MHL_Project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                    
+        <project name="Visual_Arts">
+ <newProjectName>Visual_Arts</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                 
+        <project name="Wellcome Audio">
+ <newProjectName>Wellcome Audio</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+  
+        <project name="Wellcome_Digitisation_Project">
+ <newProjectName>Wellcome_Digitisation_Project</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                  
+        <project name="Wellcome_Film">
+ <newProjectName>Wellcome_Film</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+          
+        <project name="Wellcome_Image_Awards">
+ <newProjectName>Wellcome_Image_Awards</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+                
+        <project name="Witness_Seminar">
+ <newProjectName>Witness_Seminar</newProjectName>
+            <!-- filegroups -->
+            <filegroup name="SDB">
+                <newFilegroupName>OBJECTS</newFilegroupName>
+                <path>file:///opt/digiverso/viewer/media/$(meta.CatalogIDDigital)/</path>
+                <mimeType>image/jp2</mimeType>
+                <fileSuffix>jp2</fileSuffix>
+                <folderValidation></folderValidation>
+            </filegroup>
+	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatDmsExport>Mets</fileFormatDmsExport>
+            <exportConfiguration
+                useDmsImport="true"
+                dmsImportCreateProcessFolder="false"
+                dmsImportTimeOut="0"
+                dmsImportRootPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportImagesPath="/opt/digiverso/viewer/hotfolder"
+                dmsImportSuccessPath="/opt/digiverso/viewer/success"
+                dmsImportErrorPath="/opt/digiverso/viewer/error" />
+            <metsConfiguration
+                metsRightsOwnerLogo=""
+                metsRightsOwnerSite=""
+                metsRightsOwnerMail=""
+                metsDigiprovReference=""
+                metsDigiprovPresentation=""
+                metsDigiprovReferenceAnchor=""
+                metsPointerPath=""
+                metsPointerPathAnchor=""
+                metsPurl=""
+                metsContentIDs=""
+                metsRightsSponsor=""
+                metsRightsSponsorLogo=""
+                metsRightsSponsorSiteURL=""
+                metsRightsLicense="" />
+        </project>
+
+       
     </config>
 </config_plugin>

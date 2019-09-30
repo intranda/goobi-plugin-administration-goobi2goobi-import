@@ -28,16 +28,7 @@
     <step name="Automatic: Create hashes for OCR directory" type="delete"/>
     <!-- Automatic: Verify hashes for derivatives -->
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
-    <!--SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!--PDF Creation                            -->
-    <step name="PDF Creation" type="delete"/>
-    <!--Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!--bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!--Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
+  
     <!-- Re-run METS editing -->
     <step name="Re-run METS editing" type="delete"/>
     <!-- test delay   -->
@@ -70,18 +61,18 @@
     </step>
     <!-- Image conversion                         -->
     <step name="Image conversion" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="jpeg compression" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_rate10.xml"/>
     </step>
     <!-- OLD workflow: 30 Copy JP2 images to media folder -->
     <!-- move to position 50 -->
     <step name="Copy JP2 images to media folder" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
     <!-- special rule for LMA project Image conversion Lurawave -->
     <step name="Image conversion Lurawave" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="Lurawave" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_rate8.xml"/>
     </step>
     <!-- OLD workflow: 40 Image conversion JPG -->
@@ -103,33 +94,41 @@
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!-- OLD workflow delete: 80 Export to DDS -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>
+ 
     <!-- OLD workflow: 100 15 days delay -->
     <!-- move to 140 -->
     <step name="15 days delay" type="change">
@@ -199,39 +198,41 @@
     <!-- 49	Automatic: Create hashes for derivatives -->
     <step name="Automatic: Create hashes for derivatives" type="delete">
         </step>
-    <!-- 50	SDB ingest -->
-    <step name="SDB ingest" type="delete">
-        </step>
-    <!-- 60	Export to DDS -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- 80	PDF creation -->
-    <step name="PDF creation" type="delete">
-        </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>  
+   
     <!-- 90	15 days delay -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -246,10 +247,6 @@
   </config>
   <config>
     <rulename>Wellcome_Image_Awards</rulename>
-    <!-- 50	SDB ingest -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- 80	PDF creation -->
-    <step name="80 PDF creation" type="delete"/>
     <!-- 150	Re-run METS editing	-->
     <step name="Re-run METS editing" type="delete"/>
     <!-- 1	Bibliographic import -->
@@ -263,7 +260,7 @@
     </step>
     <!-- 7	Copy JP2 images to media folder -->
     <step name="Copy JP2 images to media folder" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
     <!-- 8	Externalized jpylyzer-validation -->
@@ -282,33 +279,41 @@
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!-- 60	Export to DDS -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>
+   
     <!-- 90	15 days delay -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -327,6 +332,7 @@
     </step>
   </config>
   <config>
+    <rulename>Migration_project</rulename>
     <rulename>Wellcome_Film</rulename>
     <!-- first delete obsolete tasks -->
     <!-- Automatic: Create hashes for derivatives  -->
@@ -337,21 +343,6 @@
         </step>
     <!-- Automatic: Create hashes for imagepath  -->
     <step name="Automatic: Create hashes for imagepath" type="delete">
-        </step>
-    <!-- SDB ingest  -->
-    <step name="SDB ingest" type="delete">
-        </step>
-    <!-- PDF creation  -->
-    <step name="PDF creation" type="delete">
-        </step>
-    <!-- bagit creation and upload  -->
-    <step name="bagit creation and upload" type="delete">
-        </step>
-    <!-- Export with PREMIS data -->
-    <step name="Export with PREMIS data" type="delete">
-        </step>
-    <!-- Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete">
         </step>
     <!-- Re-run METS editing  -->
     <step name="Re-run METS editing" type="delete">
@@ -379,33 +370,41 @@
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!-- Export to DDS  -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>   
+  
     <!-- 15 days delay  -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -424,6 +423,7 @@
     <rulename>Genetics_Books_Project</rulename>
     <rulename>Wellcome_Digitisation_Project</rulename>
     <rulename>Archive Backlog</rulename>
+    <rulename>3rd Party CSHL</rulename>
     <!--Returning physical items  -->
     <step name="Returning physical items" type="delete"/>
     <!--Automatic: Create hashes for masters  -->
@@ -436,16 +436,6 @@
     <step name="Automatic: Create hashes for derivatives" type="delete"/>
     <!-- Automatic: Verify hashes for derivatives -->
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
-    <!--SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!--PDF Creation                            -->
-    <step name="PDF Creation" type="delete"/>
-    <!--Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!--bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!--Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!--Re-run METS editing                     -->
     <step name="Re-run METS editing" type="delete"/>
     <!-- Bibliographic import                     -->
@@ -509,17 +499,17 @@
     </step>
     <!-- Image conversion                         -->
     <step name="Image conversion" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="jpeg compression" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_rate10.xml"/>
     </step>
     <!-- Image conversion JPG                        -->
     <step name="Image conversion JPG" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="jpeg compression" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPEG -n iii-create_jpeg -s {origpath} -d {imagepath} -gid {processid}"/>
     </step>
     <!-- Image conversion Lurawave     -->
     <step name="Image conversion Lurawave" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="Lurawave" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_rate10.xml"/>
     </step>
     <!-- Copy JP2 images to media folder -->
@@ -541,33 +531,41 @@
       <newStepName>jpylyzer-validation</newStepName>
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
-    <!-- Export to DDS                            -->
-     <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>  
+    
     <!-- 15 days delay                            -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -595,16 +593,6 @@
     <step name="Automatic: Create hashes for derivatives" type="delete"/>
     <!-- Automatic: Verify hashes for derivatives -->
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
-    <!--SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!--PDF Creation                            -->
-    <step name="PDF Creation" type="delete"/>
-    <!--Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!--bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!--Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!--Re-run METS editing                     -->
     <step name="Re-run METS editing" type="delete"/>
     <!--Bibliographic import                    -->
@@ -663,33 +651,41 @@
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!--Export to DDS                           -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>   
+ 
     <!--15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -731,16 +727,6 @@
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
     <!-- Automatic: Create hashes for OCR directory-->
     <step name="Automatic: Create hashes for OCR directory" type="delete"/>
-    <!-- SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- PDF creation                            -->
-    <step name="PDF creation" type="delete"/>
-    <!-- bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!-- Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!-- Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!-- Re-run METS editing                     -->
     <step name="Re-run METS editing" type="delete"/>
     <!-- Bibliographic import                    -->
@@ -792,39 +778,47 @@
     </step>
     <!-- Image conversion Lurawave               -->
     <step name="Image conversion Lurawave" type="change">
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="Lurawave" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_rate8.xml"/>
     </step>
     <!-- Edit METS                               -->
     <step name="Edit METS" type="change">
       <order>40</order>
     </step>
-    <!-- Export to DDS                            -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step> 
     <!-- 15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -832,6 +826,10 @@
     <!-- Image removal                           -->
     <step name="Image removal" type="change">
       <order>150</order>
+    </step>
+    <!-- 90 days delay                           -->
+    <step name="90 days delay" type="change">
+      <order>160</order>
     </step>
     <!-- jpeg deletion                           -->
     <step name="jpeg deletion" type="change">
@@ -841,20 +839,10 @@
   <!-- Lurawave with "config.xml" -->
   <config>
     <rulename>Reading_Room_mini-theme</rulename>
-    <!-- SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!-- bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!-- Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!-- PDF re-creation                         -->
     <step name="PDF re-creation" type="delete"/>
     <!-- Re-run METS editing                     -->
     <step name="Re-run METS editing" type="delete"/>
-    <!-- PDF creation                            -->
-    <step name="PDF creation" type="delete"/>
     <!-- Re-export to DDS                        -->
     <step name="Re-export to DDS" type="delete"/>
     <!-- Automatic: Create hashes for jpg folder -->
@@ -887,12 +875,12 @@
     </step>
     <!-- Image conversion Lurawave               -->
     <step name="Image conversion Lurawave" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="Lurawave" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config.xml"/>
     </step>
     <!-- Copy JP2 images to media folder         -->
     <step name="Copy JP2 images to media folder" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
     <!-- Externalized jpylyzer-validation        -->
@@ -901,33 +889,41 @@
       <newStepName>jpylyzer-validation</newStepName>
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
-    <!-- Export to DDS                           -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>  
+  
     <!-- 15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -957,20 +953,10 @@
   <config>
     <rulename>Paintings</rulename>
     <rulename>Iconographic_Images</rulename>
-    <!-- SDB ingest                              -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- Export with PREMIS data                 -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!-- bagit creation and upload               -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!-- Send ingest request to archive service  -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!-- PDF re-creation                         -->
     <step name="PDF re-creation" type="delete"/>
     <!-- Re-run METS editing                     -->
     <step name="Re-run METS editing" type="delete"/>
-    <!-- PDF creation                            -->
-    <step name="PDF creation" type="delete"/>
     <!-- Re-export to DDS                        -->
     <step name="Re-export to DDS" type="delete"/>
     <!-- Automatic: Create hashes for jpg folder -->
@@ -1005,12 +991,12 @@
     </step>
     <!-- Image conversion Lurawave               -->
     <step name="Image conversion Lurawave" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="Lurawave" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t LURAWAVE -gid {processid} -s {s3_origpath} -d {s3_tifpath} -n config_lossless.xml"/>
     </step>
     <!-- Copy JP2 images to media folder         -->
     <step name="Copy JP2 images to media folder" type="change">
-      <order>50</order>
+      <order>30</order>
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
     <!-- Externalized jpylyzer-validation        -->
@@ -1019,33 +1005,40 @@
       <newStepName>jpylyzer-validation</newStepName>
       <scriptStep scriptStep="true" scriptName1="external jpylyzer validation" scriptPath1="/usr/bin/java -jar /opt/digiverso/itm/bin/TaskClient.jar -itm http://itm.workflow/itm/service -e -i {stepid} -T {processtitle} -t JPYLYZER -n jp2validate -s {s3_tifpath} -d {s3_processpath} -gid {processid}"/>
     </step>
-    <!-- Export to DDS                           -->
-    <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>   
     <!-- 15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -1085,16 +1078,6 @@
     <step name="Automatic: Create hashes for derivatives" type="delete"/>
     <!-- Automatic: Verify hashes for derivatives  -->
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
-    <!-- SDB ingest                                -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- PDF creation                              -->
-    <step name="PDF creation" type="delete"/>
-    <!-- Export with PREMIS data                   -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!-- bagit creation and upload                 -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!-- Send ingest request to archive service    -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!-- Re-run METS editing                       -->
     <step name="Re-run METS editing" type="delete"/>
     <!-- Automatic Import                          -->
@@ -1151,33 +1134,40 @@
       <order>50</order>
       <scriptStep scriptStep="true" scriptName1="CopyFiles" scriptPath1="/opt/digiverso/goobi/scripts/copyfiles_s3.sh {s3_origpath} {s3_tifpath}"/>
     </step>
-    <!-- Export to DDS                            -->
-   <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>  
     <!-- 15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
@@ -1254,6 +1244,7 @@
   </config>
   <config>
     <rulename>19_century</rulename>
+<rulename>Chemist_and_druggist</rulename>
     <!-- Automatic: Create hashes for sourcepath   -->
     <step name="Automatic: Create hashes for sourcepath" type="delete"/>
     <!-- Automatic: Create hashes for master images-->
@@ -1264,16 +1255,6 @@
     <step name="Automatic: Create hashes for derivatives" type="delete"/>
     <!-- Automatic: Verify hashes for derivatives  -->
     <step name="Automatic: Verify hashes for derivatives" type="delete"/>
-    <!-- SDB ingest                                -->
-    <step name="SDB ingest" type="delete"/>
-    <!-- PDF creation                              -->
-    <step name="PDF creation" type="delete"/>
-    <!-- Export with PREMIS data                   -->
-    <step name="Export with PREMIS data" type="delete"/>
-    <!-- bagit creation and upload                 -->
-    <step name="bagit creation and upload" type="delete"/>
-    <!-- Send ingest request to archive service    -->
-    <step name="Send ingest request to archive service" type="delete"/>
     <!-- Re-run METS editing                       -->
     <step name="Re-run METS editing" type="delete"/>
     <step name="Automatic Import" type="change">
@@ -1312,33 +1293,40 @@
     <!-- delete hash verification -->
     <step name="Automatic: Verify hashes for derivatives" type="delete">
         </step>
-    <!-- Export to DDS                            -->
-     <step name="Export to DDS" type="delete" />
-    <!-- add to 110 Export with PREMIS data -->
-    <step name="Edit METS" type="insertAfter">
-      <newStepName>Export with PREMIS data</newStepName>
-      <order>110</order>
-       <stepStatus>0</stepStatus>
-      <types automatic="true" export="true" stepPlugin="plugin_export-premis"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="SDB ingest" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 120 bagit creation and upload -->
-    <step name="Automatic METS edition" type="insertAfter">
-      <newStepName>bagit creation and upload</newStepName>
-      <order>120</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true"/>
-      <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
-      <usergroup>AutomaticTasks</usergroup>
+    <step name="PDF creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="PDF Creation" type="change">
+        <order>110</order>
+    </step> 
+    <step name="Export to DDS" type="change">
+        <order>120</order>
+    </step> 
+    
+
+    <step name="Export with PREMIS data" type="change">
+        <order>100</order>
     </step>
-    <!-- add new task: 130 Send ingest request to archive service -->
-    <step name="Automatic METS edition" type="insertAfter">
-      <newStepName>Send ingest request to archive service</newStepName>
-      <order>130</order>
-      <stepStatus>0</stepStatus>
-      <types automatic="true" stepPlugin="intranda_step_archiveIngest"/>
-      <usergroup>AutomaticTasks</usergroup>
+
+    <step name="automatic MMO archive status check" type="change">
+        <order>105</order>
     </step>
+
+    <step name="bagit creation and upload" type="change">
+        <order>110</order>
+        <httpStep httpStep="true" httpCloseStep="false" httpJsonBody="{                                                                                    &quot;goobiId&quot;:&quot;{processid}&quot;\,                                                         &quot;sourceDir&quot;:&quot;&quot;\,                                                                  &quot;targetDir&quot;:&quot;&quot;\,                                                                  &quot;fontType&quot;:&quot;&quot;\,                                                                   &quot;priority&quot;:5\,                                                                    &quot;postOCR&quot;:&quot;{stepid}&quot;\,                                                            &quot;titleprefix&quot;:&quot;{processtitle}&quot;\,                                                 &quot;templatename&quot;:&quot;bagit&quot;\,                                                       &quot;jobtype&quot;:&quot;BAGIT&quot;\,                                                               &quot;serverType&quot;:&quot;&quot;\,                                                                 &quot;title&quot;:&quot;{meta.TitleDocMain}&quot;\,                                                   &quot;bNumber&quot;:&quot;{meta.CatalogIDDigital}&quot;\,                                             &quot;goobiTitle&quot;:&quot;{processtitle}&quot;\,                                                  &quot;goobiID&quot;:&quot;{processid}&quot;\,                                                         &quot;metsFile&quot;:&quot;{processpath}/{meta.CatalogIDDigital}.xml&quot;\,                          &quot;s3Prefixalto&quot;:&quot;{s3_ocrbasispath}{processtitle}_alto&quot;\,                           &quot;s3PrefixImages&quot;:&quot;{s3_origpath}&quot;\,                                                &quot;outputBucket&quot;:&quot;wellcomecollection-workflow-export-bagit&quot;\,     &quot;archiveType&quot;:&quot;tar.gz&quot; }" httpMethod="POST" httpUrl="http://itm.workflow/itm/service"/>
+    </step>
+
+
+    <step name="Send ingest request to archive service" type="change">
+        <order>115</order>
+    </step>
+    <step name="DDS API Call" type="change">
+        <order>120</order>
+    </step>  
     <!-- 15 days delay                           -->
     <step name="15 days delay" type="change">
       <order>140</order>
