@@ -4,6 +4,8 @@
     <dbExportPrefix>import/</dbExportPrefix>
     <importPath>/opt/digiverso/goobi/metadata/</importPath>
     <bucket>wellcomedigitalworkflow-workflow-data</bucket>
+    <createNewProcessIds>true</createNewProcessIds>
+    <temporaryImportFolder>/opt/digiverso/goobi/importtest</temporaryImportFolder>
   </globalConfig>
   <!-- Lurawave config_rate8.xml -->
   <config>

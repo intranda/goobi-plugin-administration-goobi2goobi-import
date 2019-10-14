@@ -70,7 +70,10 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
         if ("Select all".equals(selectedFilenames.get(0))) {
             selectedFilenames = allFilenames.subList(1, allFilenames.size());
         }
-
+        String folder = ProcessImportConfiguration.getTemporaryFolderToImport();
+        if (StringUtils.isBlank(folder)) {
+            folder=ProcessImportConfiguration.getImportPath();
+        }
         for (String processId : selectedFilenames) {
             // create ticket
 
@@ -83,9 +86,11 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
             }
             importTicket.setProcessName(processId);
 
-            Path processFolder = Paths.get(ProcessImportConfiguration.getImportPath(), processId);
+            Path processFolder = Paths.get(folder, processId);
 
             importTicket.getProperties().put("processFolder", processFolder.toString());
+            importTicket.getProperties().put("createNewProcessId", String.valueOf(ProcessImportConfiguration.isCreateNewProcessId()));
+            importTicket.getProperties().put("tempFolder", ProcessImportConfiguration.getTemporaryFolderToImport());
             if (StringUtils.isBlank(currentRule)) {
                 importTicket.getProperties().put("rule", "Autodetect rule");
             } else {
@@ -145,8 +150,12 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
                 // check, if a file *_db_export.xml exists in the process folder
                 // return the folder names
                 try {
-                    Files.find(Paths.get(ProcessImportConfiguration.getImportPath()), 2,
-                            (p, bfa) -> bfa.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
+                    String folder = ProcessImportConfiguration.getTemporaryFolderToImport();
+                    if (StringUtils.isBlank(folder)) {
+                        folder=ProcessImportConfiguration.getImportPath();
+                    }
+                    Files.find(Paths.get(folder), 2,
+                            (p, file) -> file.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
                     .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
                 } catch (IOException e) {
                     log.error(e);

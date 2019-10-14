@@ -306,4 +306,20 @@ public class ProcessImportConfiguration {
         }
         return config.getString("./globalConfig/bucket");
     }
+
+    public static boolean isCreateNewProcessId() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config.getBoolean("./globalConfig/createNewProcessIds", false);
+    }
+
+    public static String getTemporaryFolderToImport() {
+        if (config == null) {
+            loadConfig();
+        }
+        return config.getString("./globalConfig/temporaryImportFolder", null);
+    }
+
+
 }

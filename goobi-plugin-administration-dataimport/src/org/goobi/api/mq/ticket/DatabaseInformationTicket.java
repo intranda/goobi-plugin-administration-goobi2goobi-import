@@ -107,18 +107,14 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         String processId = ticket.getProcessName();
 
         Path processFolder = Paths.get(ticket.getProperties().get("processFolder"));
+        String tempFolderName = ticket.getProperties().get("tempFolder");
 
         if (!Files.exists(processFolder)) {
-            try {
-                Files.createDirectories(processFolder);
-            } catch (IOException e) {
-                log.error(e);
-                return PluginReturnValue.ERROR;
-            }
+            return PluginReturnValue.ERROR;
         }
 
         String currentRule = ticket.getProperties().get("rule");
-
+        boolean createNewProcessId = Boolean.valueOf(ticket.getProperties().get("createNewProcessId"));
         List<Path> folderContentList = StorageProvider.getInstance().listFiles(processFolder.toString());
 
         List<Path> files = new ArrayList<>();
@@ -140,12 +136,30 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             return PluginReturnValue.ERROR;
         }
 
-        String returnValue = extractDatabaseInformationFromFile(importFile, currentRule);
-        if (StringUtils.isNotBlank(returnValue)) {
-            log.error(returnValue);
+        Integer generatedProcessId = null;
+        try {
+            generatedProcessId = extractDatabaseInformationFromFile(importFile, currentRule, createNewProcessId);
+        } catch (IOException e2) {
+            log.error(e2);
+            return PluginReturnValue.ERROR;
+        }
+        if (generatedProcessId == null) {
             return PluginReturnValue.ERROR;
         } else {
-            log.info("Stored process " + processId);
+            log.info("Stored process " + generatedProcessId);
+        }
+
+        if (StringUtils.isNotBlank(tempFolderName) &&  !processFolder.toString().startsWith(tempFolderName)) {
+            // copy data from temporary folder to process folder
+            Path destination = Paths.get(ConfigurationHelper.getInstance().getMetadataFolder(), String.valueOf(generatedProcessId));
+            if (!ConfigurationHelper.getInstance().useS3())  {
+                try {
+                    StorageProvider.getInstance().move(processFolder, destination);
+                } catch (IOException e) {
+                    log.error(e);
+                }
+            }
+            processFolder = destination;
         }
 
         if (ConfigurationHelper.getInstance().useS3()) {
@@ -153,11 +167,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             AmazonS3 s3 = S3FileUtils.createS3Client();
             ConfigurationHelper config = ConfigurationHelper.getInstance();
             List<String> metaList = getMetaHistory(processId, s3, config);
-            log.debug("downloading "+metaList.size()+ " files");
+            log.debug("downloading " + metaList.size() + " files");
             for (String key : metaList) {
                 try (S3Object objMeta = s3.getObject(config.getS3Bucket(), key); InputStream is = objMeta.getObjectContent()) {
-                    String basename = key.substring(key.lastIndexOf('/')+1);
-                    Path filename=processFolder.resolve(basename);
+                    String basename = key.substring(key.lastIndexOf('/') + 1);
+                    Path filename = processFolder.resolve(basename);
                     log.debug(filename);
                     Files.copy(is, processFolder.resolve(basename));
                     s3.deleteObject(config.getS3Bucket(), key);
@@ -189,8 +203,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     }
 
     /**
-     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?",
-     * so meta.xml, meta_anchor.xml and their previous versions
+     * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?", so meta.xml, meta_anchor.xml and their previous versions
      */
     private List<String> getMetaHistory(String processId, AmazonS3 s3, ConfigurationHelper config) {
         Pattern pattern = Pattern.compile("meta.*xml(?:.\\d)?");
@@ -216,7 +229,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         return metaList;
     }
 
-    private String extractDatabaseInformationFromFile(Path importFile, String currentRule) {
+    private Integer extractDatabaseInformationFromFile(Path importFile, String currentRule, boolean createNewProcessId) throws IOException {
 
         SAXBuilder builder = new SAXBuilder();
         Rule selectedRule = null;
@@ -253,24 +266,24 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 selectedRule = new Rule();
             }
 
-            // TODO check if new id should be generated
-
-            Element idElement = processElement.getChild("id", goobiNamespace);
-            // check if id is already used
-            int number = getNumberOfObjectsFromDatabase(processIdCheckQuery, idElement.getText());
-            if (number > 0) {
-                // id already in use
-                idInUse = true;
-            }
-            if (idInUse) {
-                return "Process does already exist, abort.";
+            Process process = new Process();
+            // check if id already exists, if old id is re-used
+            if (!createNewProcessId) {
+                Element idElement = processElement.getChild("id", goobiNamespace);
+                // check if id is already used
+                int number = getNumberOfObjectsFromDatabase(processIdCheckQuery, idElement.getText());
+                if (number > 0) {
+                    // id already in use
+                    idInUse = true;
+                }
+                if (idInUse) {
+                    throw new IOException("Process does already exist, abort.");
+                }
+                process.setId(Integer.parseInt(idElement.getText()));
             }
 
             Element titleElement = processElement.getChild("title", goobiNamespace);
 
-
-            Process process = new Process();
-            process.setId(Integer.parseInt(idElement.getText()));
             process.setTitel(titleElement.getText());
 
             process.setIstTemplate(Boolean.valueOf(processElement.getAttributeValue("template")));
@@ -280,7 +293,6 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             } catch (ParseException e) {
                 log.error(e);
             }
-
             // project
             assignProjectToProcess(processElement, process, selectedRule);
 
@@ -296,6 +308,8 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             process.setMediaFolderExists(Boolean.parseBoolean(sortingStatus.getAttributeValue("mediaFolderExists")));
             process.setSortHelperStatus(sortingStatus.getAttributeValue("status"));
 
+            // save process to register/get id
+            saveProcess(process);
             // batch
             Element batch = processElement.getChild("batch", goobiNamespace);
             if (batch != null) {
@@ -361,15 +375,15 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             if (!selectedRule.getConfiguredMetadataRules().isEmpty()) {
                 updateMetadata(process, selectedRule);
             }
-
+            return process.getId();
         } catch (JDOMException | IOException e) {
             log.error(e);
-            return "File not parseable: " + e.getMessage();
+            throw new IOException("File not parseable: " + e.getMessage());
         } catch (DAOException e) {
             log.error(e);
-            return "Error during saving.";
+            throw new IOException("Error during saving.");
         }
-        return "";
+
     }
 
     @Override
@@ -1249,7 +1263,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     }
 
     public static void saveProcess(Process o) throws DAOException {
-        insertProcess(o);
+        if (o.getId() == null) {
+            insertProcess(o);
+        }
         if (o.getBatch() != null) {
             ProcessManager.saveBatch(o.getBatch());
         }
@@ -1291,12 +1307,12 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             connection = MySQLHelper.getInstance().getConnection();
             QueryRunner run = new QueryRunner();
 
-            run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(),
+            Integer id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(),
                     o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                     o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                     o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
                             o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
-
+            o.setId(id);
         } catch (SQLException e) {
             log.error(e);
         } finally {
