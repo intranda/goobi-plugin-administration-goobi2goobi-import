@@ -59,6 +59,11 @@
     min-height: 150px;
     max-height: 800px;
 }
+
+.scrollableContent {
+    max-height: 300px; 
+    overflow-y:auto;
+}
 </style>
 
         <h:panelGroup rendered="#{!LoginForm.hasRole('administration_import_data')}">
@@ -82,7 +87,7 @@
                         </h3>
                     </div>
                     <h:form id="tableForm">
-                        <div class="box-content nopadding">
+                        <div class="box-content nopadding scrollableContent">
                             <div class="dataTables_wrapper">
                                 <x:dataTable
                                     styleClass="table table-hover table-nomargin dataTable table-bordered responsive"
@@ -622,7 +627,7 @@
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9 scrollableContent">
                                     <h:selectOneListbox
                                         id="rules"
                                         styleClass="form-control resizableSelection"
@@ -637,10 +642,6 @@
                                 </div>
                             </div>
 
-
-
-
-
                             <div class="form-group">
                                 <div class="col-sm-3 control-label">
                                     <h:outputLabel
@@ -650,7 +651,7 @@
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
                                 </div>
-                                <div class="col-sm-9">
+                                <div class="col-sm-9 scrollableContent">
                                     <h:selectManyListbox
                                         id="files"
                                         styleClass="form-control resizableSelection"
@@ -675,6 +676,7 @@
                                     action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
                                     <i class="fa fa-save margin-right-5"></i>
                                     <h:outputText value="#{msgs.plugin_administration_dataimport_importFile}" />
+                                    
                                 </h:commandLink>
                                 <h:commandLink
                                     id="reload"
