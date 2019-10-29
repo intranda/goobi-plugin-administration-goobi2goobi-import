@@ -12,7 +12,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -64,6 +66,7 @@ import de.intranda.goobi.importrules.StepConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.export.dms.ExportDms;
+import de.sub.goobi.helper.HelperSchritte;
 import de.sub.goobi.helper.S3FileUtils;
 import de.sub.goobi.helper.StorageProvider;
 import de.sub.goobi.helper.enums.PropertyType;
@@ -73,6 +76,7 @@ import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
 import de.sub.goobi.persistence.managers.DocketManager;
 import de.sub.goobi.persistence.managers.MasterpieceManager;
+import de.sub.goobi.persistence.managers.MetadataManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
 import de.sub.goobi.persistence.managers.ProcessManager;
 import de.sub.goobi.persistence.managers.ProjectManager;
@@ -149,7 +153,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             log.info("Stored process " + generatedProcessId);
         }
 
-        if (StringUtils.isNotBlank(tempFolderName) &&  !processFolder.toString().startsWith(tempFolderName)) {
+        if (StringUtils.isNotBlank(tempFolderName) &&  !processFolder.toString().startsWith(ConfigurationHelper.getInstance().getMetadataFolder())) {
             // copy data from temporary folder to process folder
             Path destination = Paths.get(ConfigurationHelper.getInstance().getMetadataFolder(), String.valueOf(generatedProcessId));
             if (!ConfigurationHelper.getInstance().useS3())  {
@@ -199,6 +203,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 log.error(e);
             }
         }
+
+        saveDatabaseMetadata(generatedProcessId);
+
         return PluginReturnValue.FINISH;
     }
 
@@ -375,6 +382,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             if (!selectedRule.getConfiguredMetadataRules().isEmpty()) {
                 updateMetadata(process, selectedRule);
             }
+
             return process.getId();
         } catch (JDOMException | IOException e) {
             log.error(e);
@@ -1307,11 +1315,12 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             connection = MySQLHelper.getInstance().getConnection();
             QueryRunner run = new QueryRunner();
 
-            Integer id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(), o.getAusgabename(),
-                    o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
-                    o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
-                    o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                            o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+            Integer id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(),
+                    o.getAusgabename(), o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(),
+                    o.getSortHelperImages(), o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(),
+                    o.getRegelsatz().getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(),
+                    o.getBatch() == null ? null : o.getBatch().getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(),
+                            o.isMediaFolderExists());
             o.setId(id);
         } catch (SQLException e) {
             log.error(e);
@@ -1332,5 +1341,30 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         } else {
             return "";
         }
+    }
+
+    private void saveDatabaseMetadata(Integer processid) {
+        String metdatdaPath = Paths.get(ConfigurationHelper.getInstance().getMetadataFolder(), "" + processid, "meta.xml").toString();
+
+        String anchorPath = metdatdaPath.replace("meta.xml", "meta_anchor.xml");
+        Path metadataFile = Paths.get(metdatdaPath);
+        Path anchorFile = Paths.get(anchorPath);
+        Map<String, List<String>> pairs = new HashMap<>();
+
+        HelperSchritte.extractMetadata(metadataFile, pairs);
+
+        if (StorageProvider.getInstance().isFileExists(anchorFile)) {
+            HelperSchritte.extractMetadata(anchorFile, pairs);
+        }
+
+        MetadataManager.updateMetadata(processid, pairs);
+
+        // now add all authority fields to the metadata pairs
+        HelperSchritte.extractAuthorityMetadata(metadataFile, pairs);
+        if (StorageProvider.getInstance().isFileExists(anchorFile)) {
+            HelperSchritte.extractAuthorityMetadata(anchorFile, pairs);
+        }
+        MetadataManager.updateJSONMetadata(processid, pairs);
+
     }
 }
