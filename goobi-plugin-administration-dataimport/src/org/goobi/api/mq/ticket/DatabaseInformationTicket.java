@@ -1327,7 +1327,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             connection = MySQLHelper.getInstance().getConnection();
             QueryRunner run = new QueryRunner();
             if (id != null) {
-                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getId(), o.getTitel(),
+                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, id, o.getTitel(),
                         o.getAusgabename(), o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(),
                         o.getSortHelperImages(), o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(),
                         o.getRegelsatz().getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(),
