@@ -114,8 +114,12 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         String tempFolderName = ticket.getProperties().get("tempFolder");
 
         if (!Files.exists(processFolder)) {
-            log.error("Process folder not found: " + processFolder.toString());
-            return PluginReturnValue.ERROR;
+            try {
+                Files.createDirectories(processFolder);
+            } catch (IOException e) {
+                log.error(e);
+                return PluginReturnValue.ERROR;
+            }
         }
 
         String currentRule = ticket.getProperties().get("rule");
@@ -144,7 +148,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         Integer generatedProcessId = null;
         try {
             generatedProcessId = extractDatabaseInformationFromFile(importFile, currentRule, createNewProcessId);
-        } catch (IOException e2) {
+        } catch (Exception e2) {
             log.error(e2);
             return PluginReturnValue.ERROR;
         }
