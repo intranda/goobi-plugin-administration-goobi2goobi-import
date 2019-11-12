@@ -114,6 +114,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         String tempFolderName = ticket.getProperties().get("tempFolder");
 
         if (!Files.exists(processFolder)) {
+            log.error("Process folder not found: " + processFolder.toString());
             return PluginReturnValue.ERROR;
         }
 
@@ -148,6 +149,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             return PluginReturnValue.ERROR;
         }
         if (generatedProcessId == null) {
+            log.error("No process id found");
             return PluginReturnValue.ERROR;
         } else {
             log.info("Stored process " + generatedProcessId);
