@@ -110,6 +110,13 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
         String processId = ticket.getProcessName();
 
+        if ("true".equalsIgnoreCase(ticket.getProperties().get("deleteOldProcess"))) {
+            Process process = ProcessManager.getProcessById(Integer.parseInt(processId));
+            if (process != null) {
+                ProcessManager.deleteProcess(process);
+            }
+        }
+
         Path processFolder = Paths.get(ticket.getProperties().get("processFolder"));
         String tempFolderName = ticket.getProperties().get("tempFolder");
 
@@ -293,7 +300,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 if (idInUse) {
                     throw new IOException("Process does already exist, abort.");
                 }
-                processId =Integer.parseInt(idElement.getText());
+                processId = Integer.parseInt(idElement.getText());
             }
 
             Element titleElement = processElement.getChild("title", goobiNamespace);
@@ -495,11 +502,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToChange =
-                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToChange
-                .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
+                        .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
                 if (anchorDocument != null) {
                     List<Element> anchorElements =
                             xFactory.compile(xpathFirst, Filters.element(), null, goobi, mets, mods).evaluate(anchorDocument.getRootElement());
@@ -537,7 +544,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToDelete =
-                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToDelete = xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
@@ -1333,19 +1340,17 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             connection = MySQLHelper.getInstance().getConnection();
             QueryRunner run = new QueryRunner();
             if (id != null) {
-                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, id, o.getTitel(),
-                        o.getAusgabename(), o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(),
-                        o.getSortHelperImages(), o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(),
-                        o.getRegelsatz().getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(),
-                        o.getBatch() == null ? null : o.getBatch().getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(),
-                                o.isMediaFolderExists());
+                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, id, o.getTitel(), o.getAusgabename(),
+                        o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
+                        o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
+                        o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
+                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             } else {
-                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getTitel(),
-                        o.getAusgabename(), o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(),
-                        o.getSortHelperImages(), o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(),
-                        o.getRegelsatz().getId(), o.getSortHelperDocstructs(), o.getSortHelperMetadata(),
-                        o.getBatch() == null ? null : o.getBatch().getBatchId(), o.getDocket() == null ? null : o.getDocket().getId(),
-                                o.isMediaFolderExists());
+                id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getTitel(), o.getAusgabename(),
+                        o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
+                        o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
+                        o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
+                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             }
             o.setId(id);
         } catch (SQLException e) {
