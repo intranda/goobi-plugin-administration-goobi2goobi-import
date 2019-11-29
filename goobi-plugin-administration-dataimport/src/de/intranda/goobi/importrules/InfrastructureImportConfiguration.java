@@ -142,7 +142,7 @@ public class InfrastructureImportConfiguration {
                     for (HierarchicalConfiguration ldapConfiguration : ldapList) {
                         LdapConfigurationItem rci = new LdapConfigurationItem();
                         rci.setOldLadapName(ldapConfiguration.getString("./@name", null));
-                        rci.setNewLdapName(ldapConfiguration.getString("./newRulesetName", null));
+                        rci.setNewLdapName(ldapConfiguration.getString("./newLdapName", null));
                         HierarchicalConfiguration configuration = ldapConfiguration.configurationAt("./ldapConfiguration");
                         if (configuration != null) {
                             rci.setHomeDirectory(configuration.getString("./@homeDirectory", null));
@@ -205,7 +205,7 @@ public class InfrastructureImportConfiguration {
                         List<String> rolesToRemove = ugConfiguration.getList("./removeAssignedProject");
                         rci.setAddProjectList(rolesToAdd);
                         rci.setRemoveProjectList(rolesToRemove);
-                        HierarchicalConfiguration config = ugConfiguration.configurationAt("./configuration");
+                        HierarchicalConfiguration config = ugConfiguration.configurationAt("./");
                         if (config != null) {
                             rci.setPlace(ugConfiguration.getString("./@place", null));
                             rci.setLdapgroup(ugConfiguration.getString("./@ldapgroup", null));

@@ -2,7 +2,7 @@
     <config>
         <!-- change projecsts -->
         <project name="19_century">
- <newProjectName>19_century</newProjectName>
+            <newProjectName>19_century</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -11,7 +11,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -37,12 +37,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
-
-
-                
         <project name="3rd Party CSHL">
- <newProjectName>3rd Party CSHL</newProjectName>
+            <newProjectName>3rd Party CSHL</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -51,7 +47,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -77,10 +73,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
-              
         <project name="3rd Party jp2Fs">
- <newProjectName>3rd Party jp2Fs</newProjectName>
+            <newProjectName>3rd Party jp2Fs</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -89,7 +83,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -115,10 +109,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
-              
         <project name="Ancestry-Archives">
- <newProjectName>Ancestry-Archives</newProjectName>
+            <newProjectName>Ancestry-Archives</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -127,7 +119,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -153,9 +145,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-             
         <project name="Ancestry-Journals">
- <newProjectName>Ancestry-Journals</newProjectName>
+            <newProjectName>Ancestry-Journals</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -164,7 +155,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -190,9 +181,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-               
         <project name="Ancestry-JPEGs">
- <newProjectName>Ancestry-JPEGs</newProjectName>
+            <newProjectName>Ancestry-JPEGs</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -201,7 +191,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -227,9 +217,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-             
         <project name="Arabic_Manuscripts">
- <newProjectName>Arabic_Manuscripts</newProjectName>
+            <newProjectName>Arabic_Manuscripts</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -238,7 +227,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -264,9 +253,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
         <project name="Archive Backlog">
- <newProjectName>Archive Backlog</newProjectName>
+            <newProjectName>Archive Backlog</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -275,7 +263,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -301,9 +289,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-          
         <project name="Archives digitisation">
- <newProjectName>Archives digitisation</newProjectName>
+            <newProjectName>Archives digitisation</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -312,7 +299,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -338,9 +325,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-        
         <project name="Borthwick_3rd_Party_ftp">
- <newProjectName>Borthwick_3rd_Party_ftp</newProjectName>
+            <newProjectName>Borthwick_3rd_Party_ftp</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -349,7 +335,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -375,9 +361,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-               
         <project name="Charlotte_Soldan">
- <newProjectName>Charlotte_Soldan</newProjectName>
+            <newProjectName>Charlotte_Soldan</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -386,7 +371,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -412,9 +397,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-           
         <project name="Chemist_and_druggist">
- <newProjectName>Chemist_and_druggist</newProjectName>
+            <newProjectName>Chemist_and_druggist</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -423,7 +407,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -449,9 +433,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-         
         <project name="Digitisation_on_Demand">
- <newProjectName>Digitisation_on_Demand</newProjectName>
+            <newProjectName>Digitisation_on_Demand</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -460,7 +443,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -486,9 +469,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-          
         <project name="Editorial Photography">
- <newProjectName>Editorial Photography</newProjectName>
+            <newProjectName>Editorial Photography</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -497,7 +479,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -523,9 +505,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-         
         <project name="Genetics_Books_Project">
- <newProjectName>Genetics_Books_Project</newProjectName>
+            <newProjectName>Genetics_Books_Project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -534,7 +515,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -560,9 +541,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
- 
         <project name="Glasgow_Crichton_3rd_Party_ftp">
- <newProjectName>Glasgow_Crichton_3rd_Party_ftp</newProjectName>
+            <newProjectName>Glasgow_Crichton_3rd_Party_ftp</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -571,7 +551,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -597,9 +577,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
         <project name="Glasgow_Gartnaval_3rd_Party_ftp">
- <newProjectName>Glasgow_Gartnaval_3rd_Party_ftp</newProjectName>
+            <newProjectName>Glasgow_Gartnaval_3rd_Party_ftp</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -608,7 +587,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -634,9 +613,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-           
         <project name="Goobi2-2_Testproject">
- <newProjectName>Goobi2-2_Testproject</newProjectName>
+            <newProjectName>Goobi2-2_Testproject</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -645,7 +623,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -671,9 +649,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-            
         <project name="Iconographic_Images">
- <newProjectName>Iconographic_Images</newProjectName>
+            <newProjectName>Iconographic_Images</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -682,7 +659,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -708,9 +685,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-          
         <project name="intranda test project">
- <newProjectName>intranda test project</newProjectName>
+            <newProjectName>intranda test project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -719,7 +695,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -745,9 +721,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-              
         <project name="LMA_3rd_Party_ftp">
- <newProjectName>LMA_3rd_Party_ftp</newProjectName>
+            <newProjectName>LMA_3rd_Party_ftp</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -756,7 +731,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -782,9 +757,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-           
         <project name="Medieval_Manuscripts">
- <newProjectName>Medieval_Manuscripts</newProjectName>
+            <newProjectName>Medieval_Manuscripts</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -793,7 +767,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -819,9 +793,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                    
         <project name="MHL-Project">
- <newProjectName>MHL-Project</newProjectName>
+            <newProjectName>MHL-Project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -830,7 +803,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -856,9 +829,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-              
         <project name="Migration_project">
- <newProjectName>Migration_project</newProjectName>
+            <newProjectName>Migration_project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -867,7 +839,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -893,9 +865,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-             
         <project name="MOH report project">
- <newProjectName>MOH report project</newProjectName>
+            <newProjectName>MOH report project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -904,7 +875,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -930,9 +901,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                      
         <project name="Paintings">
- <newProjectName>Paintings</newProjectName>
+            <newProjectName>Paintings</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -941,7 +911,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -967,9 +937,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                     
         <project name="Project  X">
- <newProjectName>Project  X</newProjectName>
+            <newProjectName>Project X</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -978,7 +947,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1004,9 +973,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                   
         <project name="Proquest_EEB">
- <newProjectName>Proquest_EEB</newProjectName>
+            <newProjectName>Proquest_EEB</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1015,7 +983,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1041,9 +1009,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-               
         <project name="Proquest_EEB_MMs">
- <newProjectName>Proquest_EEB_MMs</newProjectName>
+            <newProjectName>Proquest_EEB_MMs</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1052,7 +1019,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1078,9 +1045,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-               
         <project name="ProQuest_Project">
- <newProjectName>ProQuest_Project</newProjectName>
+            <newProjectName>ProQuest_Project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1089,7 +1055,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1115,9 +1081,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-         
         <project name="Published_born_digital">
- <newProjectName>Published_born_digital</newProjectName>
+            <newProjectName>Published_born_digital</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1126,7 +1091,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1152,9 +1117,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                     
         <project name="RAMC_Books">
- <newProjectName>RAMC_Books</newProjectName>
+            <newProjectName>RAMC_Books</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1163,7 +1127,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1189,9 +1153,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-        
         <project name="Reading_Room_mini-theme">
- <newProjectName>Reading_Room_mini-theme</newProjectName>
+            <newProjectName>Reading_Room_mini-theme</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1200,7 +1163,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1226,9 +1189,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                   
         <project name="Recipe_Books">
- <newProjectName>Recipe_Books</newProjectName>
+            <newProjectName>Recipe_Books</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1237,7 +1199,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1263,9 +1225,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                           
         <project name="test">
- <newProjectName>test</newProjectName>
+            <newProjectName>test</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1274,7 +1235,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1300,9 +1261,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                  
         <project name="Test Projects">
- <newProjectName>Test Projects</newProjectName>
+            <newProjectName>Test Projects</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1311,7 +1271,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1337,9 +1297,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                
         <project name="Test_3D_imaging">
- <newProjectName>Test_3D_imaging</newProjectName>
+            <newProjectName>Test_3D_imaging</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1348,7 +1307,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1374,9 +1333,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                 
-        <project name="UK_MOH_Reports"> 
-<newProjectName>UK_MOH_Reports</newProjectName>
+        <project name="UK_MOH_Reports">
+            <newProjectName>UK_MOH_Reports</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1385,7 +1343,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1411,9 +1369,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                 
         <project name="US_MHL_Project">
- <newProjectName>US_MHL_Project</newProjectName>
+            <newProjectName>US_MHL_Project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1422,7 +1379,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1448,9 +1405,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                    
         <project name="Visual_Arts">
- <newProjectName>Visual_Arts</newProjectName>
+            <newProjectName>Visual_Arts</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1459,7 +1415,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1485,9 +1441,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                 
         <project name="Wellcome Audio">
- <newProjectName>Wellcome Audio</newProjectName>
+            <newProjectName>Wellcome Audio</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1496,7 +1451,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1522,9 +1477,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-  
         <project name="Wellcome_Digitisation_Project">
- <newProjectName>Wellcome_Digitisation_Project</newProjectName>
+            <newProjectName>Wellcome_Digitisation_Project</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1533,7 +1487,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1559,9 +1513,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                  
         <project name="Wellcome_Film">
- <newProjectName>Wellcome_Film</newProjectName>
+            <newProjectName>Wellcome_Film</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1570,7 +1523,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1596,9 +1549,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-          
         <project name="Wellcome_Image_Awards">
- <newProjectName>Wellcome_Image_Awards</newProjectName>
+            <newProjectName>Wellcome_Image_Awards</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1607,7 +1559,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1633,9 +1585,8 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-                
         <project name="Witness_Seminar">
- <newProjectName>Witness_Seminar</newProjectName>
+            <newProjectName>Witness_Seminar</newProjectName>
             <!-- filegroups -->
             <filegroup name="SDB">
                 <newFilegroupName>OBJECTS</newFilegroupName>
@@ -1644,7 +1595,7 @@
                 <fileSuffix>jp2</fileSuffix>
                 <folderValidation></folderValidation>
             </filegroup>
-	    <fileFormatInternal>Mets</fileFormatInternal>
+            <fileFormatInternal>Mets</fileFormatInternal>
             <fileFormatDmsExport>Mets</fileFormatDmsExport>
             <exportConfiguration
                 useDmsImport="true"
@@ -1670,7 +1621,5 @@
                 metsRightsSponsorSiteURL=""
                 metsRightsLicense="" />
         </project>
-
-       
     </config>
 </config_plugin>
