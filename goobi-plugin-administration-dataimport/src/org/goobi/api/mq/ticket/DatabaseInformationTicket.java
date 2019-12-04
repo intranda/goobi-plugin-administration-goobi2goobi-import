@@ -502,11 +502,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToChange =
-                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToChange
-                        .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
+                .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
                 if (anchorDocument != null) {
                     List<Element> anchorElements =
                             xFactory.compile(xpathFirst, Filters.element(), null, goobi, mets, mods).evaluate(anchorDocument.getRootElement());
@@ -517,7 +517,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
         }
         for (Element element : elementsToChange) {
-            if (StringUtils.isBlank(mci.getValueContitionRegex()) || perlUtil.match(mci.getValueContitionRegex(), element.getText())) {
+            if (StringUtils.isBlank(mci.getValueConditionRegex()) || perlUtil.match(mci.getValueConditionRegex(), element.getText())) {
                 element.setText(perlUtil.substitute(mci.getValueReplacementRegex(), element.getText()));
             }
         }
@@ -544,7 +544,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToDelete =
-                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToDelete = xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
@@ -1344,13 +1344,13 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                         o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                         o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                                o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             } else {
                 id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getTitel(), o.getAusgabename(),
                         o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                         o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                         o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                                o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             }
             o.setId(id);
         } catch (SQLException e) {

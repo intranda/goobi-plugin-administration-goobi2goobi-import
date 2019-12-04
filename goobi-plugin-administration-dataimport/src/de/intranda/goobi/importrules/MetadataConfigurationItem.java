@@ -17,7 +17,7 @@ public class MetadataConfigurationItem {
     private MetadataConfigurationType configurationType = MetadataConfigurationType.CHANGE_CURRENT_METADATA;
 
     // execute the rule only if this field is empty or the value matches the expression
-    private String valueContitionRegex;
+    private String valueConditionRegex;
 
     // regular expression to manipulate the value
     private String valueReplacementRegex;

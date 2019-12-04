@@ -270,7 +270,7 @@ public class ProcessImportConfiguration {
                         } else if ("add".equalsIgnoreCase(type)) {
                             mci.setConfigurationType(MetadataConfigurationType.ADD_NEW_METADATA);
                         }
-                        mci.setValueContitionRegex(metadataConfiguration.getString("./valueContitionRegex"));
+                        mci.setValueConditionRegex(metadataConfiguration.getString("./valueConditionRegex"));
                         mci.setValueReplacementRegex(metadataConfiguration.getString("./valueReplacementRegex"));
                         mci.setPosition(metadataConfiguration.getString("./position", "all"));
                         configuredMetadataRules.add(mci);
