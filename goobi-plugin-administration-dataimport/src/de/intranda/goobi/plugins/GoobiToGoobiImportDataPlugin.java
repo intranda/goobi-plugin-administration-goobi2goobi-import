@@ -39,10 +39,10 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 @Log4j
-public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
+public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
 
     @Getter
-    private String title = "goobi-plugin-administration-database-information";
+    private String title = "intranda_administration_goobi2goobi_import_data";
 
     @Getter
     @Setter
@@ -176,7 +176,7 @@ public class ImportProcessDatebasePlugin implements IAdministrationPlugin {
 
     @Override
     public String getGui() {
-        return "/uii/administration_dataimport.xhtml";
+        return "/uii/administration_goobi2goobi_import.xhtml";
     }
 
     public List<String> getAllRuleNames() {

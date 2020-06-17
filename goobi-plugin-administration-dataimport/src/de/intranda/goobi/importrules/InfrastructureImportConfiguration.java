@@ -251,7 +251,7 @@ public class InfrastructureImportConfiguration {
     }
 
     private static void loadConfig() {
-        config = ConfigPlugins.getPluginConfig("goobi-plugin-administration-upload-infrastructure");
+        config = ConfigPlugins.getPluginConfig("intranda_administration_goobi2goobi_import_infrastructure");
         config.setReloadingStrategy(new FileChangedReloadingStrategy());
         config.setExpressionEngine(new XPathExpressionEngine());
     }

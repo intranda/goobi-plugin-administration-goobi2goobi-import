@@ -68,7 +68,7 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 
 @PluginImplementation
 @Log4j
-public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
+public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPlugin {
     // upload zip file
     // extract zip file
     // read xml file
@@ -79,13 +79,13 @@ public class ImportInfrastructureDataPlugin implements IAdministrationPlugin {
     // check if files already exist
     // overwrite?
     @Getter
-    private String title = "goobi-plugin-administration-upload-infrastructure";
+    private String title = "intranda_administration_goobi2goobi_import_infrastructure";
 
     @Getter
     private PluginType type = PluginType.Administration;
 
     @Getter
-    private String gui = "/uii/administration-upload-infrastructure.xhtml";
+    private String gui = "/uii/administration_goobi2goobi_import_infrastructure.xhtml";
 
     @Getter
     private String filename;

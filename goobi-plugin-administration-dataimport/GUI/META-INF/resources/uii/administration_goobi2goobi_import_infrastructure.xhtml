@@ -53,13 +53,13 @@
 }
 </style>
 
-        <h:panelGroup rendered="#{!LoginForm.hasRole('administration_import_data')}">
+        <h:panelGroup rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}">
             <h:outputText
                 styleClass="alert alert-danger alert-dismissable margin-bottom-10 margin-top-10"
-                value="#{msgs.plugin_administration_missingPermission} administration_import_data"></h:outputText>
+                value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"></h:outputText>
         </h:panelGroup>
 
-        <h:panelGroup rendered="#{LoginForm.hasRole('administration_import_data')}">
+        <h:panelGroup rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
 
             <h:form
                 prependId="false"
@@ -77,7 +77,7 @@
                                 id="title">
                                 <h3>
                                     <i class="fa fa-plug"></i>
-                                    <h:outputText value="#{msgs.plugin_administration_import_uploadFile}" />
+                                    <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_uploadFile}" />
                                 </h3>
                             </div>
                             <div class="box-content nopadding">
@@ -102,17 +102,11 @@
 
                 <h:panelGroup id="list">
 
-
                     <h:panelGroup
                         layout="block"
                         styleClass="row"
                         rendered="#{AdministrationForm.administrationPlugin.filename != null}">
                         <div class="col-sm-12">
-
-
-
-
-
 
                             <div class="box box-color box-bordered">
                                 <div
@@ -120,14 +114,14 @@
                                     id="title">
                                     <h3>
                                         <i class="fa fa-plug"></i>
-                                        <h:outputText value="#{msgs.plugin_administration_import_summary}" />
+                                        <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_summary}" />
                                     </h3>
                                 </div>
                                 <div class="box-content nopadding">
 
                                     <intranda:formOutputText
                                         id="totalNumberOfLdaps"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfLdaps}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfLdaps}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfLdaps}"
                                         help=""
                                         fieldStyle="form-control"
@@ -135,7 +129,7 @@
 
                                     <intranda:formOutputText
                                         id="numberOfNewLdaps"
-                                        label="#{msgs.plugin_administration_import_numberOfNewLdaps}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewLdaps}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewLdaps}"
                                         help=""
                                         fieldStyle="form-control"
@@ -143,7 +137,7 @@
 
                                     <intranda:formOutputText
                                         id="totalNumberOfProjects"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfProjects}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfProjects}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfProjects}"
                                         help=""
                                         fieldStyle="form-control"
@@ -151,7 +145,7 @@
 
                                     <intranda:formOutputText
                                         id="numberOfNewProjects"
-                                        label="#{msgs.plugin_administration_import_numberOfNewProjects}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewProjects}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewProjects}"
                                         help=""
                                         fieldStyle="form-control"
@@ -159,14 +153,14 @@
 
                                     <intranda:formOutputText
                                         id="totalNumberOfRulesets"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfRulesets}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfRulesets}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfRulesets}"
                                         help=""
                                         fieldStyle="form-control"
                                         name="totalNumberOfRulesets" />
                                     <intranda:formOutputText
                                         id="numberOfNewRulesets"
-                                        label="#{msgs.plugin_administration_import_numberOfNewRulesets}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewRulesets}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewRulesets}"
                                         help=""
                                         fieldStyle="form-control"
@@ -174,14 +168,14 @@
 
                                     <intranda:formOutputText
                                         id="totalNumberOfDockets"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfDockets}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfDockets}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfDockets}"
                                         help=""
                                         fieldStyle="form-control"
                                         name="totalNumberOfDockets" />
                                     <intranda:formOutputText
                                         id="numberOfNewDockets"
-                                        label="#{msgs.plugin_administration_import_numberOfNewDockets}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewDockets}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewDockets}"
                                         help=""
                                         fieldStyle="form-control"
@@ -189,14 +183,14 @@
 
                                     <intranda:formOutputText
                                         id="totalNumberOfUsers"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfUsers}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfUsers}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfUsers}"
                                         help=""
                                         fieldStyle="form-control"
                                         name="totalNumberOfUsers" />
                                     <intranda:formOutputText
                                         id="numberOfNewUsers"
-                                        label="#{msgs.plugin_administration_import_numberOfNewUsers}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewUsers}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewUsers}"
                                         help=""
                                         fieldStyle="form-control"
@@ -204,40 +198,35 @@
 
                                     <intranda:formOutputText
                                         id="totalNumberOfUserGroups"
-                                        label="#{msgs.plugin_administration_import_totalNumberOfUserGroups}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfUserGroups}"
                                         field="#{AdministrationForm.administrationPlugin.totalNumberOfUserGroups}"
                                         help=""
                                         fieldStyle="form-control"
                                         name="totalNumberOfUserGroups" />
                                     <intranda:formOutputText
                                         id="numberOfNewUserGroups"
-                                        label="#{msgs.plugin_administration_import_numberOfNewUserGroups}"
+                                        label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewUserGroups}"
                                         field="#{AdministrationForm.administrationPlugin.numberOfNewUserGroups}"
                                         help=""
                                         fieldStyle="form-control"
                                         name="numberOfNewUserGroups" />
+                                
+                                	<div class="form-actions">
+				                        <h:commandLink
+				                            rendered="#{AdministrationForm.administrationPlugin.filename != null}"
+				                            styleClass="btn btn-lightgrey pull-right margin-right-10 margin-top-10 margin-bottom-10 font-size-s"
+				                            id="finalize"
+				                            action="#{AdministrationForm.administrationPlugin.importSelectedData}">
+				                            <i class="fa fa-exchange margin-right-5"></i>
+				                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importData}" />
+				                        </h:commandLink>
+			                        </div>
+                                
+                                
                                 </div>
                             </div>
                         </div>
 
-
-
-
-
-
-
-
-
-
-
-                        <h:commandLink
-                            rendered="#{AdministrationForm.administrationPlugin.filename != null}"
-                            styleClass="btn btn-lightgrey pull-right margin-right-10 margin-top-10 margin-bottom-10 font-size-s"
-                            id="finalize"
-                            action="#{AdministrationForm.administrationPlugin.importSelectedData}">
-                            <i class="fa fa-exchange margin-right-5"></i>
-                            <h:outputText value="#{msgs.plugin_administration_import_importData}" />
-                        </h:commandLink>
                     </h:panelGroup>
 
                 </h:panelGroup>

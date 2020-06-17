@@ -62,7 +62,7 @@ public class ProcessImportConfiguration {
     //    }
 
     private static void loadConfig() {
-        config = ConfigPlugins.getPluginConfig("goobi-plugin-administration-database-information");
+        config = ConfigPlugins.getPluginConfig("intranda_administration_goobi2goobi_import_data");
         config.setReloadingStrategy(new FileChangedReloadingStrategy());
         config.setExpressionEngine(new XPathExpressionEngine());
     }

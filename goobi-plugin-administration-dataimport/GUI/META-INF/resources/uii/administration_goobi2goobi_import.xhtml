@@ -66,16 +66,16 @@
 }
 </style>
 
-        <h:panelGroup rendered="#{!LoginForm.hasRole('administration_import_data')}">
+        <h:panelGroup rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}">
             <h:outputText
                 styleClass="alert alert-danger alert-dismissable margin-bottom-10 margin-top-10"
-                value="#{msgs.plugin_administration_missingPermission} administration_import_data"></h:outputText>
+                value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"></h:outputText>
         </h:panelGroup>
         <h:panelGroup
             layout="block"
             styleClass="row"
             id="dashboard"
-            rendered="#{LoginForm.hasRole('administration_import_data')}">
+            rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
             <div class="col-sm-12">
                 <div class="box box-color box-bordered">
                     <div
@@ -96,7 +96,7 @@
                                     <x:column styleClass="tableColumnOverflow">
                                         <f:facet name="header">
                                             <x:div>
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulename}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulename}" />
                                             </x:div>
                                         </f:facet>
                                         <h:outputText value="#{rule.rulename}" />
@@ -107,14 +107,14 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_stepRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepRules}" />
                                             </x:div>
                                         </f:facet>
 
                                         <h:commandLink
                                             rendered="#{!rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                             title="#{rule.configuredStepRulesSize}"
-                                            id="displayStepDetails">
+                                            id="displayStepDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredStepRulesSize}" />
                                             <f:setPropertyActionListener
@@ -126,7 +126,7 @@
                                         <h:commandLink
                                             rendered="#{rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                             title="#{rule.configuredStepRulesSize}"
-                                            id="hideStepDetails">
+                                            id="hideStepDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredStepRulesSize}" />
                                             <f:setPropertyActionListener
@@ -155,7 +155,7 @@
                                                         value="#{rule.configuredStepRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_stepName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepName}" />
                                                             </f:facet>
                                                             <h:outputText
                                                                 value="#{step.currentStepName}"
@@ -189,7 +189,7 @@
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_changeType}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_changeType}" />
                                                             </f:facet>
                                                             <h:outputText value="#{msgs[step.configurationType]}" />
                                                         </h:column>
@@ -204,13 +204,13 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
                                             rendered="#{!rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
                                             title="#{rule.configuredPropertyRulesSize}"
-                                            id="displayPropertyDetails">
+                                            id="displayPropertyDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredPropertyRulesSize}" />
                                             <f:setPropertyActionListener
@@ -222,7 +222,7 @@
                                         <h:commandLink
                                             rendered="#{rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
                                             title="#{rule.configuredPropertyRulesSize}"
-                                            id="hidePropertyDetails">
+                                            id="hidePropertyDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredPropertyRulesSize}" />
                                             <f:setPropertyActionListener
@@ -250,26 +250,26 @@
                                                         value="#{rule.configuredPropertyRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.oldPropertyName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newPropertyName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newPropertyName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.newPropertyName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_propertyValue}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyValue}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.oldPropertyValue}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newPropertyValue}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newPropertyValue}" />
                                                             </f:facet>
                                                             <h:outputText value="#{property.newPropertyValue}" />
                                                         </h:column>
@@ -283,13 +283,13 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
                                             rendered="#{!rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
                                             title="#{rule.configuredMetadataRulesSize}"
-                                            id="displayMetadataDetails">
+                                            id="displayMetadataDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredMetadataRulesSize}" />
                                             <f:setPropertyActionListener
@@ -301,7 +301,7 @@
                                         <h:commandLink
                                             rendered="#{rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
                                             title="#{rule.configuredMetadataRulesSize}"
-                                            id="hideMetadataDetails">
+                                            id="hideMetadataDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredMetadataRulesSize}" />
                                             <f:setPropertyActionListener
@@ -329,33 +329,33 @@
                                                         value="#{rule.configuredMetadataRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.metadataName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataChangeType}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataChangeType}" />
                                                             </f:facet>
                                                             <h:outputText value="#{msgs[Metadata.configurationType]}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataValueContitionRegex}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataValueConditionRegex}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.valueConditionRegex}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataValueReplacementRegex}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataValueReplacementRegex}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.valueReplacementRegex}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_metadataPosition}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataPosition}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Metadata.position}" />
                                                         </h:column>
@@ -369,13 +369,13 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulesetRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulesetRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
                                             rendered="#{!rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
                                             title="#{rule.configuredRulesetRulesSize}"
-                                            id="displayRulesetDetails">
+                                            id="displayRulesetDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredRulesetRulesSize}" />
                                             <f:setPropertyActionListener
@@ -387,7 +387,7 @@
                                         <h:commandLink
                                             rendered="#{rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
                                             title="#{rule.configuredRulesetRulesSize}"
-                                            id="hideRulesetDetails">
+                                            id="hideRulesetDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredRulesetRulesSize}" />
                                             <f:setPropertyActionListener
@@ -415,20 +415,20 @@
                                                         value="#{rule.configuredRulesetRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_rulesetName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulesetName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.oldRulesetName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newRulesetName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newRulesetName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.newRulesetName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newFileName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Ruleset.newFileName}" />
                                                         </h:column>
@@ -443,13 +443,13 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_docketRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_docketRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
                                             rendered="#{!rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
                                             title="#{rule.configuredDocketRulesSize}"
-                                            id="displayDocketDetails">
+                                            id="displayDocketDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredDocketRulesSize}" />
                                             <f:setPropertyActionListener
@@ -461,7 +461,7 @@
                                         <h:commandLink
                                             rendered="#{rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
                                             title="#{rule.configuredDocketRulesSize}"
-                                            id="hideDocketDetails">
+                                            id="hideDocketDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredDocketRulesSize}" />
                                             <f:setPropertyActionListener
@@ -489,20 +489,20 @@
                                                         value="#{rule.configuredDocketRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_docketName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_docketName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.oldDocketName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newDocketName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newDocketName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.newDocketName}" />
                                                         </h:column>
 
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newFileName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Docket.newFileName}" />
                                                         </h:column>
@@ -516,13 +516,13 @@
                                         <f:facet name="header">
                                             <x:div>
                                                 <!-- Header -->
-                                                <h:outputText value="#{msgs.plugin_administration_dataimport_projectRules}" />
+                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_projectRules}" />
                                             </x:div>
                                         </f:facet>
                                         <h:commandLink
                                             rendered="#{!rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
                                             title="#{rule.configuredProjectRulesSize}"
-                                            id="displayProjectDetails">
+                                            id="displayProjectDetails" styleClass="font-black">
                                             <i class="fa fa-angle-right margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredProjectRulesSize}" />
                                             <f:setPropertyActionListener
@@ -534,7 +534,7 @@
                                         <h:commandLink
                                             rendered="#{rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
                                             title="#{rule.configuredProjectRulesSize}"
-                                            id="hideProjectDetails">
+                                            id="hideProjectDetails" styleClass="font-black">
                                             <i class="fa fa-angle-down margin-right-5"></i>
                                             <h:outputText value="#{rule.configuredProjectRulesSize}" />
                                             <f:setPropertyActionListener
@@ -562,13 +562,13 @@
                                                         value="#{rule.configuredProjectRules}">
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_projectName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_projectName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Project.oldProjectName}" />
                                                         </h:column>
                                                         <h:column>
                                                             <f:facet name="header">
-                                                                <h:outputText value="#{msgs.plugin_administration_dataimport_newProjectName}" />
+                                                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newProjectName}" />
                                                             </f:facet>
                                                             <h:outputText value="#{Project.newProjectName}" />
                                                         </h:column>
@@ -579,21 +579,20 @@
                                     </x:column>
                                 </x:dataTable>
                             </div>
-                        </div>
 
-
-                        <div class="form-actions">
-                            <h:commandLink
-                                id="reloadRules"
-                                action="#{AdministrationForm.administrationPlugin.reloadRules}"
-                                styleClass="btn font-size-s margin-bottom-most margin-sides-10"
-                                title="#{msgs.reload}">
-                                <i
-                                    class="fa fa-refresh margin-right-5"
-                                    title="#{msgs.plugin_administration_dataimport_reloadRules}" />
-                                <h:outputText value="#{msgs.plugin_administration_dataimport_reloadRules}" />
-                            </h:commandLink>
-
+	                        <div class="form-actions">
+	                            <h:commandLink
+	                                id="reloadRules"
+	                                action="#{AdministrationForm.administrationPlugin.reloadRules}"
+	                                styleClass="btn font-size-s margin-sides-10"
+	                                title="#{msgs.reload}">
+	                                <i
+	                                    class="fa fa-refresh margin-right-5"
+	                                    title="#{msgs.plugin_administration_goobi2goobi_import_reloadRules}" />
+	                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_reloadRules}" />
+	                            </h:commandLink>
+	
+	                        </div>
                         </div>
                     </h:form>
                 </div>
@@ -603,7 +602,7 @@
 
 
             <div class="col-sm-12">
-                <div class="box box-color box-bordered">
+                <div class="box box-color orange box-bordered">
                     <div
                         class="box-title"
                         id="title">
@@ -622,7 +621,7 @@
                                 <div class="col-sm-3 control-label">
                                     <h:outputLabel
                                         for="rules"
-                                        value="#{msgs.plugin_administration_dataimport_rulename}" />
+                                        value="#{msgs.plugin_administration_goobi2goobi_import_rulename}" />
                                     <h:panelGroup>
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
@@ -646,7 +645,7 @@
                                 <div class="col-sm-3 control-label">
                                     <h:outputLabel
                                         for="files"
-                                        value="#{msgs.plugin_administration_dataimport_files}" />
+                                        value="#{msgs.plugin_administration_goobi2goobi_import_files}" />
                                     <h:panelGroup>
                                         <i class="fa fa-asterisk pull-right font-asterisk" />
                                     </h:panelGroup>
@@ -670,23 +669,23 @@
 
                                 <!-- Save -->
                                 <h:commandLink
-                                    styleClass="btn btn-success submitOnEnter pull-right font-size-s margin-bottom-most"
+                                    styleClass="btn btn-success submitOnEnter pull-right font-size-s"
                                     id="absenden"
                                     type="submit"
                                     action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
                                     <i class="fa fa-save margin-right-5"></i>
-                                    <h:outputText value="#{msgs.plugin_administration_dataimport_importFile}" />
+                                    <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importFile}" />
                                     
                                 </h:commandLink>
                                 <h:commandLink
                                     id="reload"
                                     action="#{AdministrationForm.administrationPlugin.generateAllFilenames}"
-                                    styleClass="btn font-size-s margin-bottom-most margin-sides-10"
+                                    styleClass="btn font-size-s margin-sides-10"
                                     title="#{msgs.reload}">
                                     <i
                                         class="fa fa-refresh margin-right-5"
-                                        title="#{msgs.plugin_administration_dataimport_loadFiles}" />
-                                    <h:outputText value="#{msgs.plugin_administration_dataimport_loadFiles}" />
+                                        title="#{msgs.plugin_administration_goobi2goobi_import_loadFiles}" />
+                                    <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_loadFiles}" />
                                 </h:commandLink>
 
                             </div>
