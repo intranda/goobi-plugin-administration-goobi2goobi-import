@@ -9,7 +9,7 @@
     </properties>
     <parent>
         <groupId>de.intranda.goobi.plugins.workflow</groupId>
-        <artifactId>goobi-plugin-administration-dataimport-deps</artifactId>
+        <artifactId>goobi-plugin-administration-goobi2goobi-import-deps</artifactId>
         <version>0.0.1</version>
     </parent>
     <build>
