@@ -1,8 +1,9 @@
-# Goobi Administration Plugin: goobi-plugin-administration-upload-infrastructure
+# Goobi Administration Plugin: goobi-plugin-administration-goobi2goobi-import
 
 <img src="https://goobi.io/wp-content/uploads/logo_goobi_plugin.png" align="right" style="margin:0 0 20px 20px;" alt="Plugin for Goobi workflow" width="175" height="109">
 
-This plugin is part of the Goobi-to-Goobi package. This Goobi Plugin is needed to export infrastructure information about Goobi workflow internals to a zip file and information about the process details into the process folders.
+This Goobi Plugin is needed to export infrastructure information about Goobi workflow internals to a zip file and information about the process details into the process folders.
+
 This is a plugin for Goobi workflow, the open source workflow tracking software for digitisation projects. More information about Goobi workflow is available under https://goobi.io. If you want to get in touch with the user community simply go to https://community.goobi.io.
 
 ## Plugin details
@@ -11,11 +12,11 @@ More information about the functionality of this plugin and the complete documen
 
 Detail | Description
 --- | ---
-**Plugin identifier**       | goobi-plugin-administration-upload-infrastructure, goobi-plugin-administration-database-information
+**Plugin identifier**       | intranda_administration_goobi2goobi_import_infrastructure  intranda_administration_goobi2goobi_import_data
 **Plugin type**             | Administration plugin
 **Licence**                 | GPL 2.0 or newer  
-**Documentation (German)**  | -
-**Documentation (English)** | -
+**Documentation (German)**  | [https://docs.goobi.io/goobi-workflow-plugins-de/administration/plugin_intranda_adminstration_goobi2goobi](https://docs.goobi.io/goobi-workflow-plugins-de/administration/plugin_intranda_adminstration_goobi2goobi)
+**Documentation (English)** | [https://docs.goobi.io/goobi-workflow-plugins-en/administration/plugin_intranda_adminstration_goobi2goobi](https://docs.goobi.io/goobi-workflow-plugins-en/administration/plugin_intranda_adminstration_goobi2goobi)
 
 ## Goobi details
 
