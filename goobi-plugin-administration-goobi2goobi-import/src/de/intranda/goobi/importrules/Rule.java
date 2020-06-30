@@ -43,6 +43,8 @@ public class Rule {
 
     private List<UserConfigurationItem> configuredUserRules = new ArrayList<>();
 
+    private ProcessConfigurationItem processRule = new ProcessConfigurationItem();
+
     public int getConfiguredStepRulesSize() {
         return configuredStepRules.size();
     }

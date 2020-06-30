@@ -342,9 +342,10 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             // docket
             assignDocketToProcess(processElement, process, selectedRule);
 
-            // process log
-            createProcessLog(processElement.getChild("log", goobiNamespace), process);
-
+            if (!selectedRule.getProcessRule().isSkipProcesslog()) {
+                // process log
+                createProcessLog(processElement.getChild("log", goobiNamespace), process);
+            }
             // properties
             createProcessProperties(processElement.getChild("properties", goobiNamespace), process, selectedRule);
             // templates
@@ -353,7 +354,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             createWorkpieceProperties(processElement.getChild("workpiece", goobiNamespace), process);
 
             // tasks
-            createTasks(processElement.getChild("tasks", goobiNamespace), process);
+            createTasks(processElement.getChild("tasks", goobiNamespace), process, selectedRule.getProcessRule().isSkipUserImport());
 
             // change tasks based on a configuration
             updateTasks(process, selectedRule);
@@ -873,7 +874,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         }
     }
 
-    private void createTasks(Element tasks, Process process) {
+    private void createTasks(Element tasks, Process process, boolean skipUserImport) {
         if (tasks != null && tasks.getChildren() != null) {
             for (Element taskElement : tasks.getChildren()) {
                 Step step = new Step();
@@ -909,36 +910,38 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         log.error(e);
                     }
                 }
-                Element userElement = taskElement.getChild("user", goobiNamespace);
-                if (userElement != null && StringUtils.isNotBlank(userElement.getAttributeValue("login"))) {
-                    User user = UserManager.getUserByLogin(userElement.getAttributeValue("login"));
-                    if (user == null) {
-                        user = new User();
-                        user.setLogin(userElement.getAttributeValue("login"));
-                        String userName = userElement.getText();
-                        if (StringUtils.isNotBlank(userName)) {
-                            if (userName.contains(",")) {
-                                user.setNachname(userName.substring(0, userName.indexOf(",")));
-                                user.setVorname(userName.substring(userName.indexOf(",") + 1));
+                if (!skipUserImport) {
+                    Element userElement = taskElement.getChild("user", goobiNamespace);
+                    if (userElement != null && StringUtils.isNotBlank(userElement.getAttributeValue("login"))) {
+                        User user = UserManager.getUserByLogin(userElement.getAttributeValue("login"));
+                        if (user == null) {
+                            user = new User();
+                            user.setLogin(userElement.getAttributeValue("login"));
+                            String userName = userElement.getText();
+                            if (StringUtils.isNotBlank(userName)) {
+                                if (userName.contains(",")) {
+                                    user.setNachname(userName.substring(0, userName.indexOf(",")));
+                                    user.setVorname(userName.substring(userName.indexOf(",") + 1));
+                                }
                             }
-                        }
-                        user.setIstAktiv(false);
-                        user.setIsVisible("deleted");
-                        Element institutionElement = userElement.getChild("institution", goobiNamespace);
-                        if (institutionElement == null) {
-                            Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
-                            user.setInstitution(inst);
-                        } else {
-                            Institution institution = getInstitution(institutionElement);
-                            user.setInstitution(institution);
-                        }
-                        try {
-                            UserManager.saveUser(user);
-                        } catch (DAOException e) {
-                            log.error(e);
-                        }
+                            user.setIstAktiv(false);
+                            user.setIsVisible("deleted");
+                            Element institutionElement = userElement.getChild("institution", goobiNamespace);
+                            if (institutionElement == null) {
+                                Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
+                                user.setInstitution(inst);
+                            } else {
+                                Institution institution = getInstitution(institutionElement);
+                                user.setInstitution(institution);
+                            }
+                            try {
+                                UserManager.saveUser(user);
+                            } catch (DAOException e) {
+                                log.error(e);
+                            }
 
-                        step.setBearbeitungsbenutzer(user);
+                            step.setBearbeitungsbenutzer(user);
+                        }
                     }
                 }
                 step.setEditTypeEnum(StepEditType.getTypeFromValue(Integer.parseInt(taskElement.getChild("editionType", goobiNamespace).getText())));

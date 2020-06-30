@@ -205,6 +205,10 @@ public class ProcessImportConfiguration {
                     }
                 }
 
+                ProcessConfigurationItem plci = rule.getProcessRule();
+                plci.setSkipProcesslog(config.getBoolean("/config[./rulename='" + projectName + "']/skipProcesslog", false));
+                plci.setSkipUserImport(config.getBoolean("/config[./rulename='" + projectName + "']/skipUserimport", false));
+
                 // read project configuration
                 List<HierarchicalConfiguration> projectList = config.configurationsAt("/config[./rulename='" + projectName + "']/project");
                 List<ProjectConfigurationItem> configuredProjectRules = new ArrayList<>();

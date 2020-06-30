@@ -10,6 +10,8 @@
     <config>
         <rulename>Project A</rulename>
         <rulename>Project B</rulename>
+        <skipProcesslog>false</skipProcesslog>
+        <skipUserImport>false</skipUserImport>
         <step name="Example to delete" type="delete" />
         <step name="Example to change" type="change">
             <newStepName>New step name</newStepName>
