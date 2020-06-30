@@ -931,12 +931,13 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         } else {
                             Institution institution = getInstitution(institutionElement);
                             user.setInstitution(institution);
-                            try {
-                                UserManager.saveUser(user);
-                            } catch (DAOException e) {
-                                log.error(e);
-                            }
                         }
+                        try {
+                            UserManager.saveUser(user);
+                        } catch (DAOException e) {
+                            log.error(e);
+                        }
+
                         step.setBearbeitungsbenutzer(user);
                     }
                 }
