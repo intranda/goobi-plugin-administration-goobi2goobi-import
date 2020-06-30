@@ -193,5 +193,6 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
 
     public void reloadRules() {
         ProcessImportConfiguration.resetRules();
+        allRulenames.clear();
     }
 }
