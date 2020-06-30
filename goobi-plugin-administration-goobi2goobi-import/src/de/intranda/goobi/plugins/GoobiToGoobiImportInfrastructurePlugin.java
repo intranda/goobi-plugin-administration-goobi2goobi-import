@@ -465,29 +465,34 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
             ug.setInstitution(inst);
         } else {
-            String institutionName = institutionElement.getAttributeValue("longName");
-            Institution institution = null;
-            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-            for (Institution other : existingInstitutions) {
-                if (other.getLongName().equals(institutionName)) {
-                    institution = other;
-                }
-            }
-            if (institution == null) {
-                institution = new Institution();
-                institution.setLongName( institutionElement.getAttributeValue("longName"));
-                institution.setShortName( institutionElement.getAttributeValue("shortName"));
-
-                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                InstitutionManager.saveInstitution(institution);
-            }
+            Institution institution = getInstitution(institutionElement);
             ug.setInstitution(institution);
         }
 
         return ug;
+    }
+
+    private Institution getInstitution(Element institutionElement) {
+        String institutionName = institutionElement.getAttributeValue("longName");
+        Institution institution = null;
+        List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
+        for (Institution other : existingInstitutions) {
+            if (other.getLongName().equals(institutionName)) {
+                institution = other;
+            }
+        }
+        if (institution == null) {
+            institution = new Institution();
+            institution.setLongName( institutionElement.getAttributeValue("longName"));
+            institution.setShortName( institutionElement.getAttributeValue("shortName"));
+
+            institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
+            institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
+            institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
+            institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+            InstitutionManager.saveInstitution(institution);
+        }
+        return institution;
     }
 
     private User createUser(Element userElement) {
@@ -674,25 +679,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
             user.setInstitution(inst);
         } else {
-            String institutionName = institutionElement.getAttributeValue("longName");
-            Institution institution = null;
-            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-            for (Institution other : existingInstitutions) {
-                if (other.getLongName().equals(institutionName)) {
-                    institution = other;
-                }
-            }
-            if (institution == null) {
-                institution = new Institution();
-                institution.setLongName( institutionElement.getAttributeValue("longName"));
-                institution.setShortName( institutionElement.getAttributeValue("shortName"));
-
-                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                InstitutionManager.saveInstitution(institution);
-            }
+            Institution institution = getInstitution(institutionElement);
             user.setInstitution(institution);
         }
 
@@ -929,25 +916,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
             project.setInstitution(inst);
         } else {
-            String institutionName = institutionElement.getAttributeValue("longName");
-            Institution institution = null;
-            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-            for (Institution other : existingInstitutions) {
-                if (other.getLongName().equals(institutionName)) {
-                    institution = other;
-                }
-            }
-            if (institution == null) {
-                institution = new Institution();
-                institution.setLongName( institutionElement.getAttributeValue("longName"));
-                institution.setShortName( institutionElement.getAttributeValue("shortName"));
-
-                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                InstitutionManager.saveInstitution(institution);
-            }
+            Institution institution = getInstitution(institutionElement);
             project.setInstitution(institution);
         }
 

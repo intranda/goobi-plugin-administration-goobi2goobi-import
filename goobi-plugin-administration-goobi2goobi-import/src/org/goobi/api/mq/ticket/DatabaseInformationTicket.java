@@ -929,25 +929,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                             Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
                             user.setInstitution(inst);
                         } else {
-                            String institutionName = institutionElement.getAttributeValue("longName");
-                            Institution institution = null;
-                            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-                            for (Institution other : existingInstitutions) {
-                                if (other.getLongName().equals(institutionName)) {
-                                    institution = other;
-                                }
-                            }
-                            if (institution == null) {
-                                institution = new Institution();
-                                institution.setLongName(institutionElement.getAttributeValue("longName"));
-                                institution.setShortName(institutionElement.getAttributeValue("shortName"));
-
-                                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                                InstitutionManager.saveInstitution(institution);
-                            }
+                            Institution institution = getInstitution(institutionElement);
                             user.setInstitution(institution);
                             try {
                                 UserManager.saveUser(user);
@@ -1018,6 +1000,29 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         }
     }
 
+    private Institution getInstitution(Element institutionElement) {
+        String institutionName = institutionElement.getAttributeValue("longName");
+        Institution institution = null;
+        List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
+        for (Institution other : existingInstitutions) {
+            if (other.getLongName().equals(institutionName)) {
+                institution = other;
+            }
+        }
+        if (institution == null) {
+            institution = new Institution();
+            institution.setLongName(institutionElement.getAttributeValue("longName"));
+            institution.setShortName(institutionElement.getAttributeValue("shortName"));
+
+            institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
+            institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
+            institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
+            institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+            InstitutionManager.saveInstitution(institution);
+        }
+        return institution;
+    }
+
     private Usergroup createNewGroup(Element groupElement) {
         Usergroup ug = new Usergroup();
         ug.setBerechtigung(Integer.parseInt(groupElement.getAttributeValue("accessLevel")));
@@ -1033,25 +1038,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
             ug.setInstitution(inst);
         } else {
-            String institutionName = institutionElement.getAttributeValue("longName");
-            Institution institution = null;
-            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-            for (Institution other : existingInstitutions) {
-                if (other.getLongName().equals(institutionName)) {
-                    institution = other;
-                }
-            }
-            if (institution == null) {
-                institution = new Institution();
-                institution.setLongName(institutionElement.getAttributeValue("longName"));
-                institution.setShortName(institutionElement.getAttributeValue("shortName"));
-
-                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                InstitutionManager.saveInstitution(institution);
-            }
+            Institution institution = getInstitution(institutionElement);
             ug.setInstitution(institution);
         }
 
@@ -1184,25 +1171,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
                 project.setInstitution(inst);
             } else {
-                String institutionName = institutionElement.getAttributeValue("longName");
-                Institution institution = null;
-                List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
-                for (Institution other : existingInstitutions) {
-                    if (other.getLongName().equals(institutionName)) {
-                        institution = other;
-                    }
-                }
-                if (institution == null) {
-                    institution = new Institution();
-                    institution.setLongName(institutionElement.getAttributeValue("longName"));
-                    institution.setShortName(institutionElement.getAttributeValue("shortName"));
-
-                    institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-                    institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-                    institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-                    institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
-                    InstitutionManager.saveInstitution(institution);
-                }
+                Institution institution = getInstitution(institutionElement);
                 project.setInstitution(institution);
             }
             //       TODO     Element institutionElement = projectElement.getChild("institution", goobiNamespace);
