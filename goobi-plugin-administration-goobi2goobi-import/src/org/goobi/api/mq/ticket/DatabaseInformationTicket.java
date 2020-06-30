@@ -25,6 +25,7 @@ import org.goobi.api.mq.TaskTicket;
 import org.goobi.api.mq.TicketHandler;
 import org.goobi.beans.Batch;
 import org.goobi.beans.Docket;
+import org.goobi.beans.Institution;
 import org.goobi.beans.LogEntry;
 import org.goobi.beans.Masterpiece;
 import org.goobi.beans.Masterpieceproperty;
@@ -75,6 +76,7 @@ import de.sub.goobi.helper.enums.StepStatus;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
 import de.sub.goobi.persistence.managers.DocketManager;
+import de.sub.goobi.persistence.managers.InstitutionManager;
 import de.sub.goobi.persistence.managers.MasterpieceManager;
 import de.sub.goobi.persistence.managers.MetadataManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
@@ -922,14 +924,39 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         }
                         user.setIstAktiv(false);
                         user.setIsVisible("deleted");
-                        try {
-                            UserManager.saveUser(user);
-                        } catch (DAOException e) {
-                            log.error(e);
-                        }
-                    }
-                    step.setBearbeitungsbenutzer(user);
+                        Element institutionElement = userElement.getChild("institution", goobiNamespace);
+                        if (institutionElement == null) {
+                            Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
+                            user.setInstitution(inst);
+                        } else {
+                            String institutionName = institutionElement.getAttributeValue("longName");
+                            Institution institution = null;
+                            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
+                            for (Institution other : existingInstitutions) {
+                                if (other.getLongName().equals(institutionName)) {
+                                    institution = other;
+                                }
+                            }
+                            if (institution == null) {
+                                institution = new Institution();
+                                institution.setLongName(institutionElement.getAttributeValue("longName"));
+                                institution.setShortName(institutionElement.getAttributeValue("shortName"));
 
+                                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
+                                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
+                                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
+                                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+                                InstitutionManager.saveInstitution(institution);
+                            }
+                            user.setInstitution(institution);
+                            try {
+                                UserManager.saveUser(user);
+                            } catch (DAOException e) {
+                                log.error(e);
+                            }
+                        }
+                        step.setBearbeitungsbenutzer(user);
+                    }
                 }
                 step.setEditTypeEnum(StepEditType.getTypeFromValue(Integer.parseInt(taskElement.getChild("editionType", goobiNamespace).getText())));
                 Element configuration = taskElement.getChild("configuration", goobiNamespace);
@@ -984,6 +1011,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                             ug = createNewGroup(groupElement);
                         }
                         step.getBenutzergruppen().add(ug);
+
                     }
                 }
             }
@@ -1000,11 +1028,39 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         }
         ug.setUserRoles(assignedRoles);
 
+        Element institutionElement = groupElement.getChild("institution", goobiNamespace);
+        if (institutionElement == null) {
+            Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
+            ug.setInstitution(inst);
+        } else {
+            String institutionName = institutionElement.getAttributeValue("longName");
+            Institution institution = null;
+            List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
+            for (Institution other : existingInstitutions) {
+                if (other.getLongName().equals(institutionName)) {
+                    institution = other;
+                }
+            }
+            if (institution == null) {
+                institution = new Institution();
+                institution.setLongName(institutionElement.getAttributeValue("longName"));
+                institution.setShortName(institutionElement.getAttributeValue("shortName"));
+
+                institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
+                institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
+                institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
+                institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+                InstitutionManager.saveInstitution(institution);
+            }
+            ug.setInstitution(institution);
+        }
+
         try {
             UsergroupManager.saveUsergroup(ug);
         } catch (DAOException e) {
             log.error(e);
         }
+
         return ug;
     }
 
@@ -1068,7 +1124,6 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             Element startDateElement = projectElement.getChild("startDate", goobiNamespace);
             Element endDateElement = projectElement.getChild("endDate", goobiNamespace);
-
             if (startDateElement != null && StringUtils.isNotBlank(startDateElement.getText())) {
                 try {
                     project.setStartDate(dateConverter.parse(startDateElement.getText()));
@@ -1124,6 +1179,35 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             project.setMetsRightsSponsorSiteURL(getTextFromElement(metsConfiguration.getChild("metsRightsSponsorSiteURL", goobiNamespace)));
             project.setMetsRightsLicense(getTextFromElement(metsConfiguration.getChild("metsRightsLicense", goobiNamespace)));
 
+            Element institutionElement = projectElement.getChild("institution", goobiNamespace);
+            if (institutionElement == null) {
+                Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
+                project.setInstitution(inst);
+            } else {
+                String institutionName = institutionElement.getAttributeValue("longName");
+                Institution institution = null;
+                List<Institution> existingInstitutions = InstitutionManager.getAllInstitutionsAsList();
+                for (Institution other : existingInstitutions) {
+                    if (other.getLongName().equals(institutionName)) {
+                        institution = other;
+                    }
+                }
+                if (institution == null) {
+                    institution = new Institution();
+                    institution.setLongName(institutionElement.getAttributeValue("longName"));
+                    institution.setShortName(institutionElement.getAttributeValue("shortName"));
+
+                    institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
+                    institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
+                    institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
+                    institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+                    InstitutionManager.saveInstitution(institution);
+                }
+                project.setInstitution(institution);
+            }
+            //       TODO     Element institutionElement = projectElement.getChild("institution", goobiNamespace);
+            //            InstitutionManager.getInstitutionById(arg0)
+            //            asd
             // filegroups
             Element fileGroups = projectElement.getChild("fileGroups", goobiNamespace);
             if (fileGroups != null) {
@@ -1144,6 +1228,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 log.error(e);
             }
         }
+
         process.setProjekt(project);
     }
 
