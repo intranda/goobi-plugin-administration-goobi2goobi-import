@@ -1,6 +1,7 @@
 package de.intranda.goobi.importrules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
@@ -178,13 +179,13 @@ public class InfrastructureImportConfiguration {
                         UsergroupConfigurationItem rci = new UsergroupConfigurationItem();
                         rci.setOldUsergroupName(ugConfiguration.getString("./@name", null));
                         rci.setNewUsergroupName(ugConfiguration.getString("./newUsergroupName", null));
-                        List<String> rolesToAdd = ugConfiguration.getList("./addRole");
-                        List<String> rolesToRemove = ugConfiguration.getList("./removeRole");
+                        List<String> rolesToAdd = Arrays.asList(ugConfiguration.getStringArray("./addRole"));
+                        List<String> rolesToRemove = Arrays.asList(ugConfiguration.getStringArray("./removeRole"));
                         rci.setAddRoleList(rolesToAdd);
                         rci.setRemoveRoleList(rolesToRemove);
 
-                        List<String> userToAdd = ugConfiguration.getList("./addUser");
-                        List<String> userToRemove = ugConfiguration.getList("./removeUser");
+                        List<String> userToAdd = Arrays.asList(ugConfiguration.getStringArray("./addUser"));
+                        List<String> userToRemove = Arrays.asList(ugConfiguration.getStringArray("./removeUser"));
                         rci.setAddUserList(userToAdd);
                         rci.setRemoveUserList(userToRemove);
 
@@ -201,8 +202,8 @@ public class InfrastructureImportConfiguration {
                     for (HierarchicalConfiguration ugConfiguration : userList) {
                         UserConfigurationItem rci = new UserConfigurationItem();
                         rci.setLogin(ugConfiguration.getString("./@name", null));
-                        List<String> rolesToAdd = ugConfiguration.getList("./addAssignedProject");
-                        List<String> rolesToRemove = ugConfiguration.getList("./removeAssignedProject");
+                        List<String> rolesToAdd = Arrays.asList(ugConfiguration.getStringArray("./addAssignedProject"));
+                        List<String> rolesToRemove = Arrays.asList(ugConfiguration.getStringArray("./removeAssignedProject"));
                         rci.setAddProjectList(rolesToAdd);
                         rci.setRemoveProjectList(rolesToRemove);
                         HierarchicalConfiguration config = ugConfiguration.configurationAt("./");

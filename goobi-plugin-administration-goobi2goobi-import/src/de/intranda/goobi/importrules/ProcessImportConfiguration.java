@@ -1,6 +1,7 @@
 package de.intranda.goobi.importrules;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.configuration.HierarchicalConfiguration;
@@ -77,7 +78,7 @@ public class ProcessImportConfiguration {
                 loadConfig();
             }
 
-            List<String> configuredProjectNames = config.getList("/config/rulename");
+            List<String> configuredProjectNames = Arrays.asList(config.getStringArray("/config/rulename"));
             for (String projectName : configuredProjectNames) {
                 Rule rule = new Rule();
                 rule.setRulename(projectName);
@@ -168,7 +169,8 @@ public class ProcessImportConfiguration {
                         stepConfigurationItem.setHttpEscapeBodyJson(stepConfiguration.getBoolean("./httpStep/@httpEscapeBodyJson", null));
                     }
                     // add usergroups
-                    List<String> userGroups = stepConfiguration.getList("./usergroup", null);
+
+                    List<String> userGroups = Arrays.asList(stepConfiguration.getStringArray("./usergroup"));
                     if (userGroups != null && !userGroups.isEmpty()) {
                         List<Usergroup> allGroups = UsergroupManager.getAllUsergroups();
                         List<Usergroup> userGroupsToAdd = new ArrayList<>();
