@@ -17,6 +17,7 @@ import java.util.concurrent.TimeoutException;
 import javax.jms.JMSException;
 
 import org.apache.commons.lang.StringUtils;
+import org.goobi.api.mq.QueueType;
 import org.goobi.api.mq.TaskTicket;
 import org.goobi.api.mq.TicketGenerator;
 import org.goobi.production.enums.PluginType;
@@ -72,7 +73,7 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
         }
         String folder = ProcessImportConfiguration.getTemporaryFolderToImport();
         if (StringUtils.isBlank(folder)) {
-            folder=ProcessImportConfiguration.getImportPath();
+            folder = ProcessImportConfiguration.getImportPath();
         }
         for (String processId : selectedFilenames) {
             // create ticket
@@ -97,7 +98,7 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
                 importTicket.getProperties().put("rule", currentRule);
             }
             try {
-                TicketGenerator.submitTicket(importTicket, false);
+                TicketGenerator.submitInternalTicket(importTicket, QueueType.SLOW_QUEUE, "goobi2goobiImport", 0);
             } catch (JMSException e) {
             }
         }
@@ -106,7 +107,7 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
     }
 
     public List<String> getAllFilenames() {
-        if (allFilenames.isEmpty() && futureFilenames!=null) {
+        if (allFilenames.isEmpty() && futureFilenames != null) {
             try {
                 allFilenames = futureFilenames.get(10, TimeUnit.SECONDS);
             } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -152,11 +153,11 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
                 try {
                     String folder = ProcessImportConfiguration.getTemporaryFolderToImport();
                     if (StringUtils.isBlank(folder)) {
-                        folder=ProcessImportConfiguration.getImportPath();
+                        folder = ProcessImportConfiguration.getImportPath();
                     }
                     Files.find(Paths.get(folder), 2,
                             (p, file) -> file.isRegularFile() && p.getFileName().toString().matches(".*_db_export.xml"))
-                    .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
+                            .forEach(p -> allFilenames.add(p.getParent().getFileName().toString()));
                 } catch (IOException e) {
                     log.error(e);
                 }
