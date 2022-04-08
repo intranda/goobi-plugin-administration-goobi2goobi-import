@@ -175,7 +175,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
         importRule = InfrastructureImportConfiguration.getConfiguredItems();
         try {
             filename = event.getFile().getFileName();
-            copyFile(filename, event.getFile().getInputstream());
+            copyFile(filename, event.getFile().getInputStream());
 
         } catch (IOException e) {
             log.error(e);
