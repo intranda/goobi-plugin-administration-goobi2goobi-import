@@ -524,8 +524,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
         user.setNachname(userElement.getAttributeValue("lastname"));
         user.setLogin(userElement.getAttributeValue("login"));
         user.setLdaplogin(userElement.getAttributeValue("ldaplogin"));
-        user.setIstAktiv(Boolean.parseBoolean(userElement.getAttributeValue("active")));
-        user.setIsVisible(StringUtils.isBlank(userElement.getAttributeValue("visible")) ? null : userElement.getAttributeValue("visible"));
+        user.setActive(Boolean.parseBoolean(userElement.getAttributeValue("active")));
         user.setStandort(StringUtils.isNotBlank(item.getPlace()) ? item.getPlace() : userElement.getAttributeValue("place"));
         user.setTabellengroesse(item.getTablesize() != null ? item.getTablesize() : Integer.parseInt(userElement.getAttributeValue("tablesize")));
         user.setSessiontimeout(Integer.parseInt(userElement.getAttributeValue("sessionlength")));

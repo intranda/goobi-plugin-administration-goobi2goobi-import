@@ -423,7 +423,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         try {
             metadataFile = Paths.get(process.getMetadataFilePath());
             anchorFile = Paths.get(process.getMetadataFilePath().replace("meta.xml", "meta_anchor.xml"));
-        } catch (IOException | InterruptedException | SwapException | DAOException e) {
+        } catch (IOException  | SwapException e) {
             log.error(e);
             return;
         }
@@ -924,8 +924,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                                     user.setVorname(userName.substring(userName.indexOf(",") + 1));
                                 }
                             }
-                            user.setIstAktiv(false);
-                            user.setIsVisible("deleted");
+                            user.setActive(false);
                             Element institutionElement = userElement.getChild("institution", goobiNamespace);
                             if (institutionElement == null) {
                                 Institution inst = InstitutionManager.getAllInstitutionsAsList().get(0);
