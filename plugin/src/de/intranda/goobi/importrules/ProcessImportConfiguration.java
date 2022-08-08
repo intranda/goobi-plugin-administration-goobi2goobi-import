@@ -152,7 +152,7 @@ public class ProcessImportConfiguration {
                         stepConfigurationItem.setScriptname3(stepConfiguration.getString("./scriptStep/@scriptName3"));
                         stepConfigurationItem.setTypAutomatischScriptpfad3(stepConfiguration.getString("./scriptStep/@scriptPath3"));
 
-                        stepConfigurationItem.setScriptname5(stepConfiguration.getString("./scriptStep/@scriptName4"));
+                        stepConfigurationItem.setScriptname4(stepConfiguration.getString("./scriptStep/@scriptName4"));
                         stepConfigurationItem.setTypAutomatischScriptpfad4(stepConfiguration.getString("./scriptStep/@scriptPath4"));
 
                         stepConfigurationItem.setScriptname5(stepConfiguration.getString("./scriptStep/@scriptName5"));
