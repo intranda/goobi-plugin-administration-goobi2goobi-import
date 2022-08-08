@@ -976,7 +976,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                     step.setTypAutomatischScriptpfad4(scriptStep.getAttributeValue("scriptPath4"));
 
                     step.setScriptname5(scriptStep.getAttributeValue("scriptName5"));
-                    step.setTypAutomatischScriptpfad5(scriptStep.getAttributeValue("scriptPath4"));
+                    step.setTypAutomatischScriptpfad5(scriptStep.getAttributeValue("scriptPath5"));
                 }
                 Element httpStep = taskElement.getChild("httpStep", goobiNamespace);
                 if (httpStep.getAttributeValue("httpStep").equals("true")) {
