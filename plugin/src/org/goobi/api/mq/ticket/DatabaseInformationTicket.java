@@ -12,6 +12,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +27,8 @@ import org.goobi.api.mq.TicketHandler;
 import org.goobi.beans.Batch;
 import org.goobi.beans.Docket;
 import org.goobi.beans.Institution;
-import org.goobi.beans.LogEntry;
+import org.goobi.beans.JournalEntry;
+import org.goobi.beans.JournalEntry.EntryType;
 import org.goobi.beans.Masterpiece;
 import org.goobi.beans.Masterpieceproperty;
 import org.goobi.beans.Process;
@@ -77,6 +79,7 @@ import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
 import de.sub.goobi.persistence.managers.DocketManager;
 import de.sub.goobi.persistence.managers.InstitutionManager;
+import de.sub.goobi.persistence.managers.JournalManager;
 import de.sub.goobi.persistence.managers.MasterpieceManager;
 import de.sub.goobi.persistence.managers.MetadataManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
@@ -423,7 +426,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         try {
             metadataFile = Paths.get(process.getMetadataFilePath());
             anchorFile = Paths.get(process.getMetadataFilePath().replace("meta.xml", "meta_anchor.xml"));
-        } catch (IOException  | SwapException e) {
+        } catch (IOException | SwapException e) {
             log.error(e);
             return;
         }
@@ -1057,26 +1060,19 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     private void createProcessLog(Element logElement, Process process) {
         if (logElement != null && logElement.getChildren() != null) {
             for (Element entryElement : logElement.getChildren()) {
-                LogEntry entry = new LogEntry();
-                entry.setContent(entryElement.getChild("content", goobiNamespace).getText());
-                entry.setProcessId(process.getId());
+                Date date = new Date();
                 Element creationDateElement = entryElement.getChild("creationDate", goobiNamespace);
                 if (creationDateElement != null && StringUtils.isNotBlank(creationDateElement.getText())) {
                     try {
-                        entry.setCreationDate(dateConverter.parse(creationDateElement.getText()));
+                        date = dateConverter.parse(creationDateElement.getText());
                     } catch (ParseException e) {
                         log.error(e);
                     }
                 }
-                entry.setType(LogType.getByTitle(entryElement.getChild("type", goobiNamespace).getText()));
-                if (entryElement.getChild("secondContent", goobiNamespace) != null) {
-                    entry.setSecondContent(entryElement.getChild("secondContent", goobiNamespace).getText());
-                }
-                if (entryElement.getChild("thirdContent", goobiNamespace) != null) {
-                    entry.setThirdContent(entryElement.getChild("thirdContent", goobiNamespace).getText());
-                }
-                entry.setUserName(entryElement.getChild("user", goobiNamespace).getText());
-                process.getProcessLog().add(entry);
+                JournalEntry entry = new JournalEntry(process.getId(), date, entryElement.getChild("user", goobiNamespace).getText(),
+                        LogType.getByTitle(entryElement.getChild("type", goobiNamespace).getText()),
+                        entryElement.getChild("content", goobiNamespace).getText(), EntryType.PROCESS);
+                process.getJournal().add(entry);
             }
 
         }
@@ -1369,8 +1365,8 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             TemplateManager.saveTemplate(template);
         }
 
-        for (LogEntry logEntry : o.getProcessLog()) {
-            ProcessManager.saveLogEntry(logEntry);
+        for (JournalEntry logEntry : o.getJournal()) {
+            JournalManager.saveJournalEntry(logEntry);
         }
 
     }
