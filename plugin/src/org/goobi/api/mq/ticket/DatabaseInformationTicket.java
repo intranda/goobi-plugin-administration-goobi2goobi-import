@@ -135,7 +135,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         }
 
         String currentRule = ticket.getProperties().get("rule");
-        boolean createNewProcessId = Boolean.valueOf(ticket.getProperties().get("createNewProcessId"));
+        boolean createNewProcessId = Boolean.parseBoolean(ticket.getProperties().get("createNewProcessId"));
         List<Path> folderContentList = StorageProvider.getInstance().listFiles(processFolder.toString());
 
         List<Path> files = new ArrayList<>();
@@ -145,7 +145,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             String filename = path.getFileName().toString();
             if (StorageProvider.getInstance().isDirectory(path)) {
                 folder.add(path);
-            } else if (filename.equals(processId + "_db_export.xml")) {
+            } else if ((processId + "_db_export.xml").equals(filename)) {
                 importFile = path;
             } else {
                 files.add(path);
@@ -270,7 +270,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             Element projectTitleElement = projectElement.getChild("title", goobiNamespace);
             String projectName = projectTitleElement.getText();
 
-            if (StringUtils.isBlank(currentRule) || currentRule.equals("Autodetect rule")) {
+            if (StringUtils.isBlank(currentRule) || "Autodetect rule".equals(currentRule)) {
                 for (Rule rule : ProcessImportConfiguration.getConfiguredItems()) {
                     if (rule.getRulename().equals(projectName)) {
                         selectedRule = rule;
@@ -312,7 +312,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             process.setTitel(titleElement.getText());
 
-            process.setIstTemplate(Boolean.valueOf(processElement.getAttributeValue("template")));
+            process.setIstTemplate(Boolean.parseBoolean(processElement.getAttributeValue("template")));
 
             try {
                 process.setErstellungsdatum(dateConverter.parse(processElement.getChild("creationDate", goobiNamespace).getText()));
@@ -508,11 +508,11 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToChange =
-                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToChange
-                .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
+                        .addAll(xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement()));
                 if (anchorDocument != null) {
                     List<Element> anchorElements =
                             xFactory.compile(xpathFirst, Filters.element(), null, goobi, mets, mods).evaluate(anchorDocument.getRootElement());
@@ -550,7 +550,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
             case "physical":
                 elementsToDelete =
-                xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
+                        xFactory.compile(xpathPhysical, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
                 break;
             case "all":
                 elementsToDelete = xFactory.compile(xpathAll, Filters.element(), null, goobi, mets, mods).evaluate(metsDocument.getRootElement());
@@ -797,7 +797,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         log.error(e);
                     }
                 }
-                property.setType(PropertyType.String);
+                property.setType(PropertyType.STRING);
                 property.setTitel(propertyElement.getChild("name", goobiNamespace).getText());
                 property.setWert(propertyElement.getChild("value", goobiNamespace).getText());
                 masterpiece.getEigenschaftenList().add(property);
@@ -824,7 +824,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         log.error(e);
                     }
                 }
-                property.setType(PropertyType.String);
+                property.setType(PropertyType.STRING);
                 property.setTitel(propertyElement.getChild("name", goobiNamespace).getText());
                 property.setWert(propertyElement.getChild("value", goobiNamespace).getText());
                 template.getEigenschaftenList().add(property);
@@ -868,7 +868,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         log.error(e);
                     }
                 }
-                property.setType(PropertyType.String);
+                property.setType(PropertyType.STRING);
                 property.setProzess(process);
                 property.setTitel(propertyName);
                 property.setWert(propertyValue);
@@ -964,7 +964,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 step.setValidationPlugin(configuration.getAttributeValue("validationPlugin"));
 
                 Element scriptStep = taskElement.getChild("scriptStep", goobiNamespace);
-                if (scriptStep.getAttributeValue("scriptStep").equals("true")) {
+                if ("true".equals(scriptStep.getAttributeValue("scriptStep"))) {
                     step.setTypScriptStep(true);
                     step.setScriptname1(scriptStep.getAttributeValue("scriptName1"));
                     step.setTypAutomatischScriptpfad(scriptStep.getAttributeValue("scriptPath1"));
@@ -982,7 +982,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                     step.setTypAutomatischScriptpfad5(scriptStep.getAttributeValue("scriptPath5"));
                 }
                 Element httpStep = taskElement.getChild("httpStep", goobiNamespace);
-                if (httpStep.getAttributeValue("httpStep").equals("true")) {
+                if ("true".equals(httpStep.getAttributeValue("httpStep"))) {
                     step.setHttpStep(true);
                     step.setHttpCloseStep(Boolean.parseBoolean(httpStep.getAttributeValue("httpCloseStep")));
                     step.setHttpJsonBody(httpStep.getAttributeValue("httpJsonBody"));
@@ -1020,10 +1020,10 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             institution.setLongName(institutionElement.getAttributeValue("longName"));
             institution.setShortName(institutionElement.getAttributeValue("shortName"));
 
-            institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-            institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-            institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-            institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+            institution.setAllowAllAuthentications(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllAuthentications")));
+            institution.setAllowAllDockets(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllDockets")));
+            institution.setAllowAllPlugins(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllPlugins")));
+            institution.setAllowAllRulesets(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllRulesets")));
             InstitutionManager.saveInstitution(institution);
         }
         return institution;
@@ -1203,7 +1203,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     private void assignBatchToProcess(Process process, Element batch) {
 
         String batchId = batch.getAttributeValue("id");
-        if (StringUtils.isNotBlank(batchId) && !batchId.equals("0")) {
+        if (StringUtils.isNotBlank(batchId) && !"0".equals(batchId)) {
             // check for existing batch
             Batch b = ProcessManager.getBatchById(Integer.parseInt(batchId));
             // or create new batch
@@ -1397,13 +1397,13 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                         o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                         o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                         o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                                o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             } else {
                 id = run.insert(connection, insertQuery.toString(), MySQLHelper.resultSetToIntegerHandler, o.getTitel(), o.getAusgabename(),
                         o.isIstTemplate(), o.isSwappedOutHibernate(), o.isInAuswahllisteAnzeigen(), o.getSortHelperStatus(), o.getSortHelperImages(),
                         o.getSortHelperArticles(), new Timestamp(o.getErstellungsdatum().getTime()), o.getProjekt().getId(), o.getRegelsatz().getId(),
                         o.getSortHelperDocstructs(), o.getSortHelperMetadata(), o.getBatch() == null ? null : o.getBatch().getBatchId(),
-                                o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
+                        o.getDocket() == null ? null : o.getDocket().getId(), o.isMediaFolderExists());
             }
             o.setId(id);
         } catch (SQLException e) {
