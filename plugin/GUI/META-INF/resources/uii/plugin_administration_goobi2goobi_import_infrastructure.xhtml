@@ -1,0 +1,162 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:x="http://myfaces.apache.org/tomahawk"
+    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/compositesPG"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui">
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:outputText
+            rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}"
+            styleClass="alert alert-danger d-block"
+            value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"></h:outputText>
+        
+        <ui:fragment rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
+
+            <!-- UPLOAD AREA -->
+            <intranda:box
+                id="uploadBox"
+                boxType="neutral"
+                boxPadding="true"
+                boxClass="mb-3"
+                icon="fa-plug"
+                title="#{msgs.plugin_administration_goobi2goobi_import_uploadFile}">
+                            
+                <div class="draganddroparea" >
+                    <h:form id="uploadform" prependId="false">
+                        <p:fileUpload
+                            listener="#{AdministrationForm.administrationPlugin.handleFileUpload}"
+                            id="upload"
+                            auto="true"
+                            style="text-align:center;"
+                            mode="advanced"
+                            update="resultarea"
+                            multiple="false"
+                            dragDropSupport="true"
+                            label="#{msgs.plugin_administration_goobi2goobi_import_uploadInfrastructureFile}"
+                            allowTypes="/(\.|\/)(xml|zip)$/" />
+                    </h:form>
+                </div>
+            </intranda:box>
+            <!-- // UPLOAD AREA -->
+                
+            
+            <!-- RESULT AREA -->
+            <h:panelGroup id="resultarea">
+                <ui:fragment rendered="#{AdministrationForm.administrationPlugin.filename != null}">
+                    <h:form>
+                        <intranda:box
+                            boxType="primary"
+                            boxPadding="false"
+                            boxForm="true"
+                            icon="fa-plug"
+                            title="#{msgs.plugin_administration_goobi2goobi_import_summary}">
+                                        
+                            <intranda:formOutputText
+                                id="totalNumberOfLdaps"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfLdaps}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfLdaps}"
+                                help=""
+                                name="totalNumberOfLdaps" />
+                            <intranda:formOutputText
+                                id="totalNumberOfProjects"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfProjects}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfProjects}"
+                                help=""
+                                name="totalNumberOfProjects" />
+                            <intranda:formOutputText
+                                id="totalNumberOfRulesets"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfRulesets}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfRulesets}"
+                                help=""
+                                name="totalNumberOfRulesets" />
+                            <intranda:formOutputText
+                                id="totalNumberOfDockets"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfDockets}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfDockets}"
+                                help=""
+                                name="totalNumberOfDockets" />
+                            <intranda:formOutputText
+                                id="totalNumberOfUsers"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfUsers}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfUsers}"
+                                help=""
+                                name="totalNumberOfUsers" />
+                            <intranda:formOutputText
+                                id="totalNumberOfUserGroups"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_totalNumberOfUserGroups}"
+                                field="#{AdministrationForm.administrationPlugin.totalNumberOfUserGroups}"
+                                help=""
+                                name="totalNumberOfUserGroups" />
+                            <intranda:formOutputText
+                                id="numberOfNewLdaps"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewLdaps}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewLdaps}"
+                                help=""
+                                name="numberOfNewLdaps" />
+        
+                            <intranda:formOutputText
+                                id="numberOfNewProjects"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewProjects}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewProjects}"
+                                help=""
+                                name="numberOfNewProjects" />
+        
+                            <intranda:formOutputText
+                                id="numberOfNewRulesets"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewRulesets}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewRulesets}"
+                                help=""
+                                name="numberOfNewRulesets" />
+        
+                            <intranda:formOutputText
+                                id="numberOfNewDockets"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewDockets}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewDockets}"
+                                help=""
+                                name="numberOfNewDockets" />
+        
+                            <intranda:formOutputText
+                                id="numberOfNewUsers"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewUsers}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewUsers}"
+                                help=""
+                                name="numberOfNewUsers" />
+        
+                            <intranda:formOutputText
+                                id="numberOfNewUserGroups"
+                                label="#{msgs.plugin_administration_goobi2goobi_import_numberOfNewUserGroups}"
+                                field="#{AdministrationForm.administrationPlugin.numberOfNewUserGroups}"
+                                help=""
+                                name="numberOfNewUserGroups" />
+                            
+                            <div class="form-actions">
+                                <h:commandLink
+                                    styleClass="btn btn-neutral-600"
+                                    id="finalize"
+                                    action="#{AdministrationForm.administrationPlugin.importSelectedData}">
+                                    <i class="fa fa-exchange"></i>
+                                    <span>
+                                        <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importData}" />
+                                    </span>
+                                </h:commandLink>
+                            </div>
+                            
+                        </intranda:box>
+                    </h:form>
+                </ui:fragment>
+            </h:panelGroup>
+            <!-- // RESULT AREA -->
+            
+        </ui:fragment>
+    </composite:implementation>
+
+</ui:composition>

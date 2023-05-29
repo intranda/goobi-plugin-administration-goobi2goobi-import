@@ -1,0 +1,618 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:composite="http://xmlns.jcp.org/jsf/composite"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:x="http://myfaces.apache.org/tomahawk"
+    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/compositesPG"
+    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+    <composite:interface>
+    </composite:interface>
+
+    <composite:implementation>
+
+        <h:outputText
+            rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}"
+            styleClass="alert alert-danger d-block"
+            value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"/>
+            
+        <ui:fragment rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
+            
+            <intranda:box
+                boxType="primary"
+                boxPadding="false"
+                boxClass="mb-3"
+                icon="fa-plug"
+                title="#{msgs.plugin_administration_configuredRules}">
+                
+                <h:form>
+                    <div class="gw-table gw-table-fixed">
+                        <div class="gw-table-fixed__wrapper">
+    
+                            <x:dataTable
+                                styleClass="table table-hover table-bordered"
+                                value="#{AdministrationForm.administrationPlugin.configurationItemList}"
+                                var="rule">
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulename}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:outputText value="#{rule.rulename}" />
+                                </x:column>
+                                <x:column
+                                    styleClass="tableColumnOverflow"
+                                    id="stepColumn">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepRules}" />
+                                        </x:div>
+                                    </f:facet>
+        
+                                    <h:commandLink
+                                        rendered="#{!rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
+                                        title="#{rule.configuredStepRulesSize}"
+                                        id="displayStepDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredStepRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.stepPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
+                                        title="#{rule.configuredStepRulesSize}"
+                                        id="hideStepDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredStepRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.stepPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredStepRulesSize}"
+                                        rendered="#{rule.configuredStepRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.stepPanelExpanded}">
+        
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="stepList"
+                                                    var="step"
+                                                    value="#{rule.configuredStepRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepName}" />
+                                                        </f:facet>
+                                                        <h:outputText
+                                                            value="#{step.currentStepName}"
+                                                            rendered="#{step.configurationType != 'DELETE_CURRENT_STEP'}">
+                                                            <f:passThroughAttribute
+                                                                name="data-trigger"
+                                                                value="hover" />
+                                                            <f:passThroughAttribute
+                                                                name="data-container"
+                                                                value="body" />
+                                                            <f:passThroughAttribute
+                                                                name="data-toggle"
+                                                                value="popover" />
+                                                            <f:passThroughAttribute
+                                                                name="data-placement"
+                                                                value="top" />
+                                                            <f:passThroughAttribute
+                                                                name="data-html"
+                                                                value="true" />
+                                                            <f:passThroughAttribute
+                                                                name="data-content"
+                                                                value="#{step.summary}" />
+                                                        </h:outputText>
+        
+                                                        <h:outputText
+                                                            value="#{step.currentStepName}"
+                                                            rendered="#{step.configurationType == 'DELETE_CURRENT_STEP'}" />
+                                                    </h:column>
+                                                      <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_changeType}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{msgs[step.configurationType]}" />
+                                                    </h:column>
+                                                </x:dataTable>
+                                            </div>
+                                        </intranda:box>
+        
+                                    </h:panelGroup>
+                                </x:column>
+        
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyRules}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:commandLink
+                                        rendered="#{!rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
+                                        title="#{rule.configuredPropertyRulesSize}"
+                                        id="displayPropertyDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredPropertyRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.propertyPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
+                                        title="#{rule.configuredPropertyRulesSize}"
+                                        id="hidePropertyDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredPropertyRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.propertyPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredPropertyRulesSize}"
+                                        rendered="#{rule.configuredPropertyRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.propertyPanelExpanded}">
+                                        
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="propertyList"
+                                                    var="property"
+                                                    value="#{rule.configuredPropertyRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{property.oldPropertyName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newPropertyName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{property.newPropertyName}" />
+                                                    </h:column>
+        
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyValue}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{property.oldPropertyValue}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newPropertyValue}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{property.newPropertyValue}" />
+                                                    </h:column>
+                                                </x:dataTable>
+                                            </div>
+                                         </intranda:box>
+                                    </h:panelGroup>
+                                </x:column>
+        
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataRules}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:commandLink
+                                        rendered="#{!rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
+                                        title="#{rule.configuredMetadataRulesSize}"
+                                        id="displayMetadataDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredMetadataRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.metadataPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
+                                        title="#{rule.configuredMetadataRulesSize}"
+                                        id="hideMetadataDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredMetadataRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.metadataPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredMetadataRulesSize}"
+                                        rendered="#{rule.configuredMetadataRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.metadataPanelExpanded}">
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="MetadataList"
+                                                    var="Metadata"
+                                                    value="#{rule.configuredMetadataRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Metadata.metadataName}" />
+                                                    </h:column>
+        
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataChangeType}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{msgs[Metadata.configurationType]}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataValueConditionRegex}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Metadata.valueConditionRegex}" />
+                                                    </h:column>
+        
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataValueReplacementRegex}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Metadata.valueReplacementRegex}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataPosition}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Metadata.position}" />
+                                                    </h:column>
+                                                </x:dataTable>
+                                            </div>
+                                        </intranda:box>
+                                    </h:panelGroup>
+                                </x:column>
+        
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulesetRules}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:commandLink
+                                        rendered="#{!rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
+                                        title="#{rule.configuredRulesetRulesSize}"
+                                        id="displayRulesetDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredRulesetRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.rulesetPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
+                                        title="#{rule.configuredRulesetRulesSize}"
+                                        id="hideRulesetDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredRulesetRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.rulesetPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredRulesetRulesSize}"
+                                        rendered="#{rule.configuredRulesetRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.rulesetPanelExpanded}">
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="RulesetList"
+                                                    var="Ruleset"
+                                                    value="#{rule.configuredRulesetRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulesetName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Ruleset.oldRulesetName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newRulesetName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Ruleset.newRulesetName}" />
+                                                    </h:column>
+        
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Ruleset.newFileName}" />
+                                                    </h:column>
+        
+                                                </x:dataTable>
+                                            </div>
+                                        </intranda:box>
+                                    </h:panelGroup>
+                                </x:column>
+        
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_docketRules}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:commandLink
+                                        rendered="#{!rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
+                                        title="#{rule.configuredDocketRulesSize}"
+                                        id="displayDocketDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredDocketRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.docketPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
+                                        title="#{rule.configuredDocketRulesSize}"
+                                        id="hideDocketDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredDocketRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.docketPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredDocketRulesSize}"
+                                        rendered="#{rule.configuredDocketRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.docketPanelExpanded}">
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="DocketList"
+                                                    var="Docket"
+                                                    value="#{rule.configuredDocketRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_docketName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Docket.oldDocketName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newDocketName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Docket.newDocketName}" />
+                                                    </h:column>
+        
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Docket.newFileName}" />
+                                                    </h:column>
+        
+                                                </x:dataTable>
+                                            </div>
+                                        </intranda:box>
+                                    </h:panelGroup>
+                                </x:column>
+                                <x:column styleClass="tableColumnOverflow">
+                                    <f:facet name="header">
+                                        <x:div>
+                                            <!-- Header -->
+                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_projectRules}" />
+                                        </x:div>
+                                    </f:facet>
+                                    <h:commandLink
+                                        rendered="#{!rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
+                                        title="#{rule.configuredProjectRulesSize}"
+                                        id="displayProjectDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-right margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredProjectRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.projectPanelExpanded}"
+                                            value="true" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+        
+                                    <h:commandLink
+                                        rendered="#{rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
+                                        title="#{rule.configuredProjectRulesSize}"
+                                        id="hideProjectDetails" styleClass="font-black">
+                                        <i class="fa fa-angle-down margin-right-5"></i>
+                                        <h:outputText value="#{rule.configuredProjectRulesSize}" />
+                                        <f:setPropertyActionListener
+                                            target="#{rule.projectPanelExpanded}"
+                                            value="false" />
+                                        <f:ajax render="@form" />
+                                    </h:commandLink>
+                                    <h:outputText
+                                        value="#{rule.configuredProjectRulesSize}"
+                                        rendered="#{rule.configuredProjectRulesSize == 0}" />
+                                    <h:panelGroup rendered="#{rule.projectPanelExpanded}">
+                                        <intranda:box
+                                            boxType="primary"
+                                            boxSmall="true"
+                                            boxPadding="false"
+                                            icon="fa-list"
+                                            title="#{msgs.details}">
+                                            
+                                            <div class="gw-table__wrapper">
+                                                <x:dataTable
+                                                    styleClass="table table-hover table-bordered"
+                                                    id="ProjectList"
+                                                    var="Project"
+                                                    value="#{rule.configuredProjectRules}">
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_projectName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Project.oldProjectName}" />
+                                                    </h:column>
+                                                    <h:column>
+                                                        <f:facet name="header">
+                                                            <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newProjectName}" />
+                                                        </f:facet>
+                                                        <h:outputText value="#{Project.newProjectName}" />
+                                                    </h:column>
+                                                </x:dataTable>
+                                            </div>
+                                        </intranda:box>
+                                    </h:panelGroup>
+                                </x:column>
+                            </x:dataTable>
+    
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button
+                            id="reloadRules"
+                            jsf:action="#{AdministrationForm.administrationPlugin.reloadRules}"
+                            class="btn btn-blank"
+                            title="#{msgs.reload}">
+                            <i class="fa fa-refresh"></i>
+                            <span>
+                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_reloadRules}" />
+                            </span>
+                        </button>
+                    </div>
+                </h:form>            
+            </intranda:box>
+            
+            <intranda:box
+                boxType="action"
+                boxPadding="false"
+                boxForm="true"
+                icon="fa-plug"
+                title="#{msgs.plugin_administration_imortArea}">
+                
+                <h:form>
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_rulename}" 
+                            labelFor="rules" labelRequired="true"/>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <h:selectOneListbox
+                                id="rules"
+                                styleClass="form-control form__input"
+                                size="10"
+                                value="#{AdministrationForm.administrationPlugin.currentRule}"
+                                required="false">
+                                <f:selectItems
+                                    value="#{AdministrationForm.administrationPlugin.allRuleNames}"
+                                    var="file"
+                                    itemLabel="#{file}"
+                                    itemValue="#{file}" />
+                            </h:selectOneListbox>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12 col-md-3">
+                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_files}" 
+                            labelFor="files" labelRequired="true"/>
+                        </div>
+                        <div class="col-12 col-md-9">
+                            <h:selectManyListbox
+                                id="files"
+                                styleClass="form-control form__input"
+                                size="10"
+                                value="#{AdministrationForm.administrationPlugin.selectedFilenames}"
+                                required="false">
+                                <f:selectItems
+                                    value="#{AdministrationForm.administrationPlugin.allFilenames}"
+                                    var="file"
+                                    itemLabel="#{file}"
+                                    itemValue="#{file}" />
+                            </h:selectManyListbox>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+
+                        <!-- Save -->
+                        <button
+                            class="btn btn-success"
+                            id="absenden"
+                            type="submit"
+                            jsf:action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
+                            <i class="fa fa-save"></i>
+                            <span>
+                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importFile}" />
+                            </span>
+                        </button>
+                        <button
+                            id="reload"
+                            jsf:action="#{AdministrationForm.administrationPlugin.generateAllFilenames}"
+                            class="btn btn-blank"
+                            title="#{msgs.reload}">
+                            <i class="fa fa-refresh"></i>
+                            <span>
+                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_loadFiles}" />
+                            </span>
+                        </button>
+
+                    </div>
+                </h:form>
+            </intranda:box>
+
+        </ui:fragment>
+
+    </composite:implementation>
+
+</ui:composition>

@@ -87,7 +87,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
     private PluginType type = PluginType.Administration;
 
     @Getter
-    private String gui = "/uii/administration_goobi2goobi_import_infrastructure.xhtml";
+    private String gui = "/uii/plugin_administration_goobi2goobi_import_infrastructure.xhtml";
 
     @Getter
     private String filename;
@@ -191,9 +191,9 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
                 for (Path p : extractedElements) {
                     if (p.getFileName().toString().endsWith(".xml")) {
                         xmlFile = p;
-                    } else if (p.getFileName().toString().equals("dockets")) {
+                    } else if ("dockets".equals(p.getFileName().toString())) {
                         dockets = p;
-                    } else if (p.getFileName().toString().equals("rulesets")) {
+                    } else if ("rulesets".equals(p.getFileName().toString())) {
                         rulesets = p;
                     }
                 }
@@ -483,13 +483,13 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
         }
         if (institution == null) {
             institution = new Institution();
-            institution.setLongName( institutionElement.getAttributeValue("longName"));
-            institution.setShortName( institutionElement.getAttributeValue("shortName"));
+            institution.setLongName(institutionElement.getAttributeValue("longName"));
+            institution.setShortName(institutionElement.getAttributeValue("shortName"));
 
-            institution.setAllowAllAuthentications(Boolean.valueOf(institutionElement.getAttributeValue("allowAllAuthentications")));
-            institution.setAllowAllDockets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllDockets")));
-            institution.setAllowAllPlugins(Boolean.valueOf(institutionElement.getAttributeValue("allowAllPlugins")));
-            institution.setAllowAllRulesets(Boolean.valueOf(institutionElement.getAttributeValue("allowAllRulesets")));
+            institution.setAllowAllAuthentications(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllAuthentications")));
+            institution.setAllowAllDockets(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllDockets")));
+            institution.setAllowAllPlugins(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllPlugins")));
+            institution.setAllowAllRulesets(Boolean.parseBoolean(institutionElement.getAttributeValue("allowAllRulesets")));
             InstitutionManager.saveInstitution(institution);
         }
         return institution;
@@ -669,9 +669,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             }
         }
 
-
         user.setProjekte(projectList);
-
 
         Element institutionElement = userElement.getChild("institution", ns);
         if (institutionElement == null) {

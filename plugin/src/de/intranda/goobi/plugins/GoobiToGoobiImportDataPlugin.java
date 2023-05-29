@@ -177,7 +177,7 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
 
     @Override
     public String getGui() {
-        return "/uii/administration_goobi2goobi_import.xhtml";
+        return "/uii/plugin_administration_goobi2goobi_import.xhtml";
     }
 
     public List<String> getAllRuleNames() {
