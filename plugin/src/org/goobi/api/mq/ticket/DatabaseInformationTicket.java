@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.lang.StringUtils;
-import org.apache.oro.text.perl.Perl5Util;
 import org.goobi.api.mq.TaskTicket;
 import org.goobi.api.mq.TicketHandler;
 import org.goobi.beans.Batch;
@@ -92,6 +91,7 @@ import de.sub.goobi.persistence.managers.TemplateManager;
 import de.sub.goobi.persistence.managers.UserManager;
 import de.sub.goobi.persistence.managers.UsergroupManager;
 import lombok.extern.log4j.Log4j;
+import ugh.fileformats.mets.MetsModsImportExport;
 
 @Log4j
 public class DatabaseInformationTicket extends ExportDms implements TicketHandler<PluginReturnValue> {
@@ -487,7 +487,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     }
 
     private void changeMetadata(Document metsDocument, Document anchorDocument, MetadataConfigurationItem mci, XPathFactory xFactory) {
-        Perl5Util perlUtil = new Perl5Util();
+
         String xpathFirst = "/mets:mets/mets:dmdSec[1]/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/goobi:goobi/goobi:metadata[@name='"
                 + mci.getMetadataName() + "']";
         String xpathAll = "/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData/mods:mods/mods:extension/goobi:goobi/goobi:metadata[@name='"
@@ -523,8 +523,12 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 break;
         }
         for (Element element : elementsToChange) {
-            if (StringUtils.isBlank(mci.getValueConditionRegex()) || perlUtil.match(mci.getValueConditionRegex(), element.getText())) {
-                element.setText(perlUtil.substitute(mci.getValueReplacementRegex(), element.getText()));
+
+            Pattern pattern = Pattern.compile(mci.getValueConditionRegex());
+            Matcher matcher = pattern.matcher(element.getText());
+            if (StringUtils.isBlank(mci.getValueConditionRegex()) || matcher.find()) {
+                List<String> parts = MetsModsImportExport.splitRegularExpression(mci.getValueReplacementRegex());
+                element.setText(element.getText().replaceAll(parts.get(0), parts.get(1)));
             }
         }
     }
