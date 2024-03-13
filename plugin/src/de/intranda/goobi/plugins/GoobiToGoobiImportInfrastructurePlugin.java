@@ -1009,7 +1009,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Files.createDirectories(destDir);
         }
 
-        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile)) {
+        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, this.getClass().getClassLoader())) {
             final Path root = zipFileSystem.getRootDirectories().iterator().next();
 
             walkFileTree(root, new SimpleFileVisitor<Path>() {
