@@ -20,6 +20,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.io.ByteOrderMark;
@@ -1009,7 +1010,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Files.createDirectories(destDir);
         }
 
-        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, null, null)) {
+        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, new HashMap<>())) {
             final Path root = zipFileSystem.getRootDirectories().iterator().next();
 
             walkFileTree(root, new SimpleFileVisitor<Path>() {
