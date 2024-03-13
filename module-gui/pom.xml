@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>io.goobi.workflow.plugin</groupId>
-    <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import-deps</artifactId>
+    <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import</artifactId>
     <version>24.03-SNAPSHOT</version>
   </parent>
-  <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import-deps-gui</artifactId>
+  <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import-gui</artifactId>
   <packaging>jar</packaging>
   <build>
     <resources>

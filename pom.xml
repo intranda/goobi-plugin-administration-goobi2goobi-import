@@ -4,9 +4,10 @@
     <groupId>io.goobi.workflow</groupId>
     <artifactId>workflow-base</artifactId>
     <version>24.03-SNAPSHOT</version>
+    <relativePath />
   </parent>
   <groupId>io.goobi.workflow.plugin</groupId>
-  <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import-deps</artifactId>
+  <artifactId>plugin-workflow-goobi-plugin-administration-goobi2goobi-import</artifactId>
   <packaging>pom</packaging>
   <modules>
     <module>module-base</module>
