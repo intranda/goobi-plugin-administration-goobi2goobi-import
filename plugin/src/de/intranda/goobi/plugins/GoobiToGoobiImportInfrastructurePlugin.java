@@ -3,7 +3,6 @@ package de.intranda.goobi.plugins;
 import static java.nio.file.Files.copy;
 import static java.nio.file.Files.walkFileTree;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.ByteOrderMark;
 import org.apache.commons.io.input.BOMInputStream;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.RandomNumberGenerator;
@@ -225,12 +225,11 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
         newUsers = new ArrayList<>();
         newUserGroups = new ArrayList<>();
 
-        // read xml file
-        InputStream fis = null;
-        BOMInputStream in = null;
-        try {
-            fis = new FileInputStream(xmlFile.toFile());
-            in = new BOMInputStream(fis, false);
+        try (BOMInputStream in = BOMInputStream.builder()
+                .setPath(xmlFile)
+                .setByteOrderMarks(ByteOrderMark.UTF_8)
+                .setInclude(false)
+                .get()) {
 
             SAXBuilder builder = new SAXBuilder();
             Document document = builder.build(in);
@@ -336,23 +335,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             log.error(e);
             Helper.setFehlerMeldung(Helper.getTranslation("plugin_kb_invalidFile"));
 
-        } finally {
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    log.error(e);
-                }
-            }
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    log.error(e);
-                }
-            }
         }
-
     }
 
     private Usergroup createUsergroup(Element usergroupElement) {
@@ -1026,7 +1009,7 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Files.createDirectories(destDir);
         }
 
-        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, null)) {
+        try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, null, null)) {
             final Path root = zipFileSystem.getRootDirectories().iterator().next();
 
             walkFileTree(root, new SimpleFileVisitor<Path>() {
