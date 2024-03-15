@@ -5,7 +5,7 @@
     <artifactId>plugin-administration-goobi2goobi-import</artifactId>
     <version>24.03-SNAPSHOT</version>
   </parent>
-  <artifactId>plugin-administration-goobi2goobi-import-base</artifactId>
+  <artifactId>plugin-administration-goobi2goobi-import-job</artifactId>
   <packaging>jar</packaging>
   <dependencies>
     <dependency>
