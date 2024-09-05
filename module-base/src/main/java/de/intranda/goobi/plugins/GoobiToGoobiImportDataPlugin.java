@@ -7,14 +7,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import javax.jms.JMSException;
 
 import org.apache.commons.lang.StringUtils;
 import org.goobi.api.mq.QueueType;
@@ -23,20 +22,20 @@ import org.goobi.api.mq.TicketGenerator;
 import org.goobi.production.enums.PluginType;
 import org.goobi.production.plugin.interfaces.IAdministrationPlugin;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ListObjectsRequest;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-
 import de.intranda.goobi.importrules.ProcessImportConfiguration;
 import de.intranda.goobi.importrules.Rule;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.helper.Helper;
 import de.sub.goobi.helper.S3FileUtils;
+import jakarta.jms.JMSException;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 import net.xeoh.plugins.base.annotations.PluginImplementation;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.S3Object;
 
 @PluginImplementation
 @Log4j
@@ -127,25 +126,32 @@ public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
         Callable<List<String>> callable = () -> {
             List<String> allFilenames = new ArrayList<>();
             if (ConfigurationHelper.getInstance().useS3()) {
-                //
-                AmazonS3 s3 = S3FileUtils.createS3Client();
+
+                S3AsyncClient s3 = S3FileUtils.createS3Client();
                 String bucket = ProcessImportConfiguration.getBucket();
                 String dbExportPrefix = ProcessImportConfiguration.getDbExportPrefix();
-                ListObjectsRequest req = new ListObjectsRequest().withBucketName(bucket).withPrefix(dbExportPrefix);
-                ObjectListing listing = s3.listObjects(req);
-                for (S3ObjectSummary os : listing.getObjectSummaries()) {
-                    String key = os.getKey();
-                    String newKey = key.substring(dbExportPrefix.length());
-                    allFilenames.add(newKey);
-                }
-                while (listing.isTruncated()) {
-                    listing = s3.listNextBatchOfObjects(listing);
-                    for (S3ObjectSummary os : listing.getObjectSummaries()) {
-                        String key = os.getKey();
-                        String newKey = key.substring(dbExportPrefix.length());
-                        allFilenames.add(newKey);
+
+                String nextContinuationToken = null;
+                // we can list max 1000 objects in one request, so we need to paginate through the results
+                do {
+                    ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder()
+                            .bucket(bucket)
+                            .delimiter("/")
+                            .prefix(dbExportPrefix)
+                            .continuationToken(nextContinuationToken);
+
+                    CompletableFuture<ListObjectsV2Response> response = s3.listObjectsV2(requestBuilder.build());
+                    ListObjectsV2Response resp = response.toCompletableFuture().join();
+
+                    nextContinuationToken = resp.nextContinuationToken();
+
+                    List<S3Object> contents = resp.contents();
+                    for (S3Object obj : contents) {
+                        String key = obj.key().substring(dbExportPrefix.length());
+                        allFilenames.add(key);
                     }
-                }
+                } while (nextContinuationToken != null);
+
             } else {
                 // search for all  folder names in /opt/digiverso/goobi/metadata/
                 // check, if a file *_db_export.xml exists in the process folder

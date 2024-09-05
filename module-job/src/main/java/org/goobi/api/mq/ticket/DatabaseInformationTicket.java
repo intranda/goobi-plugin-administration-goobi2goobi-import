@@ -3,6 +3,7 @@ package org.goobi.api.mq.ticket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,11 +54,6 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.xpath.XPathFactory;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.ObjectListing;
-import com.amazonaws.services.s3.model.S3Object;
-import com.amazonaws.services.s3.model.S3ObjectSummary;
-
 import de.intranda.goobi.importrules.DocketConfigurationItem;
 import de.intranda.goobi.importrules.MetadataConfigurationItem;
 import de.intranda.goobi.importrules.ProcessImportConfiguration;
@@ -91,11 +88,21 @@ import de.sub.goobi.persistence.managers.TemplateManager;
 import de.sub.goobi.persistence.managers.UserManager;
 import de.sub.goobi.persistence.managers.UsergroupManager;
 import lombok.extern.log4j.Log4j;
+import software.amazon.awssdk.core.ResponseInputStream;
+import software.amazon.awssdk.core.async.AsyncResponseTransformer;
+import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Request;
+import software.amazon.awssdk.services.s3.model.ListObjectsV2Response;
+import software.amazon.awssdk.services.s3.model.S3Object;
 import ugh.fileformats.mets.MetsModsImportExport;
 
 @Log4j
 public class DatabaseInformationTicket extends ExportDms implements TicketHandler<PluginReturnValue> {
 
+    private static final long serialVersionUID = -3020845450740336089L;
     // xml conversion
     private static final Namespace goobiNamespace = Namespace.getNamespace("http://www.goobi.io/logfile");
     private static final SimpleDateFormat dateConverter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -186,20 +193,38 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
         if (ConfigurationHelper.getInstance().useS3()) {
             // move meta.xml and meta_anchor.xml to efs
-            AmazonS3 s3 = S3FileUtils.createS3Client();
+            S3AsyncClient s3;
+            try {
+                s3 = S3FileUtils.createS3Client();
+            } catch (URISyntaxException e) {
+                log.error(e);
+                return PluginReturnValue.ERROR;
+            }
             ConfigurationHelper config = ConfigurationHelper.getInstance();
             List<String> metaList = getMetaHistory(processId, s3, config);
             log.debug("downloading " + metaList.size() + " files");
             for (String key : metaList) {
-                try (S3Object objMeta = s3.getObject(config.getS3Bucket(), key); InputStream is = objMeta.getObjectContent()) {
+
+                CompletableFuture<ResponseInputStream<GetObjectResponse>> responseInputStream = s3.getObject(GetObjectRequest.builder()
+                        .bucket(config.getS3Bucket())
+                        .key(key)
+                        .build(),
+                        AsyncResponseTransformer.toBlockingInputStream());
+                try (InputStream is = responseInputStream.toCompletableFuture().join()) {
+
                     String basename = key.substring(key.lastIndexOf('/') + 1);
                     Path filename = processFolder.resolve(basename);
                     log.debug(filename);
                     Files.copy(is, processFolder.resolve(basename));
-                    s3.deleteObject(config.getS3Bucket(), key);
                 } catch (IOException e1) {
                     log.error(e1);
                 }
+                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                        .bucket(config.getS3Bucket())
+                        .key(key)
+                        .build();
+
+                s3.deleteObject(deleteObjectRequest);
             }
         }
 
@@ -230,27 +255,33 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     /**
      * Returns a list of all files in provided prefix matching "meta.*xml(?:.\\d)?", so meta.xml, meta_anchor.xml and their previous versions
      */
-    private List<String> getMetaHistory(String processId, AmazonS3 s3, ConfigurationHelper config) {
+    private List<String> getMetaHistory(String processId, S3AsyncClient s3, ConfigurationHelper config) {
         Pattern pattern = Pattern.compile("meta.*xml(?:.\\d)?");
-
-        ObjectListing ol = s3.listObjects(config.getS3Bucket(), processId);
         List<String> metaList = new ArrayList<>();
-        for (S3ObjectSummary os : ol.getObjectSummaries()) {
-            Matcher matcher = pattern.matcher(os.getKey());
-            if (matcher.find()) {
-                metaList.add(os.getKey());
-            }
 
-        }
-        while (ol.isTruncated()) {
-            ol = s3.listNextBatchOfObjects(ol);
-            for (S3ObjectSummary os : ol.getObjectSummaries()) {
-                Matcher matcher = pattern.matcher(os.getKey());
+        String nextContinuationToken = null;
+        // we can list max 1000 objects in one request, so we need to paginate through the results
+        do {
+            ListObjectsV2Request.Builder requestBuilder = ListObjectsV2Request.builder()
+                    .bucket(config.getS3Bucket())
+                    .delimiter("/")
+                    .prefix(processId)
+                    .continuationToken(nextContinuationToken);
+
+            CompletableFuture<ListObjectsV2Response> response = s3.listObjectsV2(requestBuilder.build());
+            ListObjectsV2Response resp = response.toCompletableFuture().join();
+
+            nextContinuationToken = resp.nextContinuationToken();
+
+            List<S3Object> contents = resp.contents();
+            for (S3Object obj : contents) {
+                Matcher matcher = pattern.matcher(obj.key());
                 if (matcher.find()) {
-                    metaList.add(os.getKey());
+                    metaList.add(obj.key());
                 }
             }
-        }
+        } while (nextContinuationToken != null);
+
         return metaList;
     }
 
