@@ -823,7 +823,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
             for (Element propertyElement : properties.getChildren()) {
                 Masterpieceproperty property = new Masterpieceproperty();
-                property.setContainer(Integer.parseInt(propertyElement.getAttributeValue("container")));
+                property.setContainer(propertyElement.getAttributeValue("container"));
                 Element creationDate = propertyElement.getChild("creationDate", goobiNamespace);
                 if (creationDate != null && StringUtils.isNotBlank(creationDate.getText())) {
                     try {
@@ -850,7 +850,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             process.setVorlagen(list);
             for (Element propertyElement : properties.getChildren()) {
                 Templateproperty property = new Templateproperty();
-                property.setContainer(Integer.parseInt(propertyElement.getAttributeValue("container")));
+                property.setContainer(propertyElement.getAttributeValue("container"));
                 Element creationDate = propertyElement.getChild("creationDate", goobiNamespace);
                 if (creationDate != null && StringUtils.isNotBlank(creationDate.getText())) {
                     try {
@@ -894,7 +894,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
 
                 Processproperty property = new Processproperty();
 
-                property.setContainer(Integer.parseInt(propertyElement.getAttributeValue("container")));
+                property.setContainer(propertyElement.getAttributeValue("container"));
                 Element creationDate = propertyElement.getChild("creationDate", goobiNamespace);
                 if (creationDate != null && StringUtils.isNotBlank(creationDate.getText())) {
                     try {
