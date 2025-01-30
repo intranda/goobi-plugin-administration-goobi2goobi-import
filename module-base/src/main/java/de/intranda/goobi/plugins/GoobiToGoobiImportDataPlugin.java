@@ -41,6 +41,8 @@ import software.amazon.awssdk.services.s3.model.S3Object;
 @Log4j
 public class GoobiToGoobiImportDataPlugin implements IAdministrationPlugin {
 
+    private static final long serialVersionUID = 2504028764016709397L;
+
     @Getter
     private String title = "intranda_administration_goobi2goobi_import_data";
 

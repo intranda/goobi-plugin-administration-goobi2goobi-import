@@ -3,7 +3,9 @@
 		<exec executable="mvn">
 			<arg value="package"/>
 		</exec>
-		<copy file="module-gui/target/plugin_intranda_administration_goobi2goobi_import-GUI.jar" todir="/opt/digiverso/goobi/plugins/GUI/"/>
-		<copy file="module-main/target/plugin_intranda_administration_goobi2goobi_import.jar" todir="/opt/digiverso/goobi/plugins/administration/"/>
+        <copy file="module-base/target/plugin-administration-goobi2goobi-import-base.jar" todir="/opt/digiverso/goobi/plugins/administration/"/>
+        <copy file="module-gui/target/plugin-administration-goobi2goobi-import-gui.jar" todir="/opt/digiverso/goobi/plugins/GUI/"/>
+        <copy file="module-job/target/plugin-administration-goobi2goobi-import-job.jar" todir="/opt/digiverso/goobi/plugins/GUI/"/>
+        <copy file="module-lib/target/plugin-administration-goobi2goobi-import-lib.jar" todir="/opt/digiverso/goobi/plugins/GUI/"/>
 	</target>
 </project>
