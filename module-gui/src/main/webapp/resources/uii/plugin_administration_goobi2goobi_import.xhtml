@@ -4,7 +4,6 @@
     xmlns:composite="http://xmlns.jcp.org/jsf/composite"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:x="http://myfaces.apache.org/tomahawk"
     xmlns:intranda="http://xmlns.jcp.org/jsf/composite/compositesPG"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
@@ -33,26 +32,26 @@
                     <div class="gw-table gw-table-fixed">
                         <div class="gw-table-fixed__wrapper">
     
-                            <x:dataTable
+                            <h:dataTable
                                 styleClass="table table-hover table-bordered"
                                 value="#{AdministrationForm.administrationPlugin.configurationItemList}"
                                 var="rule">
-                                <x:column styleClass="tableColumnOverflow">
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulename}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:outputText value="#{rule.rulename}" />
-                                </x:column>
-                                <x:column
+                                </h:column>
+                                <h:column
                                     styleClass="tableColumnOverflow"
                                     id="stepColumn">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
         
                                     <h:commandLink
@@ -91,7 +90,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="stepList"
                                                     var="step"
@@ -133,19 +132,19 @@
                                                         </f:facet>
                                                         <h:outputText value="#{msgs[step.configurationType]}" />
                                                     </h:column>
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                         </intranda:box>
         
                                     </h:panelGroup>
-                                </x:column>
+                                </h:column>
         
-                                <x:column styleClass="tableColumnOverflow">
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:commandLink
                                         rendered="#{!rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
@@ -183,7 +182,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="propertyList"
                                                     var="property"
@@ -213,18 +212,18 @@
                                                         </f:facet>
                                                         <h:outputText value="#{property.newPropertyValue}" />
                                                     </h:column>
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                          </intranda:box>
                                     </h:panelGroup>
-                                </x:column>
+                                </h:column>
         
-                                <x:column styleClass="tableColumnOverflow">
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:commandLink
                                         rendered="#{!rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
@@ -261,7 +260,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="MetadataList"
                                                     var="Metadata"
@@ -298,18 +297,18 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Metadata.position}" />
                                                     </h:column>
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                         </intranda:box>
                                     </h:panelGroup>
-                                </x:column>
+                                </h:column>
         
-                                <x:column styleClass="tableColumnOverflow">
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_rulesetRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:commandLink
                                         rendered="#{!rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
@@ -346,7 +345,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="RulesetList"
                                                     var="Ruleset"
@@ -371,18 +370,18 @@
                                                         <h:outputText value="#{Ruleset.newFileName}" />
                                                     </h:column>
         
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                         </intranda:box>
                                     </h:panelGroup>
-                                </x:column>
+                                </h:column>
         
-                                <x:column styleClass="tableColumnOverflow">
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_docketRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:commandLink
                                         rendered="#{!rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
@@ -419,7 +418,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="DocketList"
                                                     var="Docket"
@@ -444,17 +443,17 @@
                                                         <h:outputText value="#{Docket.newFileName}" />
                                                     </h:column>
         
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                         </intranda:box>
                                     </h:panelGroup>
-                                </x:column>
-                                <x:column styleClass="tableColumnOverflow">
+                                </h:column>
+                                <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
-                                        <x:div>
+                                        <div>
                                             <!-- Header -->
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_projectRules}" />
-                                        </x:div>
+                                        </div>
                                     </f:facet>
                                     <h:commandLink
                                         rendered="#{!rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
@@ -491,7 +490,7 @@
                                             title="#{msgs.details}">
                                             
                                             <div class="gw-table__wrapper">
-                                                <x:dataTable
+                                                <h:dataTable
                                                     styleClass="table table-hover table-bordered"
                                                     id="ProjectList"
                                                     var="Project"
@@ -508,12 +507,12 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Project.newProjectName}" />
                                                     </h:column>
-                                                </x:dataTable>
+                                                </h:dataTable>
                                             </div>
                                         </intranda:box>
                                     </h:panelGroup>
-                                </x:column>
-                            </x:dataTable>
+                                </h:column>
+                            </h:dataTable>
     
                         </div>
                     </div>

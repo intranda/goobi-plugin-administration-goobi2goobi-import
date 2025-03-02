@@ -71,6 +71,8 @@ import net.xeoh.plugins.base.annotations.PluginImplementation;
 @PluginImplementation
 @Log4j
 public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPlugin {
+    private static final long serialVersionUID = 5159053196875941782L;
+
     // upload zip file
     // extract zip file
     // read xml file
