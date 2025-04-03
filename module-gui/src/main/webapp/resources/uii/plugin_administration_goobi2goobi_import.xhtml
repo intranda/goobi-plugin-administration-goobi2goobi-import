@@ -4,7 +4,7 @@
     xmlns:composite="http://xmlns.jcp.org/jsf/composite"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:f="http://xmlns.jcp.org/jsf/core"
-    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/compositesPG"
+    xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
     xmlns:jsf="http://xmlns.jcp.org/jsf">
@@ -18,20 +18,20 @@
             rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}"
             styleClass="alert alert-danger d-block"
             value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"/>
-            
+
         <ui:fragment rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
-            
+
             <intranda:box
                 boxType="primary"
                 boxPadding="false"
                 boxClass="mb-3"
                 icon="fa-plug"
                 title="#{msgs.plugin_administration_configuredRules}">
-                
+
                 <h:form>
                     <div class="gw-table gw-table-fixed">
                         <div class="gw-table-fixed__wrapper">
-    
+
                             <h:dataTable
                                 styleClass="table table-hover table-bordered"
                                 value="#{AdministrationForm.administrationPlugin.configurationItemList}"
@@ -53,7 +53,7 @@
                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_stepRules}" />
                                         </div>
                                     </f:facet>
-        
+
                                     <h:commandLink
                                         rendered="#{!rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                         title="#{rule.configuredStepRulesSize}"
@@ -65,7 +65,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                         title="#{rule.configuredStepRulesSize}"
@@ -81,14 +81,14 @@
                                         value="#{rule.configuredStepRulesSize}"
                                         rendered="#{rule.configuredStepRulesSize == 0}" />
                                     <h:panelGroup rendered="#{rule.stepPanelExpanded}">
-        
+
                                         <intranda:box
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -121,7 +121,7 @@
                                                                 name="data-content"
                                                                 value="#{step.summary}" />
                                                         </h:outputText>
-        
+
                                                         <h:outputText
                                                             value="#{step.currentStepName}"
                                                             rendered="#{step.configurationType == 'DELETE_CURRENT_STEP'}" />
@@ -135,10 +135,10 @@
                                                 </h:dataTable>
                                             </div>
                                         </intranda:box>
-        
+
                                     </h:panelGroup>
                                 </h:column>
-        
+
                                 <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
                                         <div>
@@ -157,7 +157,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
                                         title="#{rule.configuredPropertyRulesSize}"
@@ -173,14 +173,14 @@
                                         value="#{rule.configuredPropertyRulesSize}"
                                         rendered="#{rule.configuredPropertyRulesSize == 0}" />
                                     <h:panelGroup rendered="#{rule.propertyPanelExpanded}">
-                                        
+
                                         <intranda:box
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -199,7 +199,7 @@
                                                         </f:facet>
                                                         <h:outputText value="#{property.newPropertyName}" />
                                                     </h:column>
-        
+
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_propertyValue}" />
@@ -217,7 +217,7 @@
                                          </intranda:box>
                                     </h:panelGroup>
                                 </h:column>
-        
+
                                 <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
                                         <div>
@@ -236,7 +236,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
                                         title="#{rule.configuredMetadataRulesSize}"
@@ -258,7 +258,7 @@
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -271,7 +271,7 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Metadata.metadataName}" />
                                                     </h:column>
-        
+
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataChangeType}" />
@@ -284,7 +284,7 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Metadata.valueConditionRegex}" />
                                                     </h:column>
-        
+
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_metadataValueReplacementRegex}" />
@@ -302,7 +302,7 @@
                                         </intranda:box>
                                     </h:panelGroup>
                                 </h:column>
-        
+
                                 <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
                                         <div>
@@ -321,7 +321,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
                                         title="#{rule.configuredRulesetRulesSize}"
@@ -343,7 +343,7 @@
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -362,20 +362,20 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Ruleset.newRulesetName}" />
                                                     </h:column>
-        
+
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
                                                         </f:facet>
                                                         <h:outputText value="#{Ruleset.newFileName}" />
                                                     </h:column>
-        
+
                                                 </h:dataTable>
                                             </div>
                                         </intranda:box>
                                     </h:panelGroup>
                                 </h:column>
-        
+
                                 <h:column styleClass="tableColumnOverflow">
                                     <f:facet name="header">
                                         <div>
@@ -394,7 +394,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
                                         title="#{rule.configuredDocketRulesSize}"
@@ -416,7 +416,7 @@
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -435,14 +435,14 @@
                                                         </f:facet>
                                                         <h:outputText value="#{Docket.newDocketName}" />
                                                     </h:column>
-        
+
                                                     <h:column>
                                                         <f:facet name="header">
                                                             <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_newFileName}" />
                                                         </f:facet>
                                                         <h:outputText value="#{Docket.newFileName}" />
                                                     </h:column>
-        
+
                                                 </h:dataTable>
                                             </div>
                                         </intranda:box>
@@ -466,7 +466,7 @@
                                             value="true" />
                                         <f:ajax render="@form" />
                                     </h:commandLink>
-        
+
                                     <h:commandLink
                                         rendered="#{rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
                                         title="#{rule.configuredProjectRulesSize}"
@@ -488,7 +488,7 @@
                                             boxPadding="false"
                                             icon="fa-list"
                                             title="#{msgs.details}">
-                                            
+
                                             <div class="gw-table__wrapper">
                                                 <h:dataTable
                                                     styleClass="table table-hover table-bordered"
@@ -513,10 +513,10 @@
                                     </h:panelGroup>
                                 </h:column>
                             </h:dataTable>
-    
+
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button
                             id="reloadRules"
@@ -529,20 +529,20 @@
                             </span>
                         </button>
                     </div>
-                </h:form>            
+                </h:form>
             </intranda:box>
-            
+
             <intranda:box
                 boxType="action"
                 boxPadding="false"
                 boxForm="true"
                 icon="fa-plug"
                 title="#{msgs.plugin_administration_goobi2goobi_import_importArea}">
-                
+
                 <h:form>
                     <div class="row">
                         <div class="col-12 col-md-3">
-                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_rulename}" 
+                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_rulename}"
                             labelFor="rules" labelRequired="true"/>
                         </div>
                         <div class="col-12 col-md-9">
@@ -560,10 +560,10 @@
                             </h:selectOneListbox>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-12 col-md-3">
-                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_files}" 
+                            <intranda:formLabel label="#{msgs.plugin_administration_goobi2goobi_import_files}"
                             labelFor="files" labelRequired="true"/>
                         </div>
                         <div class="col-12 col-md-9">
