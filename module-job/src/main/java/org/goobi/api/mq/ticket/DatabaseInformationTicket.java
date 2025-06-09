@@ -27,19 +27,16 @@ import org.goobi.api.mq.TaskTicket;
 import org.goobi.api.mq.TicketHandler;
 import org.goobi.beans.Batch;
 import org.goobi.beans.Docket;
+import org.goobi.beans.GoobiProperty;
 import org.goobi.beans.Institution;
 import org.goobi.beans.JournalEntry;
 import org.goobi.beans.JournalEntry.EntryType;
-import org.goobi.beans.Masterpiece;
-import org.goobi.beans.Masterpieceproperty;
 import org.goobi.beans.Process;
 import org.goobi.beans.Processproperty;
 import org.goobi.beans.Project;
 import org.goobi.beans.ProjectFileGroup;
 import org.goobi.beans.Ruleset;
 import org.goobi.beans.Step;
-import org.goobi.beans.Template;
-import org.goobi.beans.Templateproperty;
 import org.goobi.beans.User;
 import org.goobi.beans.Usergroup;
 import org.goobi.production.enums.LogType;
@@ -76,7 +73,6 @@ import de.sub.goobi.helper.exceptions.SwapException;
 import de.sub.goobi.persistence.managers.DocketManager;
 import de.sub.goobi.persistence.managers.InstitutionManager;
 import de.sub.goobi.persistence.managers.JournalManager;
-import de.sub.goobi.persistence.managers.MasterpieceManager;
 import de.sub.goobi.persistence.managers.MetadataManager;
 import de.sub.goobi.persistence.managers.MySQLHelper;
 import de.sub.goobi.persistence.managers.ProcessManager;
@@ -84,7 +80,6 @@ import de.sub.goobi.persistence.managers.ProjectManager;
 import de.sub.goobi.persistence.managers.PropertyManager;
 import de.sub.goobi.persistence.managers.RulesetManager;
 import de.sub.goobi.persistence.managers.StepManager;
-import de.sub.goobi.persistence.managers.TemplateManager;
 import de.sub.goobi.persistence.managers.UserManager;
 import de.sub.goobi.persistence.managers.UsergroupManager;
 import lombok.extern.log4j.Log4j;
@@ -382,10 +377,6 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             }
             // properties
             createProcessProperties(processElement.getChild("properties", goobiNamespace), process, selectedRule);
-            // templates
-            createTemplateProperties(processElement.getChild("templates", goobiNamespace), process);
-            // workpiece
-            createWorkpieceProperties(processElement.getChild("workpiece", goobiNamespace), process);
 
             // tasks
             createTasks(processElement.getChild("tasks", goobiNamespace), process, selectedRule.getProcessRule().isSkipUserImport());
@@ -810,62 +801,6 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         if (sci.getStepStatus() != null) {
             step.setBearbeitungsstatusEnum(StepStatus.getStatusFromValue(sci.getStepStatus()));
         }
-    }
-
-    private void createWorkpieceProperties(Element properties, Process process) {
-        if (properties != null && properties.getChildren() != null) {
-            Masterpiece masterpiece = new Masterpiece();
-            List<Masterpiece> list = new ArrayList<>();
-            list.add(masterpiece);
-            masterpiece.setProzess(process);
-            masterpiece.setProcessId(process.getId());
-            process.setWerkstuecke(list);
-
-            for (Element propertyElement : properties.getChildren()) {
-                Masterpieceproperty property = new Masterpieceproperty();
-                property.setContainer(propertyElement.getAttributeValue("container"));
-                Element creationDate = propertyElement.getChild("creationDate", goobiNamespace);
-                if (creationDate != null && StringUtils.isNotBlank(creationDate.getText())) {
-                    try {
-                        property.setCreationDate(dateConverter.parse(propertyElement.getText()));
-                    } catch (ParseException e) {
-                        log.error(e);
-                    }
-                }
-                property.setType(PropertyType.STRING);
-                property.setTitel(propertyElement.getChild("name", goobiNamespace).getText());
-                property.setWert(propertyElement.getChild("value", goobiNamespace).getText());
-                masterpiece.getEigenschaftenList().add(property);
-            }
-        }
-    }
-
-    private void createTemplateProperties(Element properties, Process process) {
-        if (properties != null && properties.getChildren() != null) {
-            Template template = new Template();
-            List<Template> list = new ArrayList<>();
-            list.add(template);
-            template.setProzess(process);
-            template.setProcessId(process.getId());
-            process.setVorlagen(list);
-            for (Element propertyElement : properties.getChildren()) {
-                Templateproperty property = new Templateproperty();
-                property.setContainer(propertyElement.getAttributeValue("container"));
-                Element creationDate = propertyElement.getChild("creationDate", goobiNamespace);
-                if (creationDate != null && StringUtils.isNotBlank(creationDate.getText())) {
-                    try {
-                        property.setCreationDate(dateConverter.parse(propertyElement.getText()));
-                    } catch (ParseException e) {
-                        log.error(e);
-                    }
-                }
-                property.setType(PropertyType.STRING);
-                property.setTitel(propertyElement.getChild("name", goobiNamespace).getText());
-                property.setWert(propertyElement.getChild("value", goobiNamespace).getText());
-                template.getEigenschaftenList().add(property);
-            }
-        }
-
     }
 
     private void createProcessProperties(Element properties, Process process, Rule selectedRule) {
@@ -1386,18 +1321,9 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
             StepManager.saveStep(s);
         }
 
-        List<Processproperty> properties = o.getEigenschaften();
-        for (Processproperty pe : properties) {
-            PropertyManager.saveProcessProperty(pe);
-        }
-
-        for (Masterpiece object : o.getWerkstuecke()) {
-            MasterpieceManager.saveMasterpiece(object);
-        }
-
-        List<Template> templates = o.getVorlagen();
-        for (Template template : templates) {
-            TemplateManager.saveTemplate(template);
+        List<GoobiProperty> properties = o.getProperties();
+        for (GoobiProperty pe : properties) {
+            PropertyManager.saveProperty(pe);
         }
 
         for (JournalEntry logEntry : o.getJournal()) {
