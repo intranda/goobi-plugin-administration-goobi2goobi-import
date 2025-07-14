@@ -5,7 +5,7 @@ published: true
 ---
 The export from the source system consists of up to three sub-steps. However, before the export can take place, it must first be specified within the role system of Goobi workflow that the user must have export permissions. Information on the configurations to be made can be found here:
 
-[Installation](page_01_00_en.md)
+[Installation](../01_config/en.md)
 
 After configuring the required user rights, the actual export can begin. In most cases, only the first of the following three steps will be necessary.
 

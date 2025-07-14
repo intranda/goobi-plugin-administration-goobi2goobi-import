@@ -5,7 +5,7 @@ published: true
 ---
 Der Import von Daten auf dem Zielsystem findet mittels zweier verschiedener Plugins statt. Diese müssen zunächst installiert und entsprechend konfiguriert werden. Mehr Informationen über deren Installation und Konfiguration finden sich hier:
 
-[Installation](page_01_00_de.md)
+[Installation](../01_config/de.md)
 
 Nach der erfolgreichen Installation, kann mit dem eigentlichen Import fortgefahren werden. Hierbei ist zu unterscheiden zwischen dem reinen Import von Vorgängen und dem Import einer exportierten Infrastruktur. Je nach Projekt kann dabei der Import der Infrastruktur als erster Arbeitsschritt erforderlich zu sein.
 
@@ -23,13 +23,13 @@ Wenn bereits Nutzer, Projekte, Gruppen etc. im Zielsystem existieren, die den gl
 
 Sollte es gewünscht sein, kann während des Imports eine Manipulation der Daten erfolgen. Dies ist durch eine Anpassung der Konfigurationsdatei `plugin_intranda_administration_goobi2goobi_import_infrastructure.xml` möglich. Genaueres hierzu findet sich im Bereich `Konfiguration für den Import der Infrastruktur` hier:
 
-[Installation](page_01_00_de.md)
+[Installation](../01_config/de.md)
 
 ## 2. Importieren von Vorgängen
 
 Um die Vorgänge von dem Ausgangssystem importieren zu können, müssen diese zunächst erfolgreich exportiert und auf das Zielsystem transferiert worden sein. Wie der Transfer der zum Teil sehr großen Datenmengen erfolgen kann ist hier beschrieben:
 
-[Transfer der Export-Verzeichnisse](page_03_00_de.md)
+[Transfer der Export-Verzeichnisse](../03_transfer/de.md)
 
 Nach dem vollständigen Transfer der Daten zum Zielsystem können Sie den Import der Daten starten. Dazu öffnen Sie im Menü `Administration` das Plugin `Goobi-to-Goobi Import - Daten`. Dort werden im oberen Bereich der Nutzeroberfläche die konfigurierten Regeln für den Import angezeigt. Werden diese Regeln auf dem Zielsystem bearbeitet, so können Sie jederzeit durch einen Klick auf den Button `Regeln neu einlesen` neu geladen werden.
 
@@ -45,6 +45,6 @@ Ein Klick auf den Button `Import der Daten durchführen` startet anschließend d
 
 Eine genaue Konfiguration des Imports sowie der zugrundeliegenden Regeln kann innerhalb der Konfigurationsdatei `plugin_intranda_administration_goobi2goobi_import_data.xml` erfolgen. Weitere Informationen über diese Konfiguration findet sich im im Abschnitt `Konfiguration für den Import der Daten`:
 
-[Installation](page_01_00_de.md)
+[Installation](../01_page/de.md)
 
 
