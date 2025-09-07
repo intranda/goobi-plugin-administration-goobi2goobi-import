@@ -1,7 +1,11 @@
 ---
 title: Transfer der Export-Verzeichnisse
 identifier: intranda_administration_goobi2goobi_export intranda_administration_goobi2goobi_import_infrastructure intranda_administration_goobi2goobi_import_data
-published: true  
+published: true
+keywords:
+    - Plugin
+    - Administration
+    - Transfer
 ---
 Nachdem die Erzeugung der Export-Verzeichnisse durchgeführt wurde, können die Vorgangsordner vom Ausgangssystem zu Zielsystem kopiert werden. Je nachdem, um welche Datenmengen es sich hierbei handelt können verschiedene Methoden für den Transfer zum Einsatz kommen.
 

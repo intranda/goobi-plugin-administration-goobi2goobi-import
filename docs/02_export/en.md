@@ -1,7 +1,11 @@
 ---
 title: Creation of the export directories
 identifier: intranda_administration_goobi2goobi_export intranda_administration_goobi2goobi_import_infrastructure intranda_administration_goobi2goobi_import_data
-published: true  
+published: true
+keywords:
+    - Plugin
+    - Administration
+    - Transfer
 ---
 The export from the source system consists of up to three sub-steps. However, before the export can take place, it must first be specified within the role system of Goobi workflow that the user must have export permissions. Information on the configurations to be made can be found here:
 
