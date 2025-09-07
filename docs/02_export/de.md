@@ -4,7 +4,7 @@ identifier: intranda_administration_goobi2goobi_export intranda_administration_g
 published: true
 keywords:
     - Plugin
-    - Administration
+    - Administration Plugin
     - Transfer
 ---
 Der Export aus dem Ausgangssystem besteht aus bis zu drei Teilschritten. Bevor der Export jedoch stattfinden kann, muss zunächst innerhalb des Rollensystems von Goobi workflow festgelegt werden, dass der Nutzer über die Berechtigungen für den Export verfügen muss. Informationen über die vorzunehmenden Konfigurationen finden sich hier:

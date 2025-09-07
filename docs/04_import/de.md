@@ -4,7 +4,7 @@ identifier: intranda_administration_goobi2goobi_export intranda_administration_g
 published: true
 keywords:
     - Plugin
-    - Administration
+    - Administration Plugin
     - Transfer
 ---
 Der Import von Daten auf dem Zielsystem findet mittels zweier verschiedener Plugins statt. Diese müssen zunächst installiert und entsprechend konfiguriert werden. Mehr Informationen über deren Installation und Konfiguration finden sich hier:

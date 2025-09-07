@@ -5,7 +5,7 @@ description: Administration Plugins für eine Migration von einem Goobi workflow
 published: true
 keywords:
     - Plugin
-    - Administration
+    - Administration Plugin
     - Transfer
 ---
 ## Einführung

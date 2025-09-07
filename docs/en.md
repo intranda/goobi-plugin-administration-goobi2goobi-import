@@ -5,7 +5,7 @@ description: Administration plugins for migrating from one Goobi workflow system
 published: true
 keywords:
     - Plugin
-    - Administration
+    - Administration Plugin
     - Transfer
 ---
 ## Introduction

@@ -4,7 +4,7 @@ identifier: intranda_administration_goobi2goobi_export intranda_administration_g
 published: true
 keywords:
     - Plugin
-    - Administration
+    - Administration Plugin
     - Transfer
 ---
 To start up the Goobi-to-Goobi mechanism, various plugins must be installed and configured on both the source and target systems. These are described in detail here.
