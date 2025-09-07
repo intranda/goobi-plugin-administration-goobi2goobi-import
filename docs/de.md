@@ -4,6 +4,7 @@ identifier: intranda_administration_goobi2goobi_export intranda_administration_g
 description: Administration Plugins für eine Migration von einem Goobi workflow System zu einem anderen Goobi workflow System
 published: true
 keywords:
+    - Goobi workflow
     - Plugin
     - Administration Plugin
     - Transfer

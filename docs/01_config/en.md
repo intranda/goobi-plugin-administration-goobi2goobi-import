@@ -3,6 +3,7 @@ title: Installation and configuration
 identifier: intranda_administration_goobi2goobi_export intranda_administration_goobi2goobi_import_infrastructure intranda_administration_goobi2goobi_import_data
 published: true
 keywords:
+    - Goobi workflow
     - Plugin
     - Administration Plugin
     - Transfer
