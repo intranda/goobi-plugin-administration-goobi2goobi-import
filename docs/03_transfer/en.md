@@ -1,7 +1,12 @@
 ---
 title: Transfer of the export directories
 identifier: intranda_administration_goobi2goobi_export intranda_administration_goobi2goobi_import_infrastructure intranda_administration_goobi2goobi_import_data
-published: true  
+published: true
+keywords:
+    - Goobi workflow
+    - Plugin
+    - Administration Plugin
+    - Transfer
 ---
 After the export directories have been created, the task folders can be copied from the source system to the target system. Depending on the amount of data involved, different methods can be used for the transfer.
 

@@ -3,6 +3,11 @@ title: Goobi-to-Goobi
 identifier: intranda_administration_goobi2goobi_export intranda_administration_goobi2goobi_import_infrastructure intranda_administration_goobi2goobi_import_data
 description: Administration Plugins für eine Migration von einem Goobi workflow System zu einem anderen Goobi workflow System
 published: true
+keywords:
+    - Goobi workflow
+    - Plugin
+    - Administration Plugin
+    - Transfer
 ---
 ## Einführung
 Mit den beiden hier beschriebenen Plugins ist ein Datentransfer von einem Goobi workflow System zu einem anderem Goobi workflow System (`Goobi-to-Goobi`) möglich. Diese Dokumentation erläutert die Installation, Konfiguration sowie die Verwendung der zugehörigen Plugins.
