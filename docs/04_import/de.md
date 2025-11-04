@@ -6,7 +6,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 Der Import von Daten auf dem Zielsystem findet mittels zweier verschiedener Plugins statt. Diese müssen zunächst installiert und entsprechend konfiguriert werden. Mehr Informationen über deren Installation und Konfiguration finden sich hier:
 

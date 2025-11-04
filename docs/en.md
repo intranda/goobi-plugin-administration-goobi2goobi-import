@@ -7,7 +7,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 ## Introduction
 The two plugins described here can be used to transfer data from one Goobi workflow system to another Goobi workflow system (`Goobi-to-Goobi`). This documentation explains how to install, configure and use the associated plugins.

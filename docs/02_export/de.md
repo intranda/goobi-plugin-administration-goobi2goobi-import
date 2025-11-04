@@ -6,7 +6,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 Der Export aus dem Ausgangssystem besteht aus bis zu drei Teilschritten. Bevor der Export jedoch stattfinden kann, muss zunächst innerhalb des Rollensystems von Goobi workflow festgelegt werden, dass der Nutzer über die Berechtigungen für den Export verfügen muss. Informationen über die vorzunehmenden Konfigurationen finden sich hier:
 

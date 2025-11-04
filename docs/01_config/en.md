@@ -6,7 +6,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 To start up the Goobi-to-Goobi mechanism, various plugins must be installed and configured on both the source and target systems. These are described in detail here.
 

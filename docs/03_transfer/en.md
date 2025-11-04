@@ -6,7 +6,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 After the export directories have been created, the task folders can be copied from the source system to the target system. Depending on the amount of data involved, different methods can be used for the transfer.
 

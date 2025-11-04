@@ -6,7 +6,6 @@ keywords:
     - Goobi workflow
     - Plugin
     - Administration Plugin
-    - Transfer
 ---
 Für die Inbetriebnahme des Goobi-to-Goobi-Mechanismus müssen sowohl auf dem Ausgangssystem als auch auf dem Zielsystem verschiedene Plugins installiert und Konfigurationen vorgenommen werden. Diese werden hier detailliert beschrieben.
 
