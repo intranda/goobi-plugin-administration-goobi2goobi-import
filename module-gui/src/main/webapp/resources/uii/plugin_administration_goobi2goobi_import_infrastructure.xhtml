@@ -6,7 +6,8 @@
     xmlns:f="http://xmlns.jcp.org/jsf/core"
     xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-    xmlns:p="http://primefaces.org/ui">
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:util="http://goobi.io/util">
 
     <composite:interface>
     </composite:interface>
@@ -26,7 +27,7 @@
                 boxType="neutral"
                 boxPadding="true"
                 boxClass="mb-3"
-                icon="fa-plug"
+                icon="plug"
                 title="#{msgs.plugin_administration_goobi2goobi_import_uploadFile}">
 
                 <div class="draganddroparea" >
@@ -56,7 +57,7 @@
                             boxType="primary"
                             boxPadding="false"
                             boxForm="true"
-                            icon="fa-plug"
+                            icon="plug"
                             title="#{msgs.plugin_administration_goobi2goobi_import_summary}">
 
                             <intranda:formOutputText
@@ -139,13 +140,10 @@
 
                             <div class="form-actions">
                                 <h:commandLink
-                                    styleClass="btn btn-neutral-600"
+                                    styleClass="btn btn-icon btn-neutral-600"
                                     id="finalize"
                                     action="#{AdministrationForm.administrationPlugin.importSelectedData}">
-                                    <i class="fa fa-exchange"></i>
-                                    <span>
-                                        <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importData}" />
-                                    </span>
+                                    <util:icon-text icon="transfer" text="#{msgs.plugin_administration_goobi2goobi_import_importData}" />
                                 </h:commandLink>
                             </div>
 
