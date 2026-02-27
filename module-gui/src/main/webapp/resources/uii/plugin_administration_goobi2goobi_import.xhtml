@@ -7,7 +7,8 @@
     xmlns:intranda="http://xmlns.jcp.org/jsf/composite/composites"
     xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:jsf="http://xmlns.jcp.org/jsf">
+    xmlns:jsf="http://xmlns.jcp.org/jsf"
+    xmlns:util="http://goobi.io/util">
 
     <composite:interface>
     </composite:interface>
@@ -25,11 +26,11 @@
                 boxType="primary"
                 boxPadding="false"
                 boxClass="mb-3"
-                icon="fa-plug"
+                icon="plug"
                 title="#{msgs.plugin_administration_configuredRules}">
 
                 <h:form>
-                    <div class="gw-table gw-table-fixed">
+                    <div class="gw-table gw-table-fixed overflow-x-auto">
                         <div class="gw-table-fixed__wrapper">
 
                             <h:dataTable
@@ -58,8 +59,7 @@
                                         rendered="#{!rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                         title="#{rule.configuredStepRulesSize}"
                                         id="displayStepDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredStepRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredStepRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.stepPanelExpanded}"
                                             value="true" />
@@ -70,8 +70,7 @@
                                         rendered="#{rule.stepPanelExpanded and rule.configuredStepRulesSize != 0}"
                                         title="#{rule.configuredStepRulesSize}"
                                         id="hideStepDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredStepRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredStepRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.stepPanelExpanded}"
                                             value="false" />
@@ -86,7 +85,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -150,8 +149,7 @@
                                         rendered="#{!rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
                                         title="#{rule.configuredPropertyRulesSize}"
                                         id="displayPropertyDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredPropertyRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredPropertyRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.propertyPanelExpanded}"
                                             value="true" />
@@ -162,8 +160,7 @@
                                         rendered="#{rule.propertyPanelExpanded and rule.configuredPropertyRulesSize != 0}"
                                         title="#{rule.configuredPropertyRulesSize}"
                                         id="hidePropertyDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredPropertyRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredPropertyRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.propertyPanelExpanded}"
                                             value="false" />
@@ -178,7 +175,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -229,8 +226,7 @@
                                         rendered="#{!rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
                                         title="#{rule.configuredMetadataRulesSize}"
                                         id="displayMetadataDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredMetadataRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredMetadataRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.metadataPanelExpanded}"
                                             value="true" />
@@ -241,8 +237,7 @@
                                         rendered="#{rule.metadataPanelExpanded and rule.configuredMetadataRulesSize != 0}"
                                         title="#{rule.configuredMetadataRulesSize}"
                                         id="hideMetadataDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredMetadataRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredMetadataRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.metadataPanelExpanded}"
                                             value="false" />
@@ -256,7 +251,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -314,8 +309,7 @@
                                         rendered="#{!rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
                                         title="#{rule.configuredRulesetRulesSize}"
                                         id="displayRulesetDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredRulesetRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredRulesetRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.rulesetPanelExpanded}"
                                             value="true" />
@@ -326,8 +320,7 @@
                                         rendered="#{rule.rulesetPanelExpanded and rule.configuredRulesetRulesSize != 0}"
                                         title="#{rule.configuredRulesetRulesSize}"
                                         id="hideRulesetDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredRulesetRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredRulesetRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.rulesetPanelExpanded}"
                                             value="false" />
@@ -341,7 +334,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -387,8 +380,7 @@
                                         rendered="#{!rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
                                         title="#{rule.configuredDocketRulesSize}"
                                         id="displayDocketDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredDocketRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredDocketRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.docketPanelExpanded}"
                                             value="true" />
@@ -399,8 +391,7 @@
                                         rendered="#{rule.docketPanelExpanded and rule.configuredDocketRulesSize != 0}"
                                         title="#{rule.configuredDocketRulesSize}"
                                         id="hideDocketDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredDocketRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredDocketRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.docketPanelExpanded}"
                                             value="false" />
@@ -414,7 +405,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -459,8 +450,7 @@
                                         rendered="#{!rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
                                         title="#{rule.configuredProjectRulesSize}"
                                         id="displayProjectDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-right margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredProjectRulesSize}" />
+                                        <util:icon-text icon="chevron-right" text="#{rule.configuredProjectRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.projectPanelExpanded}"
                                             value="true" />
@@ -471,8 +461,7 @@
                                         rendered="#{rule.projectPanelExpanded and rule.configuredProjectRulesSize != 0}"
                                         title="#{rule.configuredProjectRulesSize}"
                                         id="hideProjectDetails" styleClass="font-black">
-                                        <i class="fa fa-angle-down margin-right-5"></i>
-                                        <h:outputText value="#{rule.configuredProjectRulesSize}" />
+                                        <util:icon-text icon="chevron-down" text="#{rule.configuredProjectRulesSize}" />
                                         <f:setPropertyActionListener
                                             target="#{rule.projectPanelExpanded}"
                                             value="false" />
@@ -486,7 +475,7 @@
                                             boxType="primary"
                                             boxSmall="true"
                                             boxPadding="false"
-                                            icon="fa-list"
+                                            icon="list"
                                             title="#{msgs.details}">
 
                                             <div class="gw-table__wrapper">
@@ -521,12 +510,9 @@
                         <button
                             id="reloadRules"
                             jsf:action="#{AdministrationForm.administrationPlugin.reloadRules}"
-                            class="btn btn-blank"
+                            class="btn btn-icon btn-blank"
                             title="#{msgs.reload}">
-                            <i class="fa fa-refresh"></i>
-                            <span>
-                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_reloadRules}" />
-                            </span>
+                            <util:icon-text icon="refresh" text="#{msgs.plugin_administration_goobi2goobi_import_reloadRules}" />
                         </button>
                     </div>
                 </h:form>
@@ -536,7 +522,7 @@
                 boxType="action"
                 boxPadding="false"
                 boxForm="true"
-                icon="fa-plug"
+                icon="plug"
                 title="#{msgs.plugin_administration_goobi2goobi_import_importArea}">
 
                 <h:form>
@@ -586,24 +572,18 @@
 
                         <!-- Save -->
                         <button
-                            class="btn btn-success"
+                            class="btn btn-icon btn-success"
                             id="absenden"
                             type="submit"
                             jsf:action="#{AdministrationForm.administrationPlugin.importSelectedFiles}">
-                            <i class="fa fa-save"></i>
-                            <span>
-                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_importFile}" />
-                            </span>
+                            <util:icon-text icon="device-floppy" text="#{msgs.plugin_administration_goobi2goobi_import_importFile}" />
                         </button>
                         <button
                             id="reload"
                             jsf:action="#{AdministrationForm.administrationPlugin.generateAllFilenames}"
-                            class="btn btn-blank"
+                            class="btn btn-icon btn-blank"
                             title="#{msgs.reload}">
-                            <i class="fa fa-refresh"></i>
-                            <span>
-                                <h:outputText value="#{msgs.plugin_administration_goobi2goobi_import_loadFiles}" />
-                            </span>
+                            <util:icon-text icon="refresh" text="#{msgs.plugin_administration_goobi2goobi_import_loadFiles}" />
                         </button>
 
                     </div>
