@@ -75,7 +75,7 @@ Diese Rolle kann innerhalb der Benutzergruppen von Goobi workflow konfiguriert w
 
 ### 2.3. Konfiguration für den Import der Infrastruktur
 
-Um während des Imports der Infrastruktr Einfluss auf die zu importierenden Daten zu nehmen, kann eine Anpassung der Konfigurationsdatei `plugin_intranda_administration_goobi2goobi_import_infrastructure.xml` erfolgen. Diese Konfiguration kann beispielhaft wie folgt aussehen:
+Um während des Imports der Infrastruktur Einfluss auf die zu importierenden Daten zu nehmen, kann eine Anpassung der Konfigurationsdatei `plugin_intranda_administration_goobi2goobi_import_infrastructure.xml` erfolgen. Diese Konfiguration kann beispielhaft wie folgt aussehen:
 
 ```xml
 <config_plugin>

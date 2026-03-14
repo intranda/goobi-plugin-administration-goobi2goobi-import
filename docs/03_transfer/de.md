@@ -11,7 +11,7 @@ Nachdem die Erzeugung der Export-Verzeichnisse durchgeführt wurde, können die 
 
 ## Transfer mittels einer externen Festplatte
 
-Soll für den Transfer eine externe Festplatte zum Einsatz kommen, kann mittels des `cp`-Befehls der Kopiervorgang vom Ausgangssysetm auf die Festplatte und später wieder von der Festplatte auf das Zielsystem erfolgen.
+Soll für den Transfer eine externe Festplatte zum Einsatz kommen, kann mittels des `cp`-Befehls der Kopiervorgang vom Ausgangssystem auf die Festplatte und später wieder von der Festplatte auf das Zielsystem erfolgen.
 
 Beispielaufruf für den Kopiervorgang vom Ausgangssystem auf die externe Festplatte:
 
@@ -19,7 +19,7 @@ Beispielaufruf für den Kopiervorgang vom Ausgangssystem auf die externe Festpla
 cp -r /opt/digiverso/goobi/metadata/* /external_harddisk/export/
 ```
 
-Beispielsaufruf für den Kopiervorgang von der externen Festplatte auf das Zielsystem:
+Beispielaufruf für den Kopiervorgang von der externen Festplatte auf das Zielsystem:
 
 ```bash
 cp -r /external_harddisk/export/* /opt/digiverso/TEMP/
@@ -29,7 +29,7 @@ cp -r /external_harddisk/export/* /opt/digiverso/TEMP/
 
 Wenn zwischen dem Ausgangssystem und dem Zielsystem eine Netzwerkverbinung hergestellt werden kann, ist ein Datentransfer über die Kommandos `scp` oder `rsync` möglich. Der Vorteil des Transfers mittels `rsync` besteht dabei darin, dass eine gegebenenfalls auftretende Unterbrechung der Verbindung wieder aufgenommen werden kann, ohne den gesamten Transfer wieder von vorn beginnen zu müssen.
 
-Beispielhaft sieht ein solcher Aufruf folgendermassen aus:
+Beispielhaft sieht ein solcher Aufruf folgendermaßen aus:
 
 ```bash
 rsync -avhP --stats /opt/digiverso/goobi/metadata/ ZIELSYSTEM:/opt/digiverso/TEMP/
