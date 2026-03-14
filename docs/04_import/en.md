@@ -9,7 +9,7 @@ keywords:
 ---
 The import of data on the target system takes place using two different plugins. These must first be installed and configured accordingly. More information about their installation and configuration can be found here:
 
-[Installation](../01_config/en.md)
+[Installation](/en/workflow/plugins/administration/goobi-plugin-administration-goobi2goobi-import/config)
 
 After the successful installation, you can continue with the actual import. A distinction must be made here between the pure import of processes and the import of an exported infrastructure. Depending on the project, the import of the infrastructure may be necessary as the first step.
 
@@ -27,13 +27,13 @@ If users, projects, groups, etc. already exist in the target system with the sam
 
 If desired, the data can be manipulated during the import. This is possible by adapting the configuration file `plugin_intranda_administration_goobi2goobi_import_infrastructure.xml`. More details can be found in the section `Configuration for importing the infrastructure` here:
 
-[Installation](../01_config/en.md)
+[Installation](/en/workflow/plugins/administration/goobi-plugin-administration-goobi2goobi-import/config)
 
 ## 2. Import of processes
 
 To import the processes from the source system, they must first be successfully exported and transferred to the target system. How the transfer of the sometimes very large amounts of data can take place is described here:
 
-[Transfer of export directories](../03_transfer/en.md)
+[Transfer of export directories](/en/workflow/plugins/administration/goobi-plugin-administration-goobi2goobi-import/transfer)
 
 Once the data has been completely transferred to the target system, you can start the import of the data. To do this, open the plugin `Goobi-to-Goobi Import - Data` in the `Administration` menu. There the configured rules for the import are displayed in the upper part of the user interface. If these rules are edited on the target system, they can be reloaded at any time by clicking on the `Reload rules` button.
 
@@ -49,6 +49,6 @@ A click on the button `Perform import of data` then starts the actual import. Du
 
 You can configure the import and the underlying rules in detail in the configuration file `plugin_intranda_administration_goobi2goobi_import_data.xml`. Further information about this configuration can be found in the section `Configuration for import of data`:
 
-[Installation](../01_config/en.md)
+[Installation](/en/workflow/plugins/administration/goobi-plugin-administration-goobi2goobi-import/config)
 
 

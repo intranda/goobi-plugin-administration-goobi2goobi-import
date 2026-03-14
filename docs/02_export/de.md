@@ -9,7 +9,7 @@ keywords:
 ---
 Der Export aus dem Ausgangssystem besteht aus bis zu drei Teilschritten. Bevor der Export jedoch stattfinden kann, muss zunächst innerhalb des Rollensystems von Goobi workflow festgelegt werden, dass der Nutzer über die Berechtigungen für den Export verfügen muss. Informationen über die vorzunehmenden Konfigurationen finden sich hier:
 
-[Installation](../01_config/de.md)
+[Installation](/de/workflow/plugins/administration/goobi-plugin-administration-goobi2goobi-import/config)
 
 Nach der Konfiguration der benötigen Benutzerrechte kann der eigentliche Export beginnen. In den meisten Fällen wird hierfür lediglich der erste der folgenden drei Teilschritte notwendig sein.
 
