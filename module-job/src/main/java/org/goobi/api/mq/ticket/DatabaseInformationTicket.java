@@ -62,6 +62,7 @@ import de.intranda.goobi.importrules.StepConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.export.dms.ExportDms;
+import de.sub.goobi.metadaten.search.DatabaseMetadataField;
 import de.sub.goobi.helper.HelperSchritte;
 import de.sub.goobi.helper.S3FileUtils;
 import de.sub.goobi.helper.StorageProvider;
@@ -1394,7 +1395,7 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         String anchorPath = metdatdaPath.replace("meta.xml", "meta_anchor.xml");
         Path metadataFile = Paths.get(metdatdaPath);
         Path anchorFile = Paths.get(anchorPath);
-        Map<String, List<String>> pairs = new HashMap<>();
+        Map<String, List<DatabaseMetadataField>> pairs = new HashMap<>();
 
         HelperSchritte.extractMetadata(metadataFile, pairs);
 
@@ -1403,13 +1404,6 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         }
 
         MetadataManager.updateMetadata(processid, pairs);
-
-        // now add all authority fields to the metadata pairs
-        HelperSchritte.extractAuthorityMetadata(metadataFile, pairs);
-        if (StorageProvider.getInstance().isFileExists(anchorFile)) {
-            HelperSchritte.extractAuthorityMetadata(anchorFile, pairs);
-        }
-        MetadataManager.updateJSONMetadata(processid, pairs);
 
     }
 }
