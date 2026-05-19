@@ -62,7 +62,6 @@ import de.intranda.goobi.importrules.StepConfigurationItem;
 import de.intranda.goobi.importrules.StepConfigurationItem.ConfigurationType;
 import de.sub.goobi.config.ConfigurationHelper;
 import de.sub.goobi.export.dms.ExportDms;
-import de.sub.goobi.metadaten.search.DatabaseMetadataField;
 import de.sub.goobi.helper.HelperSchritte;
 import de.sub.goobi.helper.S3FileUtils;
 import de.sub.goobi.helper.StorageProvider;
@@ -71,6 +70,7 @@ import de.sub.goobi.helper.enums.StepEditType;
 import de.sub.goobi.helper.enums.StepStatus;
 import de.sub.goobi.helper.exceptions.DAOException;
 import de.sub.goobi.helper.exceptions.SwapException;
+import de.sub.goobi.metadaten.search.DatabaseMetadataField;
 import de.sub.goobi.persistence.managers.DocketManager;
 import de.sub.goobi.persistence.managers.InstitutionManager;
 import de.sub.goobi.persistence.managers.JournalManager;
@@ -718,32 +718,21 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
         if (sci.getScriptname1() != null) {
             step.setScriptname1(sci.getScriptname1());
         }
-        if (sci.getTypAutomatischScriptpfad() != null) {
-            step.setTypAutomatischScriptpfad(sci.getTypAutomatischScriptpfad());
-        }
+
         if (sci.getScriptname2() != null) {
             step.setScriptname2(sci.getScriptname2());
         }
-        if (sci.getTypAutomatischScriptpfad2() != null) {
-            step.setTypAutomatischScriptpfad2(sci.getTypAutomatischScriptpfad2());
-        }
+
         if (sci.getScriptname3() != null) {
             step.setScriptname3(sci.getScriptname3());
         }
-        if (sci.getTypAutomatischScriptpfad3() != null) {
-            step.setTypAutomatischScriptpfad3(sci.getTypAutomatischScriptpfad3());
-        }
+
         if (sci.getScriptname4() != null) {
             step.setScriptname4(sci.getScriptname4());
         }
-        if (sci.getTypAutomatischScriptpfad4() != null) {
-            step.setTypAutomatischScriptpfad4(sci.getTypAutomatischScriptpfad4());
-        }
+
         if (sci.getScriptname5() != null) {
             step.setScriptname5(sci.getScriptname5());
-        }
-        if (sci.getTypAutomatischScriptpfad5() != null) {
-            step.setTypAutomatischScriptpfad5(sci.getTypAutomatischScriptpfad5());
         }
 
         if (sci.getTypBeimAbschliessenVerifizieren() != null) {
@@ -938,19 +927,14 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
                 if ("true".equals(scriptStep.getAttributeValue("scriptStep"))) {
                     step.setTypScriptStep(true);
                     step.setScriptname1(scriptStep.getAttributeValue("scriptName1"));
-                    step.setTypAutomatischScriptpfad(scriptStep.getAttributeValue("scriptPath1"));
 
                     step.setScriptname2(scriptStep.getAttributeValue("scriptName2"));
-                    step.setTypAutomatischScriptpfad2(scriptStep.getAttributeValue("scriptPath2"));
 
                     step.setScriptname3(scriptStep.getAttributeValue("scriptName3"));
-                    step.setTypAutomatischScriptpfad3(scriptStep.getAttributeValue("scriptPath3"));
 
                     step.setScriptname4(scriptStep.getAttributeValue("scriptName4"));
-                    step.setTypAutomatischScriptpfad4(scriptStep.getAttributeValue("scriptPath4"));
 
                     step.setScriptname5(scriptStep.getAttributeValue("scriptName5"));
-                    step.setTypAutomatischScriptpfad5(scriptStep.getAttributeValue("scriptPath5"));
                 }
                 Element httpStep = taskElement.getChild("httpStep", goobiNamespace);
                 if ("true".equals(httpStep.getAttributeValue("httpStep"))) {
