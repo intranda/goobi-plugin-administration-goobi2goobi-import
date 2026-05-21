@@ -115,137 +115,141 @@ public class DatabaseInformationTicket extends ExportDms implements TicketHandle
     @Override
     public PluginReturnValue call(TaskTicket ticket) {
         log.info("got import ticket for " + ticket.getProcessName());
-
-        String processId = ticket.getProcessName();
-
-        if ("true".equalsIgnoreCase(ticket.getProperties().get("deleteOldProcess"))) {
-            Process process = ProcessManager.getProcessById(Integer.parseInt(processId));
-            if (process != null) {
-                ProcessManager.deleteProcess(process);
-            }
-        }
-
-        Path processFolder = Paths.get(ticket.getProperties().get("processFolder"));
-        String tempFolderName = ticket.getProperties().get("tempFolder");
-
-        if (!Files.exists(processFolder)) {
-            try {
-                Files.createDirectories(processFolder);
-            } catch (IOException e) {
-                log.error(e);
-                return PluginReturnValue.ERROR;
-            }
-        }
-
-        String currentRule = ticket.getProperties().get("rule");
-        boolean createNewProcessId = Boolean.parseBoolean(ticket.getProperties().get("createNewProcessId"));
-        List<Path> folderContentList = StorageProvider.getInstance().listFiles(processFolder.toString());
-
-        List<Path> files = new ArrayList<>();
-        List<Path> folder = new ArrayList<>();
-        Path importFile = null;
-        for (Path path : folderContentList) {
-            String filename = path.getFileName().toString();
-            if (StorageProvider.getInstance().isDirectory(path)) {
-                folder.add(path);
-            } else if ((processId + "_db_export.xml").equals(filename)) {
-                importFile = path;
-            } else {
-                files.add(path);
-            }
-        }
-
-        if (importFile == null) {
-            log.error("No importable data found in " + processFolder.toString());
-            return PluginReturnValue.ERROR;
-        }
-
-        Integer generatedProcessId = null;
         try {
-            generatedProcessId = extractDatabaseInformationFromFile(importFile, currentRule, createNewProcessId);
-        } catch (Exception e2) {
-            log.error(e2);
-            return PluginReturnValue.ERROR;
-        }
-        if (generatedProcessId == null) {
-            log.error("No process id found");
-            return PluginReturnValue.ERROR;
-        } else {
-            log.info("Stored process " + generatedProcessId);
-        }
+            String processId = ticket.getProcessName();
 
-        if (StringUtils.isNotBlank(tempFolderName) && !processFolder.toString().startsWith(ConfigurationHelper.getInstance().getMetadataFolder())) {
-            // copy data from temporary folder to process folder
-            Path destination = Paths.get(ConfigurationHelper.getInstance().getMetadataFolder(), String.valueOf(generatedProcessId));
-            if (!ConfigurationHelper.getInstance().useS3()) {
-                try {
-                    StorageProvider.getInstance().move(processFolder, destination);
-                } catch (IOException e) {
-                    log.error(e);
+            if ("true".equalsIgnoreCase(ticket.getProperties().get("deleteOldProcess"))) {
+                Process process = ProcessManager.getProcessById(Integer.parseInt(processId));
+                if (process != null) {
+                    ProcessManager.deleteProcess(process);
                 }
             }
-            processFolder = destination;
-        }
 
-        if (ConfigurationHelper.getInstance().useS3()) {
-            // move meta.xml and meta_anchor.xml to efs
-            S3AsyncClient s3;
-            try {
-                s3 = S3FileUtils.createS3Client();
-            } catch (URISyntaxException e) {
-                log.error(e);
+            Path processFolder = Paths.get(ticket.getProperties().get("processFolder"));
+            String tempFolderName = ticket.getProperties().get("tempFolder");
+
+            if (!Files.exists(processFolder)) {
+                try {
+                    Files.createDirectories(processFolder);
+                } catch (IOException e) {
+                    log.error(e);
+                    return PluginReturnValue.ERROR;
+                }
+            }
+
+            String currentRule = ticket.getProperties().get("rule");
+            boolean createNewProcessId = Boolean.parseBoolean(ticket.getProperties().get("createNewProcessId"));
+            List<Path> folderContentList = StorageProvider.getInstance().listFiles(processFolder.toString());
+
+            List<Path> files = new ArrayList<>();
+            List<Path> folder = new ArrayList<>();
+            Path importFile = null;
+            for (Path path : folderContentList) {
+                String filename = path.getFileName().toString();
+                if (StorageProvider.getInstance().isDirectory(path)) {
+                    folder.add(path);
+                } else if ((processId + "_db_export.xml").equals(filename)) {
+                    importFile = path;
+                } else {
+                    files.add(path);
+                }
+            }
+
+            if (importFile == null) {
+                log.error("No importable data found in " + processFolder.toString());
                 return PluginReturnValue.ERROR;
             }
-            ConfigurationHelper config = ConfigurationHelper.getInstance();
-            List<String> metaList = getMetaHistory(processId, s3, config);
-            log.debug("downloading " + metaList.size() + " files");
-            for (String key : metaList) {
 
-                CompletableFuture<ResponseInputStream<GetObjectResponse>> responseInputStream = s3.getObject(GetObjectRequest.builder()
-                        .bucket(config.getS3Bucket())
-                        .key(key)
-                        .build(),
-                        AsyncResponseTransformer.toBlockingInputStream());
-                try (InputStream is = responseInputStream.toCompletableFuture().join()) {
-
-                    String basename = key.substring(key.lastIndexOf('/') + 1);
-                    Path filename = processFolder.resolve(basename);
-                    log.debug(filename);
-                    Files.copy(is, processFolder.resolve(basename));
-                } catch (IOException e1) {
-                    log.error(e1);
-                }
-                DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
-                        .bucket(config.getS3Bucket())
-                        .key(key)
-                        .build();
-
-                s3.deleteObject(deleteObjectRequest);
+            Integer generatedProcessId = null;
+            try {
+                generatedProcessId = extractDatabaseInformationFromFile(importFile, currentRule, createNewProcessId);
+            } catch (Exception e2) {
+                log.error(e2);
+                return PluginReturnValue.ERROR;
             }
-        }
+            if (generatedProcessId == null) {
+                log.error("No process id found");
+                return PluginReturnValue.ERROR;
+            } else {
+                log.info("Stored process " + generatedProcessId);
+            }
 
-        // move [id]_db_export.xml to  /import/[id]_db_export.xml
-        if (StorageProvider.getInstance().isDirectory(processFolder)) {
-            Path dbExportFile = Paths.get(processFolder.toString(), processId + "_db_export.xml");
+            if (StringUtils.isNotBlank(tempFolderName) && !processFolder.toString().startsWith(ConfigurationHelper.getInstance().getMetadataFolder())) {
+                // copy data from temporary folder to process folder
+                Path destination = Paths.get(ConfigurationHelper.getInstance().getMetadataFolder(), String.valueOf(generatedProcessId));
+                if (!ConfigurationHelper.getInstance().useS3()) {
+                    try {
+                        StorageProvider.getInstance().move(processFolder, destination);
+                    } catch (IOException e) {
+                        log.error(e);
+                    }
+                }
+                processFolder = destination;
+            }
 
-            Path destinationFolder = Paths.get(processFolder.toString(), "import");
-            if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
+            if (ConfigurationHelper.getInstance().useS3()) {
+                // move meta.xml and meta_anchor.xml to efs
+                S3AsyncClient s3;
                 try {
-                    StorageProvider.getInstance().createDirectories(destinationFolder);
+                    s3 = S3FileUtils.createS3Client();
+                } catch (URISyntaxException e) {
+                    log.error(e);
+                    return PluginReturnValue.ERROR;
+                }
+                ConfigurationHelper config = ConfigurationHelper.getInstance();
+                List<String> metaList = getMetaHistory(processId, s3, config);
+                log.debug("downloading " + metaList.size() + " files");
+                for (String key : metaList) {
+
+                    CompletableFuture<ResponseInputStream<GetObjectResponse>> responseInputStream = s3.getObject(GetObjectRequest.builder()
+                            .bucket(config.getS3Bucket())
+                            .key(key)
+                            .build(),
+                            AsyncResponseTransformer.toBlockingInputStream());
+                    try (InputStream is = responseInputStream.toCompletableFuture().join()) {
+
+                        String basename = key.substring(key.lastIndexOf('/') + 1);
+                        Path filename = processFolder.resolve(basename);
+                        log.debug(filename);
+                        Files.copy(is, processFolder.resolve(basename));
+                    } catch (IOException e1) {
+                        log.error(e1);
+                    }
+                    DeleteObjectRequest deleteObjectRequest = DeleteObjectRequest.builder()
+                            .bucket(config.getS3Bucket())
+                            .key(key)
+                            .build();
+
+                    s3.deleteObject(deleteObjectRequest);
+                }
+            }
+
+            // move [id]_db_export.xml to  /import/[id]_db_export.xml
+            if (StorageProvider.getInstance().isDirectory(processFolder)) {
+                Path dbExportFile = Paths.get(processFolder.toString(), processId + "_db_export.xml");
+
+                Path destinationFolder = Paths.get(processFolder.toString(), "import");
+                if (!StorageProvider.getInstance().isFileExists(destinationFolder)) {
+                    try {
+                        StorageProvider.getInstance().createDirectories(destinationFolder);
+                    } catch (IOException e) {
+                        log.error(e);
+                    }
+                }
+                try {
+                    StorageProvider.getInstance().move(dbExportFile, Paths.get(destinationFolder.toString(), dbExportFile.getFileName().toString()));
                 } catch (IOException e) {
                     log.error(e);
                 }
             }
-            try {
-                StorageProvider.getInstance().move(dbExportFile, Paths.get(destinationFolder.toString(), dbExportFile.getFileName().toString()));
-            } catch (IOException e) {
-                log.error(e);
-            }
+
+            saveDatabaseMetadata(generatedProcessId);
+
+            return PluginReturnValue.FINISH;
+        } catch (Exception e) {
+            log.error(e);
+            return PluginReturnValue.ERROR;
         }
-
-        saveDatabaseMetadata(generatedProcessId);
-
-        return PluginReturnValue.FINISH;
     }
 
     /**
