@@ -1011,13 +1011,18 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
             Files.createDirectories(destDir);
         }
 
+        final Path normalizedDestDir = destDir.normalize();
+
         try (FileSystem zipFileSystem = FileSystems.newFileSystem(importFile, this.getClass().getClassLoader())) {
             final Path root = zipFileSystem.getRootDirectories().iterator().next();
 
             walkFileTree(root, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    final Path destFile = Paths.get(destDir.toString(), file.toString());
+                    final Path destFile = normalizedDestDir.resolve(file.toString().replaceAll("^/+", "")).normalize();
+                    if (!destFile.startsWith(normalizedDestDir)) {
+                        throw new IOException("Zip Slip detected: " + file);
+                    }
                     try {
                         copy(file, destFile, StandardCopyOption.REPLACE_EXISTING);
                     } catch (DirectoryNotEmptyException ignore) {
@@ -1027,7 +1032,10 @@ public class GoobiToGoobiImportInfrastructurePlugin implements IAdministrationPl
 
                 @Override
                 public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
-                    final Path dirToCreate = Paths.get(destDir.toString(), dir.toString());
+                    final Path dirToCreate = normalizedDestDir.resolve(dir.toString().replaceAll("^/+", "")).normalize();
+                    if (!dirToCreate.startsWith(normalizedDestDir)) {
+                        throw new IOException("Zip Slip detected: " + dir);
+                    }
                     if (!Files.exists(dirToCreate)) {
                         Files.createDirectories(dirToCreate);
                     }
