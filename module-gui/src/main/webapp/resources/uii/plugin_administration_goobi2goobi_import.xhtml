@@ -15,10 +15,7 @@
 
     <composite:implementation>
 
-        <h:outputText
-            rendered="#{!LoginForm.hasRole('Plugin_goobi2goobi_import')}"
-            styleClass="alert alert-danger d-block"
-            value="#{msgs.plugin_administration_missingPermission} Plugin_goobi2goobi_import"/>
+        <util:missing-rights rights="Plugin_goobi2goobi_import" rendered="true" />
 
         <ui:fragment rendered="#{LoginForm.hasRole('Plugin_goobi2goobi_import')}">
 
